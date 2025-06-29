@@ -1,14 +1,13 @@
 from time import sleep
 
 from django.test import LiveServerTestCase
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+
+from utils.browser import get_chrome_driver
 
 
 class BaseWebDriverForFunctionalTests(LiveServerTestCase):
     def setUp(self):
-        self.driver = webdriver.Firefox()
+        self.driver = get_chrome_driver()
         return super().setUp()
 
     def tearDown(self):
