@@ -8,3 +8,4 @@ omit =
     **/base_for_setup.py,
     utils/browser.py,
     project/settings.py,
+    functional_tests/base.py
