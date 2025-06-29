@@ -1,0 +1,10 @@
+[run]
+branch = True
+omit = 
+    venv/*,
+    **/*test*.py,
+    manage.py,
+    __localcode/*,
+    **/base_for_setup.py,
+    utils/browser.py,
+    project/settings.py,
