@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from authors import views
+
 urlpatterns = [
+    path('signup/', views.create_author),
     path('admin/', admin.site.urls),
 ]

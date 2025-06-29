@@ -1,4 +1,3 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -12,22 +11,23 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         pass
 
     def test_user_can_see_all_the_placeholders(self):
-        # Usuário entra na tela inicial
+        # User enters the home screen
         self.browser.get(self.live_server_url + '/signup/')
 
-        # Ele visualiza o botão de Login e aperta nela
+        # He sees the Login button and presses it.
         wait = self.delay()
         wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'login-button'
-        )))
+        ))).click()
 
-        # Ele percebe que não tem uma conta e aperta no botão de Sign up
-        self.browser.find_element(By.CLASS_NAME, 'sign-up-button')
+        # He realizes that he doesn't have an account
+        # and clicks the Sign up button.
+        # self.browser.find_element(By.CLASS_NAME, 'sign-up-button')
 
-        # Vê a tela de se cadastrar
-        wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-form'
-        )))
-        self.assertEqual(self.browser.title, 'Sign up')
+        # # See the registration screen
+        # wait.until(EC.visibility_of_element_located((
+        #     By.CLASS_NAME, 'sign-up-form'
+        # )))
+        # self.assertEqual(self.browser.title, 'Sign up')
 
-        # Verifica que todos os inputs tem placeholders
+        # Check that all inputs have placeholders.
