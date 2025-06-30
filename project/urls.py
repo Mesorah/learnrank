@@ -20,6 +20,6 @@ from django.urls import path
 from authors import views
 
 urlpatterns = [
-    path('signup/', views.create_author),
+    path('signup/', views.create_author, name="signup"),
     path('admin/', admin.site.urls),
 ]
