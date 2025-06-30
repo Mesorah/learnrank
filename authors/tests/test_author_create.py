@@ -18,7 +18,7 @@ class TestAuthorCreate(TestCase):
             'authors/pages/authors.html'
         )
 
-    def test_view_get_is_correct(self):
+    def test_status_code_view_get_is_correct(self):
         response = self.client.get(reverse('signup'))
 
         self.assertEqual(response.status_code, 200)
