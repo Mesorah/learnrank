@@ -40,14 +40,16 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
     def validate_errors(self, errors, expected_errors):
         commum_errors = {
             'username': [
-                'Size less than 4 characters', 'Username already in use'
+                'Size less than 4 characters.', 'Username already in use.'
             ],
-            'email': ['email already used'],
+            'email': ['Email already used.'],
             'password': [
-                'Size smaller than 5 characters', 'Without the use of symbols',
-                'Without the use of numbers', 'Passwords are not the same'
+                'Size smaller than 8 characters.', 'Without the use of symbols.',
+                'Without the use of numbers.', 'Passwords are not the same.'
             ]
         }
+
+        self.fail('campo vazio')
 
         # O erro vai vim tipo: Password: 'Without the use of symbols'
         # dai pego o commum_error que tenha a mesma chave que o erro
@@ -89,8 +91,8 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         form.submit()
 
         # Viu que apareceu erros em sua tela
-        errors = self.browser.find_elements(By.CLASS_NAME, 'erros')
-        self.validate_errors(errors, 'expected_erros')
+        errors = self.browser.find_elements(By.CLASS_NAME, 'errors')
+        self.validate_errors(errors, 'Campo vazio')
 
         # Decidiu arrumar o username
         username = form.find_element(By.CLASS_NAME, 'username_field')

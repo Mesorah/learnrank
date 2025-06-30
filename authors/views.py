@@ -1,5 +1,11 @@
 from django.shortcuts import render
 
+from authors.forms import CustomSignupForm
+
 
 def create_author(request):
-    return render(request, 'authors/pages/authors.html')
+    form = CustomSignupForm()
+
+    return render(request, 'authors/pages/authors.html', context={
+        'form': form
+    })

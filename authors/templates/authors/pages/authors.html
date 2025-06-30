@@ -7,11 +7,11 @@
 </head>
 <body>
     <form action="" class="sign-up-form">
-        <input type="text" name="username" placeholder="Ex: Gabriel Rodrigues">
-        <input type="email" name="email" placeholder="Ex: gabrielrodrigues@example.com">
-        <input type="password" name="password1" placeholder="Ex 23#$1fsgKDL!">
-        <input type="password" name="password2" placeholder="Repeat your password">
-        <button type="button" class="login-button">button</button>
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
