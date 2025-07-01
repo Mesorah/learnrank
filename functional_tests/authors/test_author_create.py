@@ -144,3 +144,9 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'home'
         )))
         self.assertEqual(self.browser.title, 'Home')
+
+        username = self.browser.find_element(
+            By.CLASS_NAME, 'username-profile'
+        ).text
+
+        self.assertEqual(username, 'testing')

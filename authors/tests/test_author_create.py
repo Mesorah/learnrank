@@ -5,6 +5,16 @@ from authors.views import create_author
 
 
 class TestAuthorCreate(TestCase):
+    def setUp(self):
+        self.data = {
+            'username': 'testing',
+            'email': 'testing@example.com',
+            'password1': 'testing12!@1dsFG',
+            'password2': 'testing12!@1dsFG',
+        }
+
+        return super().setUp()
+
     def test_view_is_correct(self):
         response = resolve(reverse('authors:signup'))
 
@@ -23,14 +33,8 @@ class TestAuthorCreate(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_status_code_view_post_is_correct(self):
-        data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
+    def test_signup_post_logs_user_and_redirects_to_home(self):
+        response = self.client.post(reverse('authors:signup'), self.data)
+        self.assertRedirects(response, reverse('home:index'))
 
-        response = self.client.post(reverse('authors:signup'), data)
-
-        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.context['user'].is_authenticated)

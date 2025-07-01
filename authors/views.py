@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from authors.forms import CustomSignupForm
 
@@ -11,6 +12,8 @@ def create_author(request):
         if form.is_valid():
             messages.success(request, 'Account created!')
             form.save()
+
+            return redirect(reverse('home:index'))
         else:
             messages.error(request, 'Form inválid.')
 
