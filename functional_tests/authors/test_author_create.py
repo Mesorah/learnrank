@@ -12,6 +12,13 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         super().setUp()
         self.wait = self.delay()
 
+        self.form_data = {
+            'username': 'testing',
+            'email': 'testing@example.com',
+            'password1': 'testing12!@1dsFG',
+            'password2': 'testing12!@1dsFG',
+        }
+
     def get_all_placeholders(self, inputs):
         inputs_information = []
 
@@ -38,30 +45,12 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
             else:
                 self.fail((placeholder, input))
 
-    def validate_errors(self, errors, expected_errors):
-        commum_errors = {
-            'username': [
-                'Size less than 4 characters.', 'Username already in use.'
-            ],
-            'email': ['Email already used.'],
-            'password': [
-                'Size smaller than 8 characters.', 'Without the use of symbols.',
-                'Without the use of numbers.', 'Passwords are not the same.'
-            ]
-        }
-
-        self.fail('finish the test!')
-
-        # O erro vai vim tipo: Password: 'Without the use of symbols'
-        # dai pego o commum_error que tenha a mesma chave que o erro
-        # e verifico se o erro foi validado
-
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
-        # # He sees the Login button and presses it.
-        # wait.until(EC.visibility_of_element_located((
+        # He sees the Login button and presses it.
+        # self.wait.until(EC.visibility_of_element_located((
         #     By.CLASS_NAME, 'login-button'
         # ))).click()
 
@@ -84,92 +73,60 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
-        # Ele viu os campos e enviou sem completar nada
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'sign-up-form'
         )))
 
+        # See the form and decide to fill it out.
+        username = form.find_element(By.ID, 'id_username')
+        email = form.find_element(By.ID, 'id_email')
+        password1 = form.find_element(By.ID, 'id_password1')
+        password2 = form.find_element(By.ID, 'id_password2')
+
+        username.send_keys('abcd')
+        email.send_keys('testing@example.com')
+        password1.send_keys('abcd1234')
+        password2.send_keys('defg5678')
+
+        # Send the form and notice errors on your screen
         form.submit()
 
-        # Viu que apareceu erros em sua tela
-        errors = self.browser.find_elements(By.CLASS_NAME, 'errors')
+        self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-form'
+        )))
 
-        self.fail('finish the test!')
+        errors = self.browser.find_elements(By.CLASS_NAME, 'errorlist')
 
-        self.validate_errors(errors, 'Campo vazio')
+        errors_messages = [error.text for error in errors]
 
-        # Decidiu arrumar o username
-        username = form.find_element(By.CLASS_NAME, 'username_field')
-        username.send_keys('abc')
+        self.assertIn(
+            'Without the use of symbols.',
+            errors_messages
+        )
 
-        # Viu que isso resultou em um erro
+        self.assertIn(
+            'Passwords are not the same.',
+            errors_messages
+        )
+
+        # Decided to fix the gaps that caused errors and resend it again.
+        form = self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-form'
+        )))
+
+        username = form.find_element(By.ID, 'id_username')
+        email = form.find_element(By.ID, 'id_email')
+        password1 = form.find_element(By.ID, 'id_password1')
+        password2 = form.find_element(By.ID, 'id_password2')
+
+        username.send_keys('testing')
+        email.send_keys('testing@example.com')
+        password1.send_keys('testing12!@1dsFG')
+        password2.send_keys('testing12!@1dsFG')
+
         form.submit()
 
-        # Decidiu arrumar
-        username.clear()
-        username.send_keys('Test')
-
-        # Mas percebeu que esse nome já existia e recebeu outro erro
-
-        #### abrir outro navegador e criar uma conta com o mesmo nome
-        form.submit()
-
-        # Colocou outro nome e viu que não deu mais erro
-        username.clear()
-        username.send_keys('Testing')
-        form.submit()
-
-        # agora tentou arrumar o e-mail
-        email = form.find_element(By.CLASS_NAME, 'email_field')
-        email.send_keys('test@gmail.com')
-
-        # Mas percebeu também que alguém já usou este email
-        # Ele decidiu tentar outro, e deu certo
-        email.clear()
-        email.send_keys('testing@gmail.com')
-
-        # Agora ele foi tentar colocar uma senha
-        password1 = form.find_element(By.CLASS_NAME, 'password1_field')
-        password2 = form.find_element(By.CLASS_NAME, 'password2_field')
-
-        password1.send_keys('abc')
-        password2.send_keys('abc')
-
-        # Percebeu que ele recebeu um erro que o tamanho
-        # é menor que 5 caracteres
-        form.submit()
-
-        # Ele então mudou de senha
-        password1.clear()
-        password2.clear()
-
-        password1.send_keys('abcdef')
-        password2.send_keys('abcdef')
-
-        # Mas agora deu um erro que não há numeros, então ele deciciu arrumar
-        password1.clear()
-        password2.clear()
-
-        password1.send_keys('abcdef1')
-        password2.send_keys('abcdef1')
-
-        # Mas viu que não há símbolos e então arrumou novamente, mas esqueceu
-        # de arrumar a password2 e recebeu o erro que as senhas não são iguais
-        password1.clear()
-        password2.clear()
-
-        password1.send_keys('abcdef1!')
-        password2.send_keys('abcdef1')
-
-        # Então por fim ele arrumou a password2 e conseguiu entrar
-        # na página principal
-        password1.clear()
-        password2.clear()
-
-        password1.send_keys('abcdef1!')
-        password2.send_keys('abcdef1!')
-
-        # foi redirecionado já logado para a home
+        # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'home'
         )))

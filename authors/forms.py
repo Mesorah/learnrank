@@ -60,7 +60,7 @@ class CustomSignupForm(UserCreationForm):
         return email
 
     def clean(self):
-        cleaned_data = super().clean()
+        cleaned_data = self.cleaned_data
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
 
