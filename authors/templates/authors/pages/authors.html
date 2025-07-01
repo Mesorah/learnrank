@@ -6,7 +6,7 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <form action="" class="sign-up-form">
+    <form action="{% url "authors:signup" %}" class="sign-up-form" method="post">
         {% csrf_token %}
 
         {{ form.as_p }}
