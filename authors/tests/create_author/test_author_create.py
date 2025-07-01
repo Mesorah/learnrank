@@ -34,7 +34,9 @@ class TestAuthorCreate(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_signup_post_logs_user_and_redirects_to_home(self):
-        response = self.client.post(reverse('authors:signup'), self.data)
-        self.assertRedirects(response, reverse('home:index'))
+        response = self.client.post(
+            reverse('authors:signup'), self.data, follow=True
+        )
 
+        self.assertRedirects(response, reverse('home:index'))
         self.assertTrue(response.context['user'].is_authenticated)

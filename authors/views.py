@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -11,9 +12,12 @@ def create_author(request):
 
         if form.is_valid():
             messages.success(request, 'Account created!')
-            form.save()
+            user = form.save()
+
+            login(request, user)
 
             return redirect(reverse('home:index'))
+
         else:
             messages.error(request, 'Form inválid.')
 

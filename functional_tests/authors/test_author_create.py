@@ -134,18 +134,18 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        self.sleep()
-
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'alert-success'
         ).text
         self.assertEqual(message_success, 'Account created!')
 
+        self.fail('finish the test!')
+
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'home'
+            By.CLASS_NAME, 'test'
         )))
-        self.assertEqual(self.browser.title, 'Home')
+        self.assertEqual(self.browser.title, 'Document')
 
         username = self.browser.find_element(
             By.CLASS_NAME, 'username-profile'
