@@ -1,3 +1,4 @@
+from django.urls import reverse
 from selenium.webdriver.common.by import By
 
 # from selenium.webdriver.common.keys import Keys
@@ -49,7 +50,7 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
             ]
         }
 
-        self.fail('campo vazio')
+        self.fail('finish the test!')
 
         # O erro vai vim tipo: Password: 'Without the use of symbols'
         # dai pego o commum_error que tenha a mesma chave que o erro
@@ -57,7 +58,7 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + '/signup/')
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
 
         # # He sees the Login button and presses it.
         # wait.until(EC.visibility_of_element_located((
@@ -75,13 +76,13 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         self.assertEqual(self.browser.title, 'Sign Up')
 
         # Check that all inputs have placeholders.
-        inputs = form.find_elements(By.TAG_NAME, 'input')
+        inputs = form.find_elements(By.CLASS_NAME, 'form-control')
         inputs_information = self.get_all_placeholders(inputs)
         self.validate_placeholders(inputs_information)
 
     def test_registration_invalid_fields_and_success_redirect(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + '/signup/')
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
 
         # Ele viu os campos e enviou sem completar nada
         form = self.wait.until(EC.visibility_of_element_located((
@@ -92,6 +93,9 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
 
         # Viu que apareceu erros em sua tela
         errors = self.browser.find_elements(By.CLASS_NAME, 'errors')
+
+        self.fail('finish the test!')
+
         self.validate_errors(errors, 'Campo vazio')
 
         # Decidiu arrumar o username

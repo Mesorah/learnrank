@@ -8,6 +8,8 @@ def create_author(request):
         form = CustomSignupForm(request.POST)
 
         if form.is_valid():
+            print(form.cleaned_data.get('password1'))
+            print(form.cleaned_data.get('password2'))
             form.save()
 
     else:
