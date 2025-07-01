@@ -6,6 +6,16 @@
     <title>Sign Up</title>
 </head>
 <body>
+    {% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+				{{ message }}
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+
     <form action="{% url "authors:signup" %}" class="sign-up-form" method="post">
         {% csrf_token %}
 

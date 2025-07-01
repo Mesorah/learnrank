@@ -91,6 +91,9 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         # Send the form and notice errors on your screen
         form.submit()
 
+        message_error = self.browser.find_element(By.CLASS_NAME, 'alert-error').text
+        self.assertEqual(message_error, 'Form inválid.')
+
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'sign-up-form'
         )))
@@ -119,12 +122,22 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         password1 = form.find_element(By.ID, 'id_password1')
         password2 = form.find_element(By.ID, 'id_password2')
 
+        username.clear()
+        email.clear()
+        password1.clear()
+        password2.clear()
+
         username.send_keys('testing')
         email.send_keys('testing@example.com')
         password1.send_keys('testing12!@1dsFG')
         password2.send_keys('testing12!@1dsFG')
 
         form.submit()
+
+        message_success = self.browser.find_element(
+            By.CLASS_NAME, 'alert-success'
+        ).text
+        self.assertEqual(message_success, 'Account created!')
 
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((

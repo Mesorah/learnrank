@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 
 from authors.forms import CustomSignupForm
@@ -8,9 +9,10 @@ def create_author(request):
         form = CustomSignupForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data.get('password1'))
-            print(form.cleaned_data.get('password2'))
+            messages.success(request, 'Account created!')
             form.save()
+        else:
+            messages.error(request, 'Form inválid.')
 
     else:
         form = CustomSignupForm()
