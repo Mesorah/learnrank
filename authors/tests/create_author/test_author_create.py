@@ -40,3 +40,12 @@ class TestAuthorCreate(TestCase):
 
         self.assertRedirects(response, reverse('home:index'))
         self.assertTrue(response.context['user'].is_authenticated)
+
+    def test_user_authenticated_cant_get_200_in_signup(self):
+        response = self.client.post(
+            reverse('authors:signup'), self.data
+        )
+
+        response = self.client.get(reverse('authors:signup'))
+
+        self.assertRedirects(response, reverse('home:index'))

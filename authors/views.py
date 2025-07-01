@@ -7,6 +7,11 @@ from authors.forms import CustomSignupForm
 
 
 def create_author(request):
+    if request.user.is_authenticated:
+        messages.error(request, 'you cannot access this while logged in.')
+
+        return redirect(reverse('home:index'))
+
     if request.method == 'POST':
         form = CustomSignupForm(request.POST)
 

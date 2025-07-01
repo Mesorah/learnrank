@@ -152,3 +152,38 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         ).text
 
         self.assertEqual(username, 'testing')
+
+    def test_logged_user_cannot_access_registration_page(self):
+        # User enters the home screen
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
+
+        # He registers himself
+        form = self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-form'
+        )))
+
+        # See the form and decide to fill it out.
+        username = form.find_element(By.ID, 'id_username')
+        email = form.find_element(By.ID, 'id_email')
+        password1 = form.find_element(By.ID, 'id_password1')
+        password2 = form.find_element(By.ID, 'id_password2')
+
+        username.send_keys('testing')
+        email.send_keys('testing@example.com')
+        password1.send_keys('testing12!@1dsFG')
+        password2.send_keys('testing12!@1dsFG')
+
+        form.submit()
+
+        # He tries to go back to the registration page.
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
+
+        # He noticed that he can no longer enter there and
+        # received an error notifying him.
+        error_message = self.browser.find_element(
+            By.CLASS_NAME, 'alert-error'
+        ).text
+
+        self.assertEqual(
+            error_message, 'you cannot access this while logged in.'
+        )
