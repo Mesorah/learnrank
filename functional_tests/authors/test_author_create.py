@@ -134,6 +134,8 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
+        self.sleep()
+
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'alert-success'
         ).text

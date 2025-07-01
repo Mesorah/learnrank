@@ -21,5 +21,6 @@ def create_author(request):
         form = CustomSignupForm()
 
     return render(request, 'authors/pages/authors.html', context={
-        'form': form
+        'form': form,
+        'title': 'Sign Up'
     })

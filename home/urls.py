@@ -1,13 +1,10 @@
-from django.http import HttpResponse
 from django.urls import path
+
+from home.views import index
 
 app_name = 'home'
 
 
-def index(request):
-    return HttpResponse('.')
-
-
 urlpatterns = [
-    path('index/', index, name='index'),
+    path('', index, name='index'),
 ]
