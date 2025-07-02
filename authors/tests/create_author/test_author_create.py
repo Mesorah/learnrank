@@ -1,3 +1,4 @@
+import lxml.html
 from django.test import TestCase
 from django.urls import resolve, reverse
 
@@ -49,3 +50,19 @@ class TestAuthorCreate(TestCase):
         response = self.client.get(reverse('authors:signup'))
 
         self.assertRedirects(response, reverse('home:index'))
+
+    def test_renders_input_form(self):
+        response = self.client.get(reverse('authors:signup'))
+        parsed = lxml.html.fromstring(response.content)  # HTML -> DOM
+        [form] = parsed.cssselect('form[method=POST]')  # -> Search a form
+        self.assertEqual(form.get('action'), reverse('authors:signup'))
+
+        inputs_names = {
+            'username': 'text',
+            'email': 'email',
+            'password1': 'password',
+            'password2': 'password'
+        }
+        for input_name, expected_type in inputs_names.items():
+            [input] = form.cssselect(f'input[name={input_name}]')
+            self.assertEqual(input.get('type'), expected_type)

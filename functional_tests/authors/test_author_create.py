@@ -171,5 +171,24 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         ).text
 
         self.assertEqual(
-            error_message, 'you cannot access this while logged in.'
+            error_message, 'You cannot access this while logged in.'
         )
+
+    def test_user_can_see_the_page_styling_and_layout(self):
+        # User enters the home screen
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
+
+        # His browser window is set to a very specific size
+        self.browser.set_window_size(1024, 768)
+
+        # He notices the form is nicely centered
+        field_ids = ['id_username', 'id_email', 'id_password1', 'id_password2']
+
+        for field_id in field_ids:
+            input = self.browser.find_element(By.ID, field_id)
+
+            self.assertAlmostEqual(
+                input.location['x'] + input.size['width'] / 2,
+                512,
+                delta=10
+            )
