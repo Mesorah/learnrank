@@ -45,6 +45,30 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
             else:
                 self.fail((placeholder, input))
 
+    def send_input_keys(self, username, email, password1, password2):
+        form = self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-form'
+        )))
+
+        username_field = form.find_element(By.ID, 'id_username')
+        email_field = form.find_element(By.ID, 'id_email')
+        password1_field = form.find_element(By.ID, 'id_password1')
+        password2_field = form.find_element(By.ID, 'id_password2')
+
+        username_field.clear()
+        email_field.clear()
+        password1_field.clear()
+        password2_field.clear()
+
+        username_field.send_keys(username)
+        email_field.send_keys(email)
+        password1_field.send_keys(password1)
+        password2_field.send_keys(password2)
+
+        form.submit()
+
+        return form
+
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
@@ -73,25 +97,15 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-form'
-        )))
+        # See the form and decide to fill it out and send
+        # the form and notice errors on your screen
+        self.send_input_keys(
+            'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
+        )
 
-        # See the form and decide to fill it out.
-        username = form.find_element(By.ID, 'id_username')
-        email = form.find_element(By.ID, 'id_email')
-        password1 = form.find_element(By.ID, 'id_password1')
-        password2 = form.find_element(By.ID, 'id_password2')
-
-        username.send_keys('abcd')
-        email.send_keys('testing@example.com')
-        password1.send_keys('abcd1234')
-        password2.send_keys('defg5678')
-
-        # Send the form and notice errors on your screen
-        form.submit()
-
-        message_error = self.browser.find_element(By.CLASS_NAME, 'alert-error').text
+        message_error = self.browser.find_element(
+            By.CLASS_NAME, 'alert-error'
+        ).text
         self.assertEqual(message_error, 'Form inválid.')
 
         self.wait.until(EC.visibility_of_element_located((
@@ -113,26 +127,10 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         )
 
         # Decided to fix the gaps that caused errors and resend it again.
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-form'
-        )))
-
-        username = form.find_element(By.ID, 'id_username')
-        email = form.find_element(By.ID, 'id_email')
-        password1 = form.find_element(By.ID, 'id_password1')
-        password2 = form.find_element(By.ID, 'id_password2')
-
-        username.clear()
-        email.clear()
-        password1.clear()
-        password2.clear()
-
-        username.send_keys('testing')
-        email.send_keys('testing@example.com')
-        password1.send_keys('testing12!@1dsFG')
-        password2.send_keys('testing12!@1dsFG')
-
-        form.submit()
+        self.send_input_keys(
+            'testing', 'testing@example.com',
+            'testing12!@1dsFG', 'testing12!@1dsFG'
+        )
 
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'alert-success'
@@ -158,22 +156,10 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
         # He registers himself
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-form'
-        )))
-
-        # See the form and decide to fill it out.
-        username = form.find_element(By.ID, 'id_username')
-        email = form.find_element(By.ID, 'id_email')
-        password1 = form.find_element(By.ID, 'id_password1')
-        password2 = form.find_element(By.ID, 'id_password2')
-
-        username.send_keys('testing')
-        email.send_keys('testing@example.com')
-        password1.send_keys('testing12!@1dsFG')
-        password2.send_keys('testing12!@1dsFG')
-
-        form.submit()
+        self.send_input_keys(
+            'testing', 'testing@example.com',
+            'testing12!@1dsFG', 'testing12!@1dsFG'
+        )
 
         # He tries to go back to the registration page.
         self.browser.get(self.live_server_url + reverse('authors:signup'))
