@@ -74,13 +74,13 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
         # He sees the Login button and presses it.
-        # self.wait.until(EC.visibility_of_element_located((
-        #     By.CLASS_NAME, 'login-button'
-        # ))).click()
+        self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'login-button'
+        ))).click()
 
         # He realizes that he doesn't have an account
         # and clicks the Sign up button.
-        # self.browser.find_element(By.CLASS_NAME, 'sign-up-button')
+        self.browser.find_element(By.CLASS_NAME, 'sign-up-button')
 
         # See the registration screen
         form = self.wait.until(EC.visibility_of_element_located((
