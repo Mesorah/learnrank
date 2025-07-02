@@ -1,12 +1,12 @@
 from time import sleep
 
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.browser import get_chrome_driver
 
 
-class BaseWebDriverForFunctionalTests(LiveServerTestCase):
+class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = get_chrome_driver()
         return super().setUp()

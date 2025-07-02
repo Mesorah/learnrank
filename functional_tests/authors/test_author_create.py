@@ -181,14 +181,11 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
 
-        # He notices the form is nicely centered
-        field_ids = ['id_username', 'id_email', 'id_password1', 'id_password2']
-
-        for field_id in field_ids:
-            input = self.browser.find_element(By.ID, field_id)
-
-            self.assertAlmostEqual(
-                input.location['x'] + input.size['width'] / 2,
-                512,
-                delta=10
-            )
+        # He notices the Submit button color
+        submit_button = self.browser.find_element(
+            By.XPATH, '//button[text()="Submit"]'
+        )
+        self.assertEqual(
+            submit_button.value_of_css_property('background-color'),
+            'rgba(38, 198, 218, 1)'
+        )
