@@ -1,33 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'authors/css/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+{% extends "authors/base.html" %}
 
-        <form action="{% url "authors:signup" %}" class="sign-up-form" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
 
-        <div class="login-link">
-            <p>Have an account? <a href="#">Click here</a></p>
-        </div>
+{% block content %}
+    <form action="{% url "authors:signup" %}" class="sign-up-form" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="login-link">
+        <p>Have an account? <a href="#">Click here</a></p>
     </div>
-</body>
-</html>
+{% endblock content %}
