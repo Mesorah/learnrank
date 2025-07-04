@@ -73,7 +73,7 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.browser.get(self.live_server_url)
 
         # He sees the Login button and presses it.
         self.wait.until(EC.visibility_of_element_located((
@@ -82,7 +82,9 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
 
         # He realizes that he doesn't have an account
         # and clicks the Sign up button.
-        self.browser.find_element(By.CLASS_NAME, 'sign-up-button')
+        self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-button'
+        ))).click()
 
         # See the registration screen
         form = self.wait.until(EC.visibility_of_element_located((
@@ -99,7 +101,7 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
-        self.assertEqual(self.browser.title, 'Signup')
+        self.assertEqual(self.browser.title, 'Sign Up')
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
@@ -111,7 +113,7 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-error'
         ).text
 
-        self.assertEqual(message_error, 'Form inválid.')
+        self.assertEqual(message_error, 'Form invalid.')
 
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'sign-up-form'
@@ -122,7 +124,7 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
         errors_messages = [error.text for error in errors]
 
         self.assertIn(
-            'Password must not contain symbols.',
+            'The password must contain symbols.',
             errors_messages
         )
 
@@ -137,12 +139,11 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
             'testing12!@1dsFG', 'testing12!@1dsFG'
         )
 
-        message_success = self.browser.find_element(
+        message_success = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'alert-success'
-        ).text
-        self.assertEqual(message_success, 'Account created!')
+        ))).text
 
-        self.fail('finish the test!')
+        self.assertEqual(message_success, 'Account created!')
 
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((

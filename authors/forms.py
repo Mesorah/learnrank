@@ -81,18 +81,18 @@ class CustomSignupForm(UserCreationForm):
         # Verify if password1 have [a-z] or [1-9] and don't have symbols
         if password1 and password1.isalnum():
             self.add_error('password1', _(
-                'Password must not contain symbols.'
+                'The password must contain symbols.'
             ))
 
         # Verify if password1 don't have numbers [1-9]
         if not re.search(r'\d', password1):
             self.add_error('password1', _(
-                'Password must not contain numbers.'
+                'Password must contain numbers.'
             ))
 
         if not re.search(r'[A-Za-z]', password1):
             self.add_error('password1', _(
-                'Password must not contain letters.'
+                'Password must contain letters.'
             ))
 
         return cleaned_data

@@ -59,10 +59,10 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            'Password must not contain symbols.', form.errors['password1']
+            'The password must contain symbols.', form.errors['password1']
         )
         self.assertIn(
-            'Password must not contain letters.', form.errors['password1']
+            'Password must contain letters.', form.errors['password1']
         )
 
         self.form_data['password1'] = 'abcdefgh'
@@ -70,7 +70,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            'Password must not contain numbers.', form.errors['password1']
+            'Password must contain numbers.', form.errors['password1']
         )
 
         self.form_data['password1'] = 'abcdefg1'
@@ -126,7 +126,7 @@ class TestAuthorCreateForm(TestCase):
 
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')
-    def test__(self):
+    def test_portuguese_translate_is_load_and_is_correct(self):
         activate('pt-br')
 
         response = self.client.get(reverse('authors:signup'))

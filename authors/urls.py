@@ -5,5 +5,5 @@ from authors import views
 app_name = 'authors'
 
 urlpatterns = [
-    path('signup/', views.create_author, name='signup'),
+    path('signup/', views.CreatViewAuthor.as_view(), name='signup'),
 ]
