@@ -137,4 +137,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
+# Translation
+*.mo
+
+# Me
 _me

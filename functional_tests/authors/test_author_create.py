@@ -1,15 +1,17 @@
 from django.urls import reverse
 from selenium.webdriver.common.by import By
-
-# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
-class TestAuthorCreate(BaseWebDriverForFunctionalTests):
+class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
+    language_header = "en-US,en"
+    locale = "en"
+
     def setUp(self):
         super().setUp()
+
         self.wait = self.delay()
 
         self.form_data = {
@@ -97,6 +99,8 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
+        self.assertEqual(self.browser.title, 'Signup')
+
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
         self.send_input_keys(
@@ -106,6 +110,7 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         message_error = self.browser.find_element(
             By.CLASS_NAME, 'alert-error'
         ).text
+
         self.assertEqual(message_error, 'Form inválid.')
 
         self.wait.until(EC.visibility_of_element_located((
@@ -117,12 +122,12 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
         errors_messages = [error.text for error in errors]
 
         self.assertIn(
-            'Without the use of symbols.',
+            'Password must not contain symbols.',
             errors_messages
         )
 
         self.assertIn(
-            'Passwords are not the same.',
+            'Passwords do not match.',
             errors_messages
         )
 
@@ -189,3 +194,43 @@ class TestAuthorCreate(BaseWebDriverForFunctionalTests):
             submit_button.value_of_css_property('background-color'),
             'rgba(38, 198, 218, 1)'
         )
+
+
+class TestAuthorCreatePtBRFT(BaseWebDriverForFunctionalTests):
+    language = 'pt-BR,pt'
+    locale = 'pt-br'
+
+    def setUp(self):
+        super().setUp()
+
+        self.wait = self.delay()
+
+    def test_user_can_see_portuguese_translatation(self):
+        # User enters the home screen
+        self.browser.get(self.live_server_url + reverse('authors:signup'))
+
+        form = self.wait.until(EC.visibility_of_element_located((
+            By.CLASS_NAME, 'sign-up-form'
+        )))
+
+        username = form.find_element(
+            By.XPATH, '//label[@for="id_username"]'
+        ).text
+
+        password1 = form.find_element(
+            By.XPATH, '//label[@for="id_password1"]'
+        ).text
+
+        password2 = form.find_element(
+            By.XPATH, '//label[@for="id_password2"]'
+        ).text
+
+        password2_input = form.find_element(By.ID, 'id_password2')
+
+        password2_placeholder = password2_input.get_attribute('placeholder')
+
+        self.assertEqual(username, 'Nome de usuário:')
+        self.assertEqual(password1, 'Senha:')
+        self.assertEqual(password2, 'Repita a senha:')
+        self.assertEqual(password2_placeholder, 'Repita sua senha')
+        self.assertEqual(self.browser.title, 'Registrar-se')

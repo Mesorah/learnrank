@@ -1,14 +1,15 @@
 {% extends "authors/base.html" %}
+{% load i18n %}
 
 
 {% block content %}
     <form action="{% url "authors:signup" %}" class="sign-up-form" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <button type="submit">{% translate "Submit" %}</button>
     </form>
 
     <div class="login-link">
-        <p>Have an account? <a href="#">Click here</a></p>
+        <p>{% translate "Have an account?" %} <a href="#">{% translate "Click here" %}</a></p>
     </div>
 {% endblock content %}

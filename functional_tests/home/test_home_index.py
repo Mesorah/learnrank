@@ -7,5 +7,5 @@ from selenium.webdriver.support import expected_conditions as EC
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
-class TestHomeIndex(BaseWebDriverForFunctionalTests):
+class TestHomeIndexFT(BaseWebDriverForFunctionalTests):
     pass

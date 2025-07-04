@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-03 17:42-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\authors\forms.py:21
+msgid "Username"
+msgstr "Nome de usuário"
+
+#: .\authors\forms.py:24
+msgid "Please enter at least 4 characters."
+msgstr "Por favor, insira pelo menos 4 caracteres."
+
+#: .\authors\forms.py:31
+msgid "Email"
+msgstr "E-mail"
+
+#: .\authors\forms.py:37
+msgid "Password"
+msgstr "Senha"
+
+#: .\authors\forms.py:40 .\authors\forms.py:50
+msgid "Please enter at least 8 characters."
+msgstr "Por favor, insira pelo menos 8 caracteres."
+
+#: .\authors\forms.py:47
+msgid "Repeat password"
+msgstr "Repita a senha"
+
+#: .\authors\forms.py:53
+msgid "Repeat your password"
+msgstr "Repita sua senha"
+
+#: .\authors\forms.py:61
+msgid "Username is already taken."
+msgstr "Nome de usuário já está em uso."
+
+#: .\authors\forms.py:69
+msgid "Email is already registered."
+msgstr "E-mail já está registrado."
+
+#: .\authors\forms.py:79
+msgid "Passwords do not match."
+msgstr "As senhas não coincidem."
+
+#: .\authors\forms.py:84
+msgid "Password must not contain symbols."
+msgstr "A senha não deve conter símbolos."
+
+#: .\authors\forms.py:90
+msgid "Password must not contain numbers."
+msgstr "A senha não deve conter números."
+
+#: .\authors\forms.py:95
+msgid "Password must not contain letters."
+msgstr "A senha não deve conter letras."
+
+#: .\authors\templates\authors\pages\authors.html:9
+msgid "Submit"
+msgstr "Enviar"
+
+#: .\authors\templates\authors\pages\authors.html:13
+msgid "Have an account?"
+msgstr "Já tem uma conta?"
+
+#: .\authors\templates\authors\pages\authors.html:13
+msgid "Click here"
+msgstr "Clique aqui"
+
+#: .\authors\views.py:13
+msgid "You cannot access this while logged in."
+msgstr "Você não pode acessar isso enquanto estiver logado."
+
+#: .\authors\views.py:21
+msgid "Account created!"
+msgstr "Conta criada!"
+
+#: .\authors\views.py:29
+msgid "Form inválid."
+msgstr "Formulário inválido."
+
+#: .\authors\views.py:35
+msgid "Sign Up"
+msgstr "Registrar-se"

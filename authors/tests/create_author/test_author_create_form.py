@@ -1,5 +1,8 @@
+import lxml.html
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.urls import reverse
+from django.utils.translation import activate
 
 from authors.forms import CustomSignupForm
 
@@ -22,7 +25,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['username'][0], 'Size less than 4 characters.'
+            form.errors['username'][0], 'Please enter at least 4 characters.'
         )
 
         self.form_data['username'] = 'abcd'
@@ -35,7 +38,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['username'][0], 'Username already in use.'
+            form.errors['username'][0], 'Username is already taken.'
         )
 
     def test_email_validator_is_correct(self):
@@ -47,7 +50,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['email'][0], 'Email already in use.'
+            form.errors['email'][0], 'Email is already registered.'
         )
 
     def test_password_validator_is_correct(self):
@@ -56,10 +59,10 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            'Without the use of symbols.', form.errors['password1']
+            'Password must not contain symbols.', form.errors['password1']
         )
         self.assertIn(
-            'Without the use of characters.', form.errors['password1']
+            'Password must not contain letters.', form.errors['password1']
         )
 
         self.form_data['password1'] = 'abcdefgh'
@@ -67,7 +70,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            'Without the use of numbers.', form.errors['password1']
+            'Password must not contain numbers.', form.errors['password1']
         )
 
         self.form_data['password1'] = 'abcdefg1'
@@ -75,7 +78,7 @@ class TestAuthorCreateForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            'Passwords are not the same.', form.errors['password2']
+            'Passwords do not match.', form.errors['password2']
         )
 
         self.form_data['password1'] = 'abcdef1!'
@@ -104,3 +107,27 @@ class TestAuthorCreateForm(TestCase):
         self.assertFalse(form.is_valid())
 
         self.assertEqual(User.objects.count(), 2)
+
+    def test_renders_input_form(self):
+        response = self.client.get(reverse('authors:signup'))
+        parsed = lxml.html.fromstring(response.content)  # HTML -> DOM
+        [form] = parsed.cssselect('form[method=POST]')  # -> Search a form
+        self.assertEqual(form.get('action'), reverse('authors:signup'))
+
+        inputs_names = {
+            'username': 'text',
+            'email': 'email',
+            'password1': 'password',
+            'password2': 'password'
+        }
+        for input_name, expected_type in inputs_names.items():
+            [input] = form.cssselect(f'input[name={input_name}]')
+            self.assertEqual(input.get('type'), expected_type)
+
+    # Override_settings in this test confirms that it will change the language.
+    @override_settings(LANGUAGE_CODE='pt-br')
+    def test__(self):
+        activate('pt-br')
+
+        response = self.client.get(reverse('authors:signup'))
+        self.assertContains(response, 'Já tem uma conta?')
