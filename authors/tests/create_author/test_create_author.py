@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
 
-from authors.views import CreatViewAuthor
+from authors.views import CreateAuthorView
 
 
 class TestAuthorCreate(TestCase):
@@ -18,7 +18,7 @@ class TestAuthorCreate(TestCase):
     def test_view_is_correct(self):
         response = resolve(reverse('authors:signup'))
 
-        self.assertEqual(response.func.view_class, CreatViewAuthor)
+        self.assertEqual(response.func.view_class, CreateAuthorView)
 
     def test_view_load_correct_template(self):
         response = self.client.get(reverse('authors:signup'))
@@ -28,7 +28,7 @@ class TestAuthorCreate(TestCase):
             'authors/pages/authors.html'
         )
 
-    def test_status_code_view_get_is_correct(self):
+    def test_get_view_returns_200(self):
         response = self.client.get(reverse('authors:signup'))
 
         self.assertEqual(response.status_code, 200)

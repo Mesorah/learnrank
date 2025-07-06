@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-04 12:51-0300\n"
+"POT-Creation-Date: 2025-07-06 10:04-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,3 +97,7 @@ msgstr "Formulário inválido."
 #: .\authors\views.py:48
 msgid "Sign Up"
 msgstr "Registrar-se"
+
+#: .\authors\views.py:58
+msgid "Success, you have logged out!"
+msgstr "Sucesso, você saiu da conta!"

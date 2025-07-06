@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
-class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
+class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
     language_header = "en-US,en"
     locale = "en"
 
@@ -109,11 +109,11 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
             'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
         )
 
-        message_error = self.browser.find_element(
+        error_message = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'alert-error'
-        ).text
+        ))).text
 
-        self.assertEqual(message_error, 'Form invalid.')
+        self.assertEqual(error_message, 'Form invalid.')
 
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'sign-up-form'
@@ -172,9 +172,9 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.browser.find_element(
+        error_message = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'alert-error'
-        ).text
+        ))).text
 
         self.assertEqual(
             error_message, 'You cannot access this while logged in.'
@@ -197,7 +197,7 @@ class TestAuthorCreateFT(BaseWebDriverForFunctionalTests):
         )
 
 
-class TestAuthorCreatePtBRFT(BaseWebDriverForFunctionalTests):
+class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
     language = 'pt-BR,pt'
     locale = 'pt-br'
 
@@ -206,10 +206,11 @@ class TestAuthorCreatePtBRFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_user_can_see_portuguese_translatation(self):
+    def test_user_can_see_portuguese_translation(self):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
+        # And he found the form in portuguese
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'sign-up-form'
         )))

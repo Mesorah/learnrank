@@ -1,9 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 
 from authors.forms import CustomSignupForm
@@ -11,7 +13,7 @@ from authors.forms import CustomSignupForm
 User = get_user_model()
 
 
-class CreatViewAuthor(CreateView):
+class CreateAuthorView(CreateView):
     model = User
     form_class = CustomSignupForm
     template_name = 'authors/pages/authors.html'
@@ -48,3 +50,12 @@ class CreatViewAuthor(CreateView):
         ctx['html_language'] = translation.get_language()
 
         return ctx
+
+
+@require_POST
+@login_required(login_url=reverse_lazy('authors:signup'))
+def logout_author(request):
+    logout(request)
+    messages.success(request, _('Success, you have logged out!'))
+
+    return redirect('authors:signup')

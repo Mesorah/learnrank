@@ -1,10 +1,13 @@
 from time import sleep
 
+from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.utils.translation import activate
 from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.browser import get_chrome_driver
+
+User = get_user_model()
 
 
 class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
@@ -23,6 +26,21 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
     def delay(self, time=5):
         return WebDriverWait(self.browser, time)
+
+    def login_user(self):
+        user = User.objects.create(username='test')
+        self.client.force_login(user=user)
+
+        # Used to login user
+        cookie = self.client.cookies['sessionid']
+        self.browser.add_cookie({
+            'name': 'sessionid',
+            'value': cookie.value,
+            'secure': False,
+            'path': '/'
+        })
+
+        self.browser.refresh()
 
     @staticmethod
     def sleep(time=5):
