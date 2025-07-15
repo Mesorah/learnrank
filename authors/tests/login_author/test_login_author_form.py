@@ -9,13 +9,11 @@ from authors.forms import CustomSignupForm
 User = get_user_model()
 
 
-class TestCreateAuthorForm(TestCase):
+class TestLoginAuthorForm(TestCase):
     def setUp(self):
         self.form_data = {
             'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'password': 'testing12!@1dsFG',
         }
 
         return super().setUp()
@@ -39,18 +37,6 @@ class TestCreateAuthorForm(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['username'][0], 'Username is already taken.'
-        )
-
-    def test_email_validator_is_correct(self):
-        form = CustomSignupForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
-        form.save()
-
-        # Email already in use
-        form = CustomSignupForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(
-            form.errors['email'][0], 'Email is already registered.'
         )
 
     def test_password_validator_is_correct(self):

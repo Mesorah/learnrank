@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    <form action="{% url "authors:signup" %}" class="sign-up-form" method="POST">
+    <form action="{% url "authors:signup" %}" class="author-form" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{% translate "Submit" %}</button>

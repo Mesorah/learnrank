@@ -1,27 +1,25 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
 
-from authors.views import CreateAuthorView
+from authors.views import login_author
 
 
-class TestCreateAuthor(TestCase):
+class TestLoginAuthor(TestCase):
     def setUp(self):
         self.data = {
             'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'password': 'testing12!@1dsFG',
         }
 
         return super().setUp()
 
     def test_view_is_correct(self):
-        response = resolve(reverse('authors:signup'))
+        response = resolve(reverse('authors:login'))
 
-        self.assertEqual(response.func.view_class, CreateAuthorView)
+        self.assertEqual(response.func, login_author)
 
     def test_view_load_correct_template(self):
-        response = self.client.get(reverse('authors:signup'))
+        response = self.client.get(reverse('authors:login'))
 
         self.assertTemplateUsed(
             response,
@@ -29,13 +27,13 @@ class TestCreateAuthor(TestCase):
         )
 
     def test_get_view_returns_200(self):
-        response = self.client.get(reverse('authors:signup'))
+        response = self.client.get(reverse('authors:login'))
 
         self.assertEqual(response.status_code, 200)
 
     def test_signup_post_logs_user_and_redirects_to_home(self):
         response = self.client.post(
-            reverse('authors:signup'), self.data, follow=True
+            reverse('authors:login'), self.data, follow=True
         )
 
         self.assertRedirects(response, reverse('home:index'))
@@ -43,7 +41,7 @@ class TestCreateAuthor(TestCase):
 
     def test_user_authenticated_cant_get_200_in_signup(self):
         response = self.client.post(
-            reverse('authors:signup'), self.data
+            reverse('authors:login'), self.data
         )
 
         response = self.client.get(reverse('authors:signup'))

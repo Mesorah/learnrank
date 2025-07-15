@@ -50,7 +50,7 @@ body {
 }
 
 /* Formulário */
-form.sign-up-form {
+form.author-form {
   background-color: white;
   padding: 2rem;
   border-radius: 20px;
@@ -59,18 +59,18 @@ form.sign-up-form {
   max-width: 400px;
 }
 
-form.sign-up-form p {
+form.author-form p {
   margin-bottom: 1.2rem;
 }
 
-form.sign-up-form label {
+form.author-form label {
   display: block;
   margin-bottom: 0.3rem;
   font-weight: 600;
   color: #333;
 }
 
-form.sign-up-form input {
+form.author-form input {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
@@ -78,13 +78,13 @@ form.sign-up-form input {
   transition: border-color 0.3s ease;
 }
 
-form.sign-up-form input:focus {
+form.author-form input:focus {
   border-color: #26c6da;
   outline: none;
 }
 
 /* Botão de envio */
-form.sign-up-form button {
+form.author-form button {
   background-color: rgb(38, 198, 218);
   color: white;
   padding: 0.8rem;
@@ -97,7 +97,7 @@ form.sign-up-form button {
   transition: background-color 0.3s ease;
 }
 
-form.sign-up-form button:hover {
+form.author-form button:hover {
   background-color: #00acc1;
 }
 

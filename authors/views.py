@@ -59,3 +59,7 @@ def logout_author(request):
     messages.success(request, _('Success, you have logged out!'))
 
     return redirect('authors:signup')
+
+
+def login_author(request):
+    pass

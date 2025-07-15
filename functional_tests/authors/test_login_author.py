@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
-class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
+class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
     language_header = "en-US,en"
     locale = "en"
 
@@ -16,9 +16,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.form_data = {
             'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'password': 'testing12!@1dsFG',
         }
 
     def get_all_placeholders(self, inputs):
@@ -34,9 +32,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
     def validate_placeholders(self, inputs_information):
         correct_inputs = {
             'username': 'Ex: Gabriel Rodrigues',
-            'email': 'Ex: gabrielrodrigues@example.com',
-            'password1': 'Ex 23#$1fsgKDL!',
-            'password2': 'Repeat your password'
+            'password': 'Ex 23#$1fsgKDL!',
         }
 
         for name, placeholder in inputs_information:
@@ -47,25 +43,19 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             else:
                 self.fail((placeholder, input))
 
-    def send_input_keys(self, username, email, password1, password2):
+    def send_input_keys(self, username, password):
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
 
         username_field = form.find_element(By.ID, 'id_username')
-        email_field = form.find_element(By.ID, 'id_email')
-        password1_field = form.find_element(By.ID, 'id_password1')
-        password2_field = form.find_element(By.ID, 'id_password2')
+        password_field = form.find_element(By.ID, 'id_password')
 
         username_field.clear()
-        email_field.clear()
-        password1_field.clear()
-        password2_field.clear()
+        password_field.clear()
 
         username_field.send_keys(username)
-        email_field.send_keys(email)
-        password1_field.send_keys(password1)
-        password2_field.send_keys(password2)
+        password_field.send_keys(password)
 
         form.submit()
 
@@ -80,34 +70,26 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'login-button'
         ))).click()
 
-        # He realizes that he doesn't have an account
-        # and clicks the Sign up button.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-button'
-        ))).click()
-
-        # See the registration screen
+        # See the login page
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
-        self.assertEqual(self.browser.title, 'Sign Up')
+        self.assertEqual(self.browser.title, 'Login')
 
         # Check that all inputs have placeholders.
         inputs = form.find_elements(By.CLASS_NAME, 'form-control')
         inputs_information = self.get_all_placeholders(inputs)
         self.validate_placeholders(inputs_information)
 
-    def test_registration_invalid_fields_and_success_redirect(self):
+    def test_login_invalid_fields_and_success_redirect(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.browser.get(self.live_server_url + reverse('authors:login'))
 
-        self.assertEqual(self.browser.title, 'Sign Up')
+        self.assertEqual(self.browser.title, 'Login')
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        self.send_input_keys(
-            'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
-        )
+        self.send_input_keys('abcd', 'abcd1234')
 
         error_message = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'alert-error'
@@ -123,27 +105,16 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         errors_messages = [error.text for error in errors]
 
-        self.assertIn(
-            'The password must contain symbols.',
-            errors_messages
-        )
-
-        self.assertIn(
-            'Passwords do not match.',
-            errors_messages
-        )
+        self.fail(errors_messages)
 
         # Decided to fix the gaps that caused errors and resend it again.
-        self.send_input_keys(
-            'testing', 'testing@example.com',
-            'testing12!@1dsFG', 'testing12!@1dsFG'
-        )
+        self.send_input_keys('testing', 'testing12!@1dsFG')
 
         message_success = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(message_success, 'Account created!')
+        self.assertEqual(message_success, 'Account logged!')
 
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((
@@ -159,16 +130,13 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_logged_user_cannot_access_registration_page(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.browser.get(self.live_server_url + reverse('authors:login'))
 
-        # He registers himself
-        self.send_input_keys(
-            'testing', 'testing@example.com',
-            'testing12!@1dsFG', 'testing12!@1dsFG'
-        )
+        # He login himself
+        self.send_input_keys('testing', 'testing12!@1dsFG',)
 
-        # He tries to go back to the registration page.
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        # He tries to go back to the login page.
+        self.browser.get(self.live_server_url + reverse('authors:login'))
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
@@ -182,7 +150,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.browser.get(self.live_server_url + reverse('authors:login'))
 
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
@@ -219,20 +187,15 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
             By.XPATH, '//label[@for="id_username"]'
         ).text
 
-        password1 = form.find_element(
-            By.XPATH, '//label[@for="id_password1"]'
+        password = form.find_element(
+            By.XPATH, '//label[@for="id_password"]'
         ).text
 
-        password2 = form.find_element(
-            By.XPATH, '//label[@for="id_password2"]'
-        ).text
+        password_input = form.find_element(By.ID, 'id_password')
 
-        password2_input = form.find_element(By.ID, 'id_password2')
-
-        password2_placeholder = password2_input.get_attribute('placeholder')
+        password_placeholder = password_input.get_attribute('placeholder')
 
         self.assertEqual(username, 'Nome de usuário:')
-        self.assertEqual(password1, 'Senha:')
-        self.assertEqual(password2, 'Repita a senha:')
-        self.assertEqual(password2_placeholder, 'Repita sua senha')
+        self.assertEqual(password, 'Senha:')
+        self.assertEqual(password_placeholder, 'Repita sua senha')
         self.assertEqual(self.browser.title, 'Registrar-se')
