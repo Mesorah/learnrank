@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+from authors.forms import CustomSignupForm
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -13,6 +14,21 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         super().setUp()
 
         self.wait = self.delay()
+
+        self.form_data = {
+            'username': 'testing',
+            'password': 'testing12!@1dsFG',
+        }
+
+        form_data = {
+            'username': 'testing',
+            'email': 'testing@example.com',
+            'password1': 'testing12!@1dsFG',
+            'password2': 'testing12!@1dsFG',
+        }
+
+        form = CustomSignupForm(data=form_data)
+        form.save()
 
         self.form_data = {
             'username': 'testing',
@@ -92,20 +108,17 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.send_input_keys('abcd', 'abcd1234')
 
         error_message = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'alert-error'
+            By.CLASS_NAME, 'errorlist'
         ))).text
 
-        self.assertEqual(error_message, 'Form invalid.')
+        self.assertEqual(error_message, (
+            'Please enter a correct username and password. '
+            'Note that both fields may be case-sensitive.'
+        ))
 
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
-
-        errors = self.browser.find_elements(By.CLASS_NAME, 'errorlist')
-
-        errors_messages = [error.text for error in errors]
-
-        self.fail(errors_messages)
 
         # Decided to fix the gaps that caused errors and resend it again.
         self.send_input_keys('testing', 'testing12!@1dsFG')
@@ -128,7 +141,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.assertEqual(username, 'testing')
 
-    def test_logged_user_cannot_access_registration_page(self):
+    def test_logged_user_cannot_access_login_page(self):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:login'))
 
@@ -176,7 +189,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.browser.get(self.live_server_url + reverse('authors:login'))
 
         # And he found the form in portuguese
         form = self.wait.until(EC.visibility_of_element_located((
@@ -187,6 +200,10 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
             By.XPATH, '//label[@for="id_username"]'
         ).text
 
+        username_input = form.find_element(By.ID, 'id_username')
+
+        username_placeholder = username_input.get_attribute('placeholder')
+
         password = form.find_element(
             By.XPATH, '//label[@for="id_password"]'
         ).text
@@ -195,7 +212,10 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
         password_placeholder = password_input.get_attribute('placeholder')
 
-        self.assertEqual(username, 'Nome de usuário:')
+        self.assertEqual(username, 'Usuário:')
         self.assertEqual(password, 'Senha:')
-        self.assertEqual(password_placeholder, 'Repita sua senha')
-        self.assertEqual(self.browser.title, 'Registrar-se')
+        self.assertEqual(
+            username_placeholder, 'Escreva seu nome de usuário aqui.'
+        )
+        self.assertEqual(password_placeholder, 'Escreva sua senha aqui.')
+        self.assertEqual(self.browser.title, 'Entrar')

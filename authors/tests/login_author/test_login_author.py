@@ -1,11 +1,22 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
 
+from authors.forms import CustomSignupForm
 from authors.views import login_author
 
 
 class TestLoginAuthor(TestCase):
     def setUp(self):
+        form_data = {
+            'username': 'testing',
+            'email': 'testing@example.com',
+            'password1': 'testing12!@1dsFG',
+            'password2': 'testing12!@1dsFG',
+        }
+
+        form = CustomSignupForm(data=form_data)
+        form.save()
+
         self.data = {
             'username': 'testing',
             'password': 'testing12!@1dsFG',
