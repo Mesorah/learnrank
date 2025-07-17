@@ -81,9 +81,9 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         ))).click()
 
         # He realizes that he doesn't have an account
-        # and clicks the Sign up button.
+        # and clicks the Sign up link.
         self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-button'
+            By.CLASS_NAME, 'sign-up-link'
         ))).click()
 
         # See the registration screen

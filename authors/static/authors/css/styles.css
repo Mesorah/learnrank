@@ -102,23 +102,23 @@ form.author-form button:hover {
 }
 
 /* Link para login */
-.login-link {
+.author-link {
   margin-top: 1rem;
   text-align: center;
   font-size: 0.95rem;
 }
 
-.login-link p {
+.author-link p {
   color: #333;
 }
 
-.login-link a {
+.author-link a {
   color: #00796b;
   text-decoration: none;
   font-weight: bold;
   margin-left: 0.3rem;
 }
 
-.login-link a:hover {
+.author-link a:hover {
   text-decoration: underline;
 }
