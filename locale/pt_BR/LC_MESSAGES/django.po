@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-06 10:04-0300\n"
+"POT-Creation-Date: 2025-07-16 18:16-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,55 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\authors\forms.py:21
+#: .\authors\forms.py:17
+msgid "Write your username here."
+msgstr "Escreva seu nome de usuário aqui."
+
+#: .\authors\forms.py:20
+msgid "Write your password here."
+msgstr "Escreva sua senha aqui."
+
+#: .\authors\forms.py:33
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: .\authors\forms.py:24
+#: .\authors\forms.py:36
 msgid "Please enter at least 4 characters."
 msgstr "Por favor, insira pelo menos 4 caracteres."
 
-#: .\authors\forms.py:31
+#: .\authors\forms.py:43
 msgid "Email"
 msgstr "E-mail"
 
-#: .\authors\forms.py:37
+#: .\authors\forms.py:49
 msgid "Password"
 msgstr "Senha"
 
-#: .\authors\forms.py:40 .\authors\forms.py:50
+#: .\authors\forms.py:52 .\authors\forms.py:62
 msgid "Please enter at least 8 characters."
 msgstr "Por favor, insira pelo menos 8 caracteres."
 
-#: .\authors\forms.py:47
+#: .\authors\forms.py:59
 msgid "Repeat password"
 msgstr "Repita a senha"
 
-#: .\authors\forms.py:53
+#: .\authors\forms.py:65
 msgid "Repeat your password"
 msgstr "Repita sua senha"
 
-#: .\authors\forms.py:61
+#: .\authors\forms.py:73
 msgid "Username is already taken."
 msgstr "Nome de usuário já está em uso."
 
-#: .\authors\forms.py:69
+#: .\authors\forms.py:81
 msgid "Email is already registered."
 msgstr "E-mail já está registrado."
 
-#: .\authors\forms.py:79
+#: .\authors\forms.py:91
 msgid "Passwords do not match."
 msgstr "As senhas não coincidem."
 
-#: .\authors\forms.py:84
+#: .\authors\forms.py:96
 msgid "The password must contain symbols."
 msgstr "A senha deve conter símbolos."
 
-#: .\authors\forms.py:90
+#: .\authors\forms.py:102
 msgid "Password must contain numbers."
 msgstr "A senha deve conter números."
 
-#: .\authors\forms.py:95
+#: .\authors\forms.py:107
 msgid "Password must contain letters."
 msgstr "A senha deve conter letras."
 
@@ -74,30 +82,44 @@ msgstr "A senha deve conter letras."
 msgid "Submit"
 msgstr "Enviar"
 
-#: .\authors\templates\authors\pages\authors.html:13
+#: .\authors\templates\authors\pages\authors.html:14
 msgid "Have an account?"
 msgstr "Já tem uma conta?"
 
-#: .\authors\templates\authors\pages\authors.html:13
+#: .\authors\templates\authors\pages\authors.html:14
+#: .\authors\templates\authors\pages\authors.html:18
 msgid "Click here"
 msgstr "Clique aqui"
 
-#: .\authors\views.py:24
+#: .\authors\templates\authors\pages\authors.html:18
+msgid "Don't you have an account?"
+msgstr "Não tem uma conta?"
+
+#: .\authors\views.py:25 .\authors\views.py:71
 msgid "You cannot access this while logged in."
 msgstr "Você não pode acessar isso enquanto estiver logado."
 
-#: .\authors\views.py:38
+#: .\authors\views.py:39
 msgid "Account created!"
 msgstr "Conta criada!"
 
-#: .\authors\views.py:42
+#: .\authors\views.py:43
 msgid "Form invalid."
 msgstr "Formulário inválido."
 
-#: .\authors\views.py:48
+#: .\authors\views.py:49
 msgid "Sign Up"
 msgstr "Registrar-se"
 
-#: .\authors\views.py:58
+#: .\authors\views.py:61
 msgid "Success, you have logged out!"
 msgstr "Sucesso, você saiu da conta!"
+
+#: .\authors\views.py:81
+msgid "Account logged!"
+msgstr "Conta conectada!"
+
+#: .\authors\views.py:88
+msgid "Login"
+msgstr "Entrar"
+

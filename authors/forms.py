@@ -2,11 +2,23 @@ import re
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['placeholder'] = _(
+            'Write your username here.'
+        )
+        self.fields['password'].widget.attrs['placeholder'] = _(
+            'Write your password here.'
+        )
 
 
 class CustomSignupForm(UserCreationForm):
