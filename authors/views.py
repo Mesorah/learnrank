@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
@@ -63,28 +64,34 @@ def logout_author(request):
     return redirect('authors:signup')
 
 
-def login_author(request):
-    form = CustomAuthenticationForm(request, data=request.POST or None)
+class LoginAuthorView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'authors/pages/authors.html'
+    redirect_authenticated_user = True
+    success_url = reverse_lazy('home:index')
 
-    if request.user.is_authenticated:
-        messages.error(request, _(
-            'You cannot access this while logged in.'
-        ))
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.error(request, _(
+                'You cannot access this while logged in.'
+            ))
 
-        return redirect(reverse('home:index'))
+            return redirect(reverse('home:index'))
 
-    if request.method == 'POST':
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
+        return super().dispatch(request, *args, **kwargs)
 
-            messages.success(request, _('Account logged!'))
-            return redirect('home:index')
-        else:
-            print('f')
+    def get_success_url(self):
+        return self.success_url
 
-    return render(request, 'authors/pages/authors.html', context={
-        'form': form,
-        'title': _('Login'),
-        'form_action': 'authors:login'
-    })
+    def form_valid(self, form):
+        messages.success(self.request, _('Account logged!'))
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        ctx['title'] = _('Login')
+        ctx['html_language'] = translation.get_language()
+        ctx['form_action'] = 'authors:login'
+
+        return ctx

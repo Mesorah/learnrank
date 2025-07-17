@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from authors.forms import CustomSignupForm
-from authors.views import login_author
+from authors.views import LoginAuthorView
 
 
 class TestLoginAuthor(TestCase):
@@ -27,7 +27,7 @@ class TestLoginAuthor(TestCase):
     def test_view_is_correct(self):
         response = resolve(reverse('authors:login'))
 
-        self.assertEqual(response.func, login_author)
+        self.assertEqual(response.func.view_class, LoginAuthorView)
 
     def test_view_load_correct_template(self):
         response = self.client.get(reverse('authors:login'))
