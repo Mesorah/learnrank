@@ -3,13 +3,19 @@
 
 
 {% block content %}
-    <form action="{% url "authors:signup" %}" class="author-form" method="POST">
+    <form action="{% url form_action %}" class="author-form" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{% translate "Submit" %}</button>
     </form>
 
-    <div class="login-link">
-        <p>{% translate "Have an account?" %} <a href="#">{% translate "Click here" %}</a></p>
-    </div>
+    {% if is_signup %}
+        <div class="login-link">
+            <p>{% translate "Have an account?" %} <a href="#">{% translate "Click here" %}</a></p>
+        </div>
+    {% else %}
+        <div class="login-link">
+            <p>{% translate "Don't you have an account?" %} <a href="#">{% translate "Click here" %}</a></p>
+        </div>
+    {% endif %}
 {% endblock content %}

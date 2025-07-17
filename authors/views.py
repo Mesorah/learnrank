@@ -1,14 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 
-from authors.forms import CustomSignupForm
+from authors.forms import CustomAuthenticationForm, CustomSignupForm
 
 User = get_user_model()
 
@@ -48,6 +48,8 @@ class CreateAuthorView(CreateView):
 
         ctx['title'] = _('Sign Up')
         ctx['html_language'] = translation.get_language()
+        ctx['form_action'] = 'authors:signup'
+        ctx['is_signup'] = True
 
         return ctx
 
@@ -62,4 +64,27 @@ def logout_author(request):
 
 
 def login_author(request):
-    pass
+    form = CustomAuthenticationForm(request, data=request.POST or None)
+
+    if request.user.is_authenticated:
+        messages.error(request, _(
+            'You cannot access this while logged in.'
+        ))
+
+        return redirect(reverse('home:index'))
+
+    if request.method == 'POST':
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+
+            messages.success(request, _('Account logged!'))
+            return redirect('home:index')
+        else:
+            print('f')
+
+    return render(request, 'authors/pages/authors.html', context={
+        'form': form,
+        'title': _('Login'),
+        'form_action': 'authors:login'
+    })
