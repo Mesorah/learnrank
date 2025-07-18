@@ -101,6 +101,8 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
+        self.browser.maximize_window()
+
         self.assertEqual(self.browser.title, 'Sign Up')
 
         # See the form and decide to fill it out and send

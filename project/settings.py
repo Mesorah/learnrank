@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY') # noqa E501
+SECRET_KEY = os.getenv('SECRET_KEY', 'insecure')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = []
 
@@ -131,6 +131,18 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if bool(os.getenv('DJANGO_TEST')) is True:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER_ENV', 'user')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD_ENV', 'password')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL_ENV', 'default')
 
 # For fast tests
 if bool(os.getenv('DJANGO_TEST')) is True:
