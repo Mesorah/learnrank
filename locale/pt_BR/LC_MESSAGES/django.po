@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-16 18:16-0300\n"
+"POT-Creation-Date: 2025-07-20 12:03-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,67 +18,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\authors\forms.py:17
+#: .\authors\forms.py:21
+msgid "Write your email here."
+msgstr "Escreva seu e-mail aqui."
+
+#: .\authors\forms.py:30
 msgid "Write your username here."
 msgstr "Escreva seu nome de usuário aqui."
 
-#: .\authors\forms.py:20
+#: .\authors\forms.py:33
 msgid "Write your password here."
 msgstr "Escreva sua senha aqui."
 
-#: .\authors\forms.py:33
+#: .\authors\forms.py:46
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: .\authors\forms.py:36
+#: .\authors\forms.py:49
 msgid "Please enter at least 4 characters."
 msgstr "Por favor, insira pelo menos 4 caracteres."
 
-#: .\authors\forms.py:43
+#: .\authors\forms.py:56
 msgid "Email"
 msgstr "E-mail"
 
-#: .\authors\forms.py:49
+#: .\authors\forms.py:62
 msgid "Password"
 msgstr "Senha"
 
-#: .\authors\forms.py:52 .\authors\forms.py:62
+#: .\authors\forms.py:65 .\authors\forms.py:75
 msgid "Please enter at least 8 characters."
 msgstr "Por favor, insira pelo menos 8 caracteres."
 
-#: .\authors\forms.py:59
+#: .\authors\forms.py:72
 msgid "Repeat password"
 msgstr "Repita a senha"
 
-#: .\authors\forms.py:65
+#: .\authors\forms.py:78
 msgid "Repeat your password"
 msgstr "Repita sua senha"
 
-#: .\authors\forms.py:73
+#: .\authors\forms.py:86
 msgid "Username is already taken."
-msgstr "Nome de usuário já está em uso."
+msgstr "Este nome de usuário já está em uso."
 
-#: .\authors\forms.py:81
+#: .\authors\forms.py:94
 msgid "Email is already registered."
-msgstr "E-mail já está registrado."
+msgstr "Este e-mail já está registrado."
 
-#: .\authors\forms.py:91
+#: .\authors\forms.py:104
 msgid "Passwords do not match."
 msgstr "As senhas não coincidem."
 
-#: .\authors\forms.py:96
+#: .\authors\forms.py:109
 msgid "The password must contain symbols."
 msgstr "A senha deve conter símbolos."
 
-#: .\authors\forms.py:102
+#: .\authors\forms.py:115
 msgid "Password must contain numbers."
 msgstr "A senha deve conter números."
 
-#: .\authors\forms.py:107
+#: .\authors\forms.py:120
 msgid "Password must contain letters."
 msgstr "A senha deve conter letras."
 
 #: .\authors\templates\authors\pages\authors.html:9
+#: .\authors\templates\authors\pages\password_reset.html:9
 msgid "Submit"
 msgstr "Enviar"
 
@@ -87,39 +92,46 @@ msgid "Have an account?"
 msgstr "Já tem uma conta?"
 
 #: .\authors\templates\authors\pages\authors.html:14
-#: .\authors\templates\authors\pages\authors.html:18
+#: .\authors\templates\authors\pages\authors.html:16
 msgid "Click here"
 msgstr "Clique aqui"
 
-#: .\authors\templates\authors\pages\authors.html:18
+#: .\authors\templates\authors\pages\authors.html:16
 msgid "Don't you have an account?"
-msgstr "Não tem uma conta?"
+msgstr "Ainda não tem uma conta?"
 
-#: .\authors\views.py:25 .\authors\views.py:71
+#: .\authors\views.py:28
 msgid "You cannot access this while logged in."
-msgstr "Você não pode acessar isso enquanto estiver logado."
+msgstr "Você não pode acessar esta página enquanto estiver logado."
 
-#: .\authors\views.py:39
+#: .\authors\views.py:58
 msgid "Account created!"
-msgstr "Conta criada!"
+msgstr "Conta criada com sucesso!"
 
-#: .\authors\views.py:43
+#: .\authors\views.py:62
 msgid "Form invalid."
 msgstr "Formulário inválido."
 
-#: .\authors\views.py:49
+#: .\authors\views.py:68
 msgid "Sign Up"
-msgstr "Registrar-se"
+msgstr "Criar conta"
 
-#: .\authors\views.py:61
+#: .\authors\views.py:80
 msgid "Success, you have logged out!"
-msgstr "Sucesso, você saiu da conta!"
+msgstr "Você saiu da conta com sucesso!"
 
-#: .\authors\views.py:81
+#: .\authors\views.py:94
 msgid "Account logged!"
-msgstr "Conta conectada!"
+msgstr "Você entrou na conta com sucesso!"
 
-#: .\authors\views.py:88
+#: .\authors\views.py:100
 msgid "Login"
 msgstr "Entrar"
 
+#: .\authors\views.py:111
+msgid "You cannot access this while not logged in."
+msgstr "Você não pode acessar esta página sem estar logado."
+
+#: .\authors\views.py:125
+msgid "Password changed successfully!"
+msgstr "Senha alterada com sucesso!"

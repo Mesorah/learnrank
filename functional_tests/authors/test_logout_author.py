@@ -73,4 +73,4 @@ class TestLogoutAuthorPtBRFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(success_message, 'Sucesso, você saiu da conta!')
+        self.assertEqual(success_message, 'Você saiu da conta com sucesso!')

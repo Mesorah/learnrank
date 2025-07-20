@@ -237,4 +237,4 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(password1, 'Senha:')
         self.assertEqual(password2, 'Repita a senha:')
         self.assertEqual(password2_placeholder, 'Repita sua senha')
-        self.assertEqual(self.browser.title, 'Registrar-se')
+        self.assertEqual(self.browser.title, 'Criar conta')

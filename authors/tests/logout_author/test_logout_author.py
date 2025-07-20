@@ -71,7 +71,7 @@ class TestLogoutAuthor(TestCase):
         messages = list(response.context['messages'])
 
         self.assertTrue(any(
-            actual_message.message == 'Sucesso, você saiu da conta!'
+            actual_message.message == 'Você saiu da conta com sucesso!'
             and
             actual_message.level == 25
             for actual_message in messages
