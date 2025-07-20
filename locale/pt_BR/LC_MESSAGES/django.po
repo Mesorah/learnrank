@@ -1,17 +1,16 @@
-# SOME DESCRIPTIVE TITLE.
+# Portuguese (Brazil) translations for your Django project.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-20 12:39-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2025-07-20 12:40-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Portuguese (Brazil) <LL@li.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,10 +100,8 @@ msgid "Don't you have an account?"
 msgstr "Ainda não tem uma conta?"
 
 #: .\authors\templates\authors\pages\password_reset_done.html:7
-#, fuzzy
-#| msgid "Write your email here."
 msgid "Check your email"
-msgstr "Escreva seu e-mail aqui."
+msgstr "Verifique seu e-mail"
 
 #: .\authors\templates\authors\pages\password_reset_done.html:8
 msgid ""
@@ -113,6 +110,10 @@ msgid ""
 "receive a message with instructions to reset your password.\n"
 "        "
 msgstr ""
+"\n"
+"            Se existir uma conta associada ao endereço de e-mail fornecido, "
+"você receberá uma mensagem com instruções para redefinir sua senha.\n"
+"        "
 
 #: .\authors\templates\authors\pages\password_reset_email.html:2
 #, python-format
@@ -167,8 +168,10 @@ msgstr "Entrar"
 msgid "Password changed successfully!"
 msgstr "Senha alterada com sucesso!"
 
-#~ msgid "You cannot access this while logged in."
-#~ msgstr "Você não pode acessar esta página enquanto estiver logado."
+#: .\authors\views.py
+msgid "You cannot access this while logged in."
+msgstr "Você não pode acessar esta página enquanto estiver logado."
 
-#~ msgid "You cannot access this while not logged in."
-#~ msgstr "Você não pode acessar esta página sem estar logado."
+#: .\authors\views.py
+msgid "You cannot access this while not logged in."
+msgstr "Você não pode acessar esta página sem estar logado."

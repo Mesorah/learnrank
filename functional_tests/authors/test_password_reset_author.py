@@ -14,37 +14,6 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-    def send_input_keys(self, username, email, password1, password2):
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
-
-        username_field = form.find_element(By.ID, 'id_username')
-        email_field = form.find_element(By.ID, 'id_email')
-        password1_field = form.find_element(By.ID, 'id_password1')
-        password2_field = form.find_element(By.ID, 'id_password2')
-
-        username_field.clear()
-        email_field.clear()
-        password1_field.clear()
-        password2_field.clear()
-
-        username_field.send_keys(username)
-        email_field.send_keys(email)
-        password1_field.send_keys(password1)
-        password2_field.send_keys(password2)
-
-        form.submit()
-
-        return form
-
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
         self.browser.get(self.live_server_url)
