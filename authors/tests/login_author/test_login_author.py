@@ -1,5 +1,6 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
+from django.utils.translation import activate
 
 from authors.forms import CustomSignupForm
 from authors.views import LoginAuthorView
@@ -58,3 +59,13 @@ class TestLoginAuthor(TestCase):
         response = self.client.get(reverse('authors:signup'))
 
         self.assertRedirects(response, reverse('home:index'))
+
+    # Override_settings in this test confirms that it will change the language.
+    @override_settings(LANGUAGE_CODE='pt-br')
+    def test_portuguese_translate_is_load_and_is_correct(self):
+        activate('pt-br')
+
+        response = self.client.get(reverse('authors:signup'))
+        content = response.content.decode()
+
+        self.assertIn('Já tem uma conta?', content)

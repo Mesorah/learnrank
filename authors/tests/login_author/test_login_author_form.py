@@ -1,8 +1,7 @@
 import lxml.html
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import activate
 
 from authors.forms import CustomAuthenticationForm, CustomSignupForm
 
@@ -69,13 +68,3 @@ class TestLoginAuthorForm(TestCase):
         for input_name, expected_type in inputs_names.items():
             [input] = form.cssselect(f'input[name={input_name}]')
             self.assertEqual(input.get('type'), expected_type)
-
-    # Override_settings in this test confirms that it will change the language.
-    @override_settings(LANGUAGE_CODE='pt-br')
-    def test_portuguese_translate_is_load_and_is_correct(self):
-        activate('pt-br')
-
-        response = self.client.get(reverse('authors:signup'))
-        content = response.content.decode()
-
-        self.assertIn('Já tem uma conta?', content)
