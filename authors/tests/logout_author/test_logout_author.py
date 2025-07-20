@@ -25,8 +25,7 @@ class TestLogoutAuthor(TestCase):
 
         response = self.client.post(reverse('authors:logout'))
 
-        # Mudar para login e nao signup
-        self.assertRedirects(response, reverse('authors:signup'))
+        self.assertRedirects(response, reverse('authors:login'))
 
     def test_anonymous_user_cannot_logout(self):
         response = self.client.post(reverse('authors:logout'), follow=True)
@@ -40,9 +39,8 @@ class TestLogoutAuthor(TestCase):
             )
         )
 
-        # Mudar para login e nao signup
         expected_url = (
-            f"{reverse('authors:signup')}"
+            f"{reverse('authors:login')}"
             f"?{urlencode({'next': reverse('authors:logout')})}"
         )
 
