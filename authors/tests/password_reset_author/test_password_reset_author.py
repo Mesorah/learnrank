@@ -87,3 +87,18 @@ class TestPasswordResetAuthor(TestCase):
 
         response = self.client.get(reverse('authors:password_reset'))
         self.assertContains(response, 'Enviar')
+
+        url = reverse('authors:password_reset')
+        self.client.post(url, {'email': self.form_data['email']})
+
+        email = mail.outbox
+
+        self.assertEqual(len(email), 1)
+
+        self.assertEqual(email[0].to, ['testing@example.com'])
+
+        self.assertIn(
+            ('Você está recebendo este e-mail porque solicitou a redefinição '
+             'de senha da sua conta no site'),
+            email[0].body
+        )

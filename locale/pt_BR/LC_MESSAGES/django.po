@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-20 12:03-0300\n"
+"POT-Creation-Date: 2025-07-20 12:39-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,38 +100,75 @@ msgstr "Clique aqui"
 msgid "Don't you have an account?"
 msgstr "Ainda não tem uma conta?"
 
-#: .\authors\views.py:28
-msgid "You cannot access this while logged in."
-msgstr "Você não pode acessar esta página enquanto estiver logado."
+#: .\authors\templates\authors\pages\password_reset_done.html:7
+#, fuzzy
+#| msgid "Write your email here."
+msgid "Check your email"
+msgstr "Escreva seu e-mail aqui."
 
-#: .\authors\views.py:58
+#: .\authors\templates\authors\pages\password_reset_done.html:8
+msgid ""
+"\n"
+"            If an account exists with the provided email address, you will "
+"receive a message with instructions to reset your password.\n"
+"        "
+msgstr ""
+
+#: .\authors\templates\authors\pages\password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"Você está recebendo este e-mail porque solicitou a redefinição de senha da sua conta no site %(site_name)s."
+
+#: .\authors\templates\authors\pages\password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr "Acesse a página a seguir e escolha uma nova senha:"
+
+#: .\authors\templates\authors\pages\password_reset_email.html:8
+msgid "In case you’ve forgotten, you are:"
+msgstr "Caso tenha se esquecido, você é:"
+
+#: .\authors\templates\authors\pages\password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr "Obrigado por usar o nosso site!"
+
+#: .\authors\templates\authors\pages\password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "A equipe do %(site_name)s"
+
+#: .\authors\views.py:59
 msgid "Account created!"
 msgstr "Conta criada com sucesso!"
 
-#: .\authors\views.py:62
+#: .\authors\views.py:63
 msgid "Form invalid."
 msgstr "Formulário inválido."
 
-#: .\authors\views.py:68
+#: .\authors\views.py:69
 msgid "Sign Up"
 msgstr "Criar conta"
 
-#: .\authors\views.py:80
+#: .\authors\views.py:81
 msgid "Success, you have logged out!"
 msgstr "Você saiu da conta com sucesso!"
 
-#: .\authors\views.py:94
+#: .\authors\views.py:95
 msgid "Account logged!"
 msgstr "Você entrou na conta com sucesso!"
 
-#: .\authors\views.py:100
+#: .\authors\views.py:101
 msgid "Login"
 msgstr "Entrar"
 
-#: .\authors\views.py:111
-msgid "You cannot access this while not logged in."
-msgstr "Você não pode acessar esta página sem estar logado."
-
-#: .\authors\views.py:125
+#: .\authors\views.py:126
 msgid "Password changed successfully!"
 msgstr "Senha alterada com sucesso!"
+
+#~ msgid "You cannot access this while logged in."
+#~ msgstr "Você não pode acessar esta página enquanto estiver logado."
+
+#~ msgid "You cannot access this while not logged in."
+#~ msgstr "Você não pode acessar esta página sem estar logado."
