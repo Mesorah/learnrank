@@ -2,11 +2,41 @@ import re
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+    UserCreationForm,
+)
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['new_password1'].help_text = ''
+        self.fields['new_password2'].help_text = ''
+
+        self.fields['new_password1'].widget.attrs['placeholder'] = _(
+            'Write your new password.'
+        )
+
+        self.fields['new_password2'].widget.attrs['placeholder'] = _(
+            'Confirm your new password.'
+        )
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['email'].widget.attrs['placeholder'] = _(
+            'Write your email here.'
+        )
 
 
 class CustomAuthenticationForm(AuthenticationForm):
