@@ -1,34 +1,54 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
+from django.views.generic.base import View
 
-from authors.forms import CustomAuthenticationForm, CustomSignupForm
+from authors.forms import (
+    CustomAuthenticationForm,
+    CustomPasswordResetForm,
+    CustomSetPasswordForm,
+    CustomSignupForm,
+)
 
 User = get_user_model()
 
 
-class CreateAuthorView(CreateView):
+class LoginErrorMixin(View):
+    message = _lazy('You cannot access this while logged in.')
+    authenticated_user = True
+
+    def dispatch(self, request, *args, **kwargs):
+        is_authenticated = request.user.is_authenticated
+
+        if not self.authenticated_user and is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+
+        if self.authenticated_user and not is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+
+        messages.error(request, self.message)
+
+        return redirect(reverse('home:index'))
+
+
+class CreateAuthorView(CreateView, LoginErrorMixin):
     model = User
     form_class = CustomSignupForm
     template_name = 'authors/pages/authors.html'
     success_url = reverse_lazy('home:index')
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            messages.error(request, _(
-                'You cannot access this while logged in.'
-            ))
-
-            return redirect(reverse('home:index'))
-
-        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.success_url
@@ -56,29 +76,18 @@ class CreateAuthorView(CreateView):
 
 
 @require_POST
-@login_required(login_url=reverse_lazy('authors:signup'))
+@login_required(login_url=reverse_lazy('authors:login'))
 def logout_author(request):
     logout(request)
     messages.success(request, _('Success, you have logged out!'))
 
-    return redirect('authors:signup')
+    return redirect('authors:login')
 
 
-class LoginAuthorView(LoginView):
+class LoginAuthorView(LoginView, LoginErrorMixin):
     form_class = CustomAuthenticationForm
     template_name = 'authors/pages/authors.html'
-    redirect_authenticated_user = True
     success_url = reverse_lazy('home:index')
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            messages.error(request, _(
-                'You cannot access this while logged in.'
-            ))
-
-            return redirect(reverse('home:index'))
-
-        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.success_url
@@ -95,3 +104,26 @@ class LoginAuthorView(LoginView):
         ctx['form_action'] = 'authors:login'
 
         return ctx
+
+
+class PasswordResetAuthorView(LoginErrorMixin, PasswordResetView):
+    success_url = reverse_lazy('authors:password_reset_done')
+    template_name = 'authors/pages/password_reset.html'
+    email_template_name = 'authors/pages/password_reset_email.html'
+    message = _lazy('You cannot access this while not logged in.')
+    authenticated_user = False
+    form_class = CustomPasswordResetForm
+
+
+class PasswordResetDoneAuthorView(PasswordResetDoneView):
+    template_name = 'authors/pages/password_reset_done.html'
+
+
+class PasswordResetConfirmAuthorView(PasswordResetConfirmView):
+    success_url = reverse_lazy('home:index')
+    template_name = 'authors/pages/password_reset.html'
+    form_class = CustomSetPasswordForm
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Password changed successfully!'))
+        return super().form_valid(form)
