@@ -56,7 +56,7 @@ class TestLogoutAuthor(TestCase):
 
         # Not logged
         response = self.client.post(reverse('authors:logout'))
-        self.assertRedirects(response, reverse('authors:signup'))
+        self.assertRedirects(response, reverse('authors:login'))
 
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')

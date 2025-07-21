@@ -177,8 +177,8 @@ msgstr "Entrar"
 msgid "Password changed successfully!"
 msgstr "Senha alterada com sucesso!"
 
-#~ msgid "You cannot access this while logged in."
-#~ msgstr "Você não pode acessar esta página enquanto estiver logado."
+msgid "You cannot access this while logged in."
+msgstr "Você não pode acessar esta página enquanto estiver logado."
 
-#~ msgid "You cannot access this while not logged in."
-#~ msgstr "Você não pode acessar esta página sem estar logado."
+msgid "You cannot access this while not logged in."
+msgstr "Você não pode acessar esta página sem estar logado."
