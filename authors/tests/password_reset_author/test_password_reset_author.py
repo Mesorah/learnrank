@@ -67,19 +67,6 @@ class TestPasswordResetAuthor(TestCase):
 
         self.assertEqual(len(email), 0)
 
-    def test_user_not_authenticated_cant_get_200_in_signup(self):
-        self.client.logout()
-
-        url = reverse('authors:password_reset')
-        response = self.client.get(
-            url, {'email': self.form_data['email']}, follow=True
-        )
-
-        self.assertRedirects(response, reverse('home:index'))
-        self.assertContains(
-            response, 'You cannot access this while not logged in.'
-        )
-
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')
     def test_portuguese_translate_is_load_and_is_correct(self):

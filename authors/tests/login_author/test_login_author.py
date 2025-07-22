@@ -56,7 +56,7 @@ class TestLoginAuthor(TestCase):
             reverse('authors:login'), self.data
         )
 
-        response = self.client.get(reverse('authors:signup'))
+        response = self.client.get(reverse('authors:login'))
 
         self.assertRedirects(response, reverse('home:index'))
 
@@ -65,7 +65,8 @@ class TestLoginAuthor(TestCase):
     def test_portuguese_translate_is_load_and_is_correct(self):
         activate('pt-br')
 
-        response = self.client.get(reverse('authors:signup'))
+        response = self.client.get(reverse('authors:login'))
         content = response.content.decode()
 
-        self.assertIn('Já tem uma conta?', content)
+        self.assertIn('Ainda não tem uma conta?', content)
+        self.assertIn('Esqueceu sua senha?', content)
