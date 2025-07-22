@@ -7,7 +7,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetView,
 )
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
@@ -17,6 +17,7 @@ from django.views.generic import CreateView
 from django.views.generic.base import View
 
 from authors.forms import (
+    ConfirmForm,
     CustomAuthenticationForm,
     CustomPasswordResetForm,
     CustomSetPasswordForm,
@@ -71,6 +72,7 @@ class CreateAuthorView(CreateView, LoginErrorMixin):
         ctx['html_language'] = translation.get_language()
         ctx['form_action'] = 'authors:signup'
         ctx['is_signup'] = True
+        ctx['title_key'] = 'Sign Up'
 
         return ctx
 
@@ -102,16 +104,48 @@ class LoginAuthorView(LoginView, LoginErrorMixin):
         ctx['title'] = _('Login')
         ctx['html_language'] = translation.get_language()
         ctx['form_action'] = 'authors:login'
+        ctx['title_key'] = 'Login'
 
         return ctx
 
 
-class PasswordResetAuthorView(LoginErrorMixin, PasswordResetView):
+def delete_author(request):
+    form = ConfirmForm()
+
+    if not request.user.is_authenticated:
+        messages.error(
+            request,
+            _('You cannot access this while not logged in.')
+        )
+
+        return redirect('home:index')
+
+    if request.method == 'POST':
+        form = ConfirmForm(request.POST)
+
+        if form.is_valid():
+            user = request.user
+            user.delete()
+
+            messages.success(
+                request, _('Your account has been successfully deleted!')
+            )
+
+            return redirect('home:index')
+
+    return render(request, 'authors/pages/authors.html', context={
+        'form_action': 'authors:delete',
+        'form': form,
+        'title': _('Delete your account'),
+    })
+
+
+class PasswordResetAuthorView(PasswordResetView):
     success_url = reverse_lazy('authors:password_reset_done')
     template_name = 'authors/pages/password_reset.html'
     email_template_name = 'authors/pages/password_reset_email.html'
-    message = _lazy('You cannot access this while not logged in.')
-    authenticated_user = False
+    # message = _lazy('You cannot access this while not logged in.')
+    # authenticated_user = False
     form_class = CustomPasswordResetForm
 
 
