@@ -9,11 +9,14 @@
         <button type="submit">{% translate "Submit" %}</button>
     </form>
 
-    <div class="author-link">
-        {% if is_signup %}
-            <p>{% translate "Have an account?" %} <a class='login-link' href="{% url "authors:login" %}">{% translate "Click here" %}</a></p>
-        {% else %}
-            <p>{% translate "Don't you have an account?" %} <a class='sign-up-link' href="{% url "authors:signup" %}">{% translate "Click here" %}</a></p>
-        {% endif %}
-    </div>
+    {% if title_key == 'Sign Up' or title_key == 'Login' %}
+        <div class="author-link">
+            {% if is_signup %}
+                <p>{% translate "Have an account?" %} <a class='login-link' href="{% url "authors:login" %}">{% translate "Click here" %}</a></p>
+            {% else %}
+                <p>{% translate "Don't you have an account?" %} <a class='sign-up-link' href="{% url "authors:signup" %}">{% translate "Click here" %}</a></p>
+                <p>{% translate "Forgot your password?" %} <a class='sign-up-link' href="{% url "authors:password_reset" %}">{% translate "Click here" %}</a></p>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock content %}
