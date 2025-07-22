@@ -14,6 +14,30 @@ from django.utils.translation import gettext_lazy as _
 User = get_user_model()
 
 
+class ConfirmForm(forms.Form):
+    confirm = forms.CharField(
+        label=_('Delete confirmation'),
+        widget=forms.TextInput(
+            attrs={'placeholder': _(
+                'Type "DELETE" to permanently delete your account.'
+            )}
+        )
+    )
+
+    def clean_confirm(self):
+        confirm = self.cleaned_data['confirm']
+
+        if str(confirm) != 'DELETE':
+            raise ValidationError(
+                _(
+                    'Incorrect confirmation. Please type "DELETE" '
+                    'to delete your account.'
+                )
+            )
+
+        return confirm
+
+
 class CustomSetPasswordForm(SetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

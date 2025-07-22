@@ -42,6 +42,11 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
         self.browser.refresh()
 
+    def logout_user(self):
+        self.client.logout()
+        self.browser.delete_all_cookies()
+        self.browser.refresh()
+
     @staticmethod
     def sleep(time=5):
         sleep(time)
