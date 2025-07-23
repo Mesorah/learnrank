@@ -3,7 +3,7 @@ from django.urls import resolve, reverse
 from django.utils.translation import activate
 
 from authors.forms import CustomSignupForm
-from authors.views import delete_author
+from authors.views import DeleteAuthorView
 
 
 class TestDeleteAuthor(TestCase):
@@ -27,7 +27,7 @@ class TestDeleteAuthor(TestCase):
     def test_view_is_correct(self):
         response = resolve(reverse('authors:delete'))
 
-        self.assertEqual(response.func, delete_author)
+        self.assertEqual(response.func.view_class, DeleteAuthorView)
 
     def test_view_load_correct_template(self):
         response = self.client.get(reverse('authors:delete'))

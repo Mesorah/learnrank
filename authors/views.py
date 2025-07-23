@@ -109,18 +109,30 @@ class LoginAuthorView(LoginView, LoginErrorMixin):
         return ctx
 
 
-def delete_author(request):
-    form = ConfirmForm()
+class DeleteAuthorView(View):
+    def render_form(self, form):
+        return render(self.request, 'authors/pages/authors.html', context={
+            'form_action': 'authors:delete',
+            'form': form,
+            'title': _('Delete your account'),
+        })
 
-    if not request.user.is_authenticated:
-        messages.error(
-            request,
-            _('You cannot access this while not logged in.')
-        )
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(
+                request,
+                _('You cannot access this while not logged in.')
+            )
 
-        return redirect('home:index')
+            return redirect('home:index')
 
-    if request.method == 'POST':
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form = ConfirmForm()
+        return self.render_form(form)
+
+    def post(self, request, *args, **kwargs):
         form = ConfirmForm(request.POST)
 
         if form.is_valid():
@@ -133,11 +145,7 @@ def delete_author(request):
 
             return redirect('home:index')
 
-    return render(request, 'authors/pages/authors.html', context={
-        'form_action': 'authors:delete',
-        'form': form,
-        'title': _('Delete your account'),
-    })
+        return self.render_form(form)
 
 
 class PasswordResetAuthorView(PasswordResetView):
