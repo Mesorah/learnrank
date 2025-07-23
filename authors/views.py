@@ -27,17 +27,17 @@ from authors.forms import (
 User = get_user_model()
 
 
-class LoginErrorMixin(View):
+class LoginErrorMixin:
     message = _lazy('You cannot access this while logged in.')
-    authenticated_user = True
+    authenticated_user = False
 
     def dispatch(self, request, *args, **kwargs):
         is_authenticated = request.user.is_authenticated
 
-        if not self.authenticated_user and is_authenticated:
+        if not self.authenticated_user and not is_authenticated:
             return super().dispatch(request, *args, **kwargs)
 
-        if self.authenticated_user and not is_authenticated:
+        if self.authenticated_user and is_authenticated:
             return super().dispatch(request, *args, **kwargs)
 
         messages.error(request, self.message)
@@ -45,7 +45,7 @@ class LoginErrorMixin(View):
         return redirect(reverse('home:index'))
 
 
-class CreateAuthorView(CreateView, LoginErrorMixin):
+class CreateAuthorView(LoginErrorMixin, CreateView):
     model = User
     form_class = CustomSignupForm
     template_name = 'authors/pages/authors.html'
@@ -86,7 +86,7 @@ def logout_author(request):
     return redirect('authors:login')
 
 
-class LoginAuthorView(LoginView, LoginErrorMixin):
+class LoginAuthorView(LoginErrorMixin, LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'authors/pages/authors.html'
     success_url = reverse_lazy('home:index')
@@ -109,24 +109,16 @@ class LoginAuthorView(LoginView, LoginErrorMixin):
         return ctx
 
 
-class DeleteAuthorView(View):
+class DeleteAuthorView(LoginErrorMixin, View):
+    message = _lazy('You cannot access this while not logged in.')
+    authenticated_user = True
+
     def render_form(self, form):
         return render(self.request, 'authors/pages/authors.html', context={
             'form_action': 'authors:delete',
             'form': form,
             'title': _('Delete your account'),
         })
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                _('You cannot access this while not logged in.')
-            )
-
-            return redirect('home:index')
-
-        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = ConfirmForm()
@@ -152,8 +144,6 @@ class PasswordResetAuthorView(PasswordResetView):
     success_url = reverse_lazy('authors:password_reset_done')
     template_name = 'authors/pages/password_reset.html'
     email_template_name = 'authors/pages/password_reset_email.html'
-    # message = _lazy('You cannot access this while not logged in.')
-    # authenticated_user = False
     form_class = CustomPasswordResetForm
 
 
