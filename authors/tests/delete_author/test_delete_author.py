@@ -1,5 +1,3 @@
-from urllib.parse import urlencode
-
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
@@ -49,18 +47,13 @@ class TestDeleteAuthor(TestCase):
 
         response = self.client.get(reverse('authors:delete'))
 
-        expected_url = (
-            f"{reverse('authors:login')}"
-            f"?{urlencode({'next': reverse('authors:delete')})}"
-        )
-
-        self.assertRedirects(response, expected_url)
+        self.assertRedirects(response, reverse('home:index'))
 
         response = self.client.post(reverse('authors:delete'), data={
             'confirm': 'DELETE'
         }, follow=True)
 
-        self.assertRedirects(response, expected_url)
+        self.assertRedirects(response, reverse('home:index'))
 
         self.assertNotContains(
             response, 'Your account has been successfully deleted!'

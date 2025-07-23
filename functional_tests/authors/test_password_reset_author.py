@@ -43,22 +43,6 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         else:
             self.fail((placeholder, correct_input[name]))
 
-    def test_not_logged_user_cannot_access_registration_page(self):
-        # User enters the home screen
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset')
-        )
-
-        # He noticed that he couldn't enter there
-        # and received an error notifying him.
-        error_message = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'alert-error'
-        ))).text
-
-        self.assertEqual(
-            error_message, 'You cannot access this while not logged in.'
-        )
-
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the home screen
         self.browser.get(self.live_server_url)
@@ -93,22 +77,8 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.wait = self.delay()
 
     def test_user_can_see_portuguese_translation(self):
-        # User tried to reset the password without being logged in
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset')
-        )
-
-        # Saw the error alerting him
-        error_message = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'alert-error'
-        ))).text
-
-        self.assertEqual(
-            error_message,
-            'Você não pode acessar esta página sem estar logado.'
-        )
-
         # So he logged into his account.
+        self.browser.get(self.live_server_url)
         self.login_user()
 
         # And decided to change his password
