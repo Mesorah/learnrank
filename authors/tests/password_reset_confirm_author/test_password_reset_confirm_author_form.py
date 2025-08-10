@@ -47,7 +47,7 @@ class TestPasswordResetConfirmAuthorForm(TestCase):
         })
 
         self.assertContains(
-            response, 'The two password fields didn’t match'
+            response, "The two password fields didn’t match"
         )
 
         response = self.client.post(redirect_url, data={

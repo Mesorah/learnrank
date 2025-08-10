@@ -2,6 +2,7 @@ import lxml.html
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import html
 
 from authors.forms import CustomSignupForm
 
@@ -32,8 +33,11 @@ class TestDeleteAuthorForm(TestCase):
         })
 
         self.assertContains(
-            response, 'Incorrect confirmation. Please type &quot;DELETE&quot; '
-            'to delete your account.'
+            response,
+            html.escape(
+                'Incorrect confirmation. Please type "DELETE" '
+                'to delete your account.'
+            )
         )
 
     def test_post_delete_user_and_redirects_to_home(self):

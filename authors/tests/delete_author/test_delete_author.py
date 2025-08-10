@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
+from django.utils import html
 from django.utils.translation import activate
 
 from authors.forms import CustomSignupForm
@@ -74,8 +75,10 @@ class TestDeleteAuthor(TestCase):
         content = response.content.decode()
 
         self.assertIn(
-            'Confirmação incorreta. Por favor, digite &quot;DELETE&quot; '
-            'para deletar sua conta.',
+            html.escape(
+                'Confirmação incorreta. Por favor, digite "DELETE" '
+                'para deletar sua conta.'
+            ),
             content
         )
 
