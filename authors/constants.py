@@ -1,0 +1,30 @@
+# Error
+DELETE_ACCOUNT_ERROR = 'Incorrect confirmation. Please type "DELETE" to delete your account.'
+USERNAME_MIN_LENGTH_ERROR = 'Please enter at least 4 characters.'
+PASSWORD1_MIN_LENGTH_ERROR = 'Please enter at least 8 characters.'
+PASSWORD2_MIN_LENGTH_ERROR = 'Please enter at least 8 characters.'
+USERNAME_TAKEN_ALREADY_ERROR = 'Username is already taken.'
+EMAIL_ALREADY_REGISTERED_ERROR = 'Email is already registered.'
+PASSWORDS_DO_NOT_MATCH_ERROR = 'Passwords do not match.'
+PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR = 'The password must contain symbols.'
+PASSWORD_MUST_CONTAIN_NUMBERS_ERROR = 'Password must contain numbers.'
+PASSWORD_MUST_CONTAIN_LETTERS_ERROR = 'Password must contain letters.'
+
+# Placeholder
+DELETE_ACCOUNT_PLACEHOLDER = 'Type "DELETE" to permanently delete your account.'
+NEW_PASSWORD1_PLACEHOLDER = 'Write your new password.'
+NEW_PASSWORD2_PLACEHOLDER = 'Confirm your new password.'
+EMAIL_PLACEHOLDER = 'Write your email here.'
+PASSWORD_PLACEHOLDER = 'Write your password here.'
+USERNAME_PLACEHOLDER = 'Write your username here.'
+SIGNUP_USERNAME_PLACEHOLDER = 'Ex: Gabriel Rodrigues'
+SIGNUP_EMAIL_PLACEHOLDER = 'Ex: gabrielrodrigues@example.com'
+SIGNUP_PASSWORD1_PLACEHOLDER = 'Ex 23#$1fsgKDL!'
+SIGNUP_PASSWORD2_PLACEHOLDER = 'Repeat your password'
+
+# Label
+DELETE_CONFIRMATION_LABEL = 'Delete confirmation'
+USERNAME_LABEL = 'Username'
+EMAIL_LABEL = 'Email'
+PASSWORD1_LABEL = 'Password'
+PASSWORD2_LABEL = 'Repeat password'
