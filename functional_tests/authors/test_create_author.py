@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -33,10 +34,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def validate_placeholders(self, inputs_information):
         correct_inputs = {
-            'username': 'Ex: Gabriel Rodrigues',
-            'email': 'Ex: gabrielrodrigues@example.com',
-            'password1': 'Ex 23#$1fsgKDL!',
-            'password2': 'Repeat your password'
+            'username': const.SIGNUP_USERNAME_PLACEHOLDER,
+            'email': const.SIGNUP_EMAIL_PLACEHOLDER,
+            'password1': const.SIGNUP_PASSWORD1_PLACEHOLDER,
+            'password2': const.SIGNUP_PASSWORD2_PLACEHOLDER
         }
 
         for name, placeholder in inputs_information:
@@ -126,12 +127,12 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         errors_messages = [error.text for error in errors]
 
         self.assertIn(
-            'The password must contain symbols.',
+            const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
             errors_messages
         )
 
         self.assertIn(
-            'Passwords do not match.',
+            const.PASSWORDS_DO_NOT_MATCH_ERROR,
             errors_messages
         )
 
@@ -179,7 +180,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'
+            error_message, 'You cannot access this while logged in.'  # TODO
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

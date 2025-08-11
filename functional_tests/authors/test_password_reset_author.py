@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -36,7 +37,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         placeholder = input.get_attribute('placeholder')
         name = input.get_attribute('name')
 
-        correct_input = {'email': 'Write your email here.'}
+        correct_input = {'email': const.EMAIL_PLACEHOLDER}
 
         if placeholder == correct_input[name]:
             pass

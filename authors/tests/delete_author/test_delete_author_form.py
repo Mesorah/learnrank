@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import html
 
+import authors.constants as consts
 from authors.forms import CustomSignupForm
 
 User = get_user_model()
@@ -34,10 +35,7 @@ class TestDeleteAuthorForm(TestCase):
 
         self.assertContains(
             response,
-            html.escape(
-                'Incorrect confirmation. Please type "DELETE" '
-                'to delete your account.'
-            )
+            html.escape(consts.DELETE_ACCOUNT_ERROR)
         )
 
     def test_post_delete_user_and_redirects_to_home(self):
@@ -52,7 +50,7 @@ class TestDeleteAuthorForm(TestCase):
         self.assertFalse(user)
         self.assertRedirects(response, reverse('home:index'))
         self.assertContains(
-            response, 'Your account has been successfully deleted!'
+            response, 'Your account has been successfully deleted!'  # TODO
         )
 
     def test_renders_input_form(self):

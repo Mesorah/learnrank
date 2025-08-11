@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from authors.forms import CustomSignupForm
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
@@ -47,8 +48,8 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
     def validate_placeholders(self, inputs_information):
         correct_inputs = {
-            'username': 'Ex: Gabriel Rodrigues',
-            'password': 'Ex 23#$1fsgKDL!',
+            'username': const.SIGNUP_USERNAME_PLACEHOLDER,
+            'password': const.SIGNUP_PASSWORD1_PLACEHOLDER,
         }
 
         for name, placeholder in inputs_information:
@@ -158,7 +159,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'
+            error_message, 'You cannot access this while logged in.'  # TODO
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

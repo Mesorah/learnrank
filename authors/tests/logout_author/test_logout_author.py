@@ -34,7 +34,7 @@ class TestLogoutAuthor(TestCase):
 
         self.assertFalse(
             any(
-                actual_message.message == 'Success, you have logged out!'
+                actual_message.message == 'Success, you have logged out!'  # TODO
                 for actual_message in messages
             )
         )

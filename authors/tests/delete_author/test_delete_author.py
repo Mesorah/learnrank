@@ -57,7 +57,7 @@ class TestDeleteAuthor(TestCase):
         self.assertRedirects(response, reverse('home:index'))
 
         self.assertNotContains(
-            response, 'Your account has been successfully deleted!'
+            response, 'Your account has been successfully deleted!'  # TODO
         )
 
     # Override_settings in this test confirms that it will change the language.

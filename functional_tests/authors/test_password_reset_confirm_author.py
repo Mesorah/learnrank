@@ -6,6 +6,7 @@ from django.utils.http import urlsafe_base64_encode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 User = get_user_model()
@@ -56,8 +57,8 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         correct_inputs = {
-            'new_password1': 'Write your new password.',
-            'new_password2': 'Confirm your new password.'
+            'new_password1': const.NEW_PASSWORD1_PLACEHOLDER,
+            'new_password2': const.NEW_PASSWORD2_PLACEHOLDER
         }
 
         self.assertEqual(

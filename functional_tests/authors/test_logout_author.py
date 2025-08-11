@@ -27,7 +27,7 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'
+            error_message, 'You cannot access this while logged in.'  # TODO
         )
 
         # So he decided to log out there to be able to access the page.
@@ -40,7 +40,7 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(success_message, 'Success, you have logged out!')
+        self.assertEqual(success_message, 'Success, you have logged out!')  # TODO
 
         # And managed to enter the sign-up page
         self.browser.get(self.live_server_url + reverse('authors:signup'))

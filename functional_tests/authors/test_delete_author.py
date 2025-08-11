@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from authors.forms import CustomSignupForm
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
@@ -61,7 +62,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.assertEqual(
             confirm_placeholder,
-            'Type "DELETE" to permanently delete your account.'
+            const.DELETE_ACCOUNT_PLACEHOLDER
         )
 
     def test_form_invalid_fields_and_success_redirect(self):
@@ -82,10 +83,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'errorlist'
         ))).text
 
-        self.assertEqual(error_message, (
-            'Incorrect confirmation. Please type "DELETE" '
-            'to delete your account.'
-        ))
+        self.assertEqual(error_message, const.DELETE_ACCOUNT_ERROR)
 
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
@@ -102,7 +100,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            message_success, 'Your account has been successfully deleted!'
+            message_success, 'Your account has been successfully deleted!'  # TODO
         )
 
         # It worked and was redirected already logged in to the homepage.
@@ -124,7 +122,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while not logged in.'
+            error_message, 'You cannot access this while not logged in.'  # TODO
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

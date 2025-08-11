@@ -1,4 +1,4 @@
-# Error
+# Errors
 DELETE_ACCOUNT_ERROR = 'Incorrect confirmation. Please type "DELETE" to delete your account.'
 USERNAME_MIN_LENGTH_ERROR = 'Please enter at least 4 characters.'
 PASSWORD1_MIN_LENGTH_ERROR = 'Please enter at least 8 characters.'
@@ -10,7 +10,7 @@ PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR = 'The password must contain symbols.'
 PASSWORD_MUST_CONTAIN_NUMBERS_ERROR = 'Password must contain numbers.'
 PASSWORD_MUST_CONTAIN_LETTERS_ERROR = 'Password must contain letters.'
 
-# Placeholder
+# Placeholders
 DELETE_ACCOUNT_PLACEHOLDER = 'Type "DELETE" to permanently delete your account.'
 NEW_PASSWORD1_PLACEHOLDER = 'Write your new password.'
 NEW_PASSWORD2_PLACEHOLDER = 'Confirm your new password.'
@@ -22,7 +22,7 @@ SIGNUP_EMAIL_PLACEHOLDER = 'Ex: gabrielrodrigues@example.com'
 SIGNUP_PASSWORD1_PLACEHOLDER = 'Ex 23#$1fsgKDL!'
 SIGNUP_PASSWORD2_PLACEHOLDER = 'Repeat your password'
 
-# Label
+# Labels
 DELETE_CONFIRMATION_LABEL = 'Delete confirmation'
 USERNAME_LABEL = 'Username'
 EMAIL_LABEL = 'Email'
