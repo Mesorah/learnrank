@@ -12,6 +12,11 @@ PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR = _lazy('The password must contain symbols.'
 PASSWORD_MUST_CONTAIN_NUMBERS_ERROR = _lazy('Password must contain numbers.')
 PASSWORD_MUST_CONTAIN_LETTERS_ERROR = _lazy('Password must contain letters.')
 
+CANNOT_ACCESS_LOGGED_ERROR = _lazy('You cannot access this while logged in.')
+FORM_INVALID_ERROR = _lazy('Form invalid.')
+CANNOT_ACCESS_NOT_LOGGED_ERROR = _lazy('You cannot access this while not logged in.')
+
+
 # Placeholders
 DELETE_ACCOUNT_PLACEHOLDER = _lazy('Type "DELETE" to permanently delete your account.')
 NEW_PASSWORD1_PLACEHOLDER = _lazy('Write your new password.')
@@ -24,9 +29,24 @@ SIGNUP_EMAIL_PLACEHOLDER = _lazy('Ex: gabrielrodrigues@example.com')
 SIGNUP_PASSWORD1_PLACEHOLDER = _lazy('Ex 23#$1fsgKDL!')
 SIGNUP_PASSWORD2_PLACEHOLDER = _lazy('Repeat your password')
 
+
 # Labels
 DELETE_CONFIRMATION_LABEL = _lazy('Delete confirmation')
 USERNAME_LABEL = _lazy('Username')
 EMAIL_LABEL = _lazy('Email')
 PASSWORD1_LABEL = _lazy('Password')
 PASSWORD2_LABEL = _lazy('Repeat password')
+
+
+# SUCCESS MESSAGES
+ACCOUNT_CREATED_SUCCESS = _lazy('Account created!')
+ACCOUNT_LOGGED_SUCCESS = _lazy('Account logged!')
+ACCOUNT_DELETED_SUCCESS = _lazy('Your account has been successfully deleted!')
+PASSWORD_CHANGED_SUCCESS = _lazy('Password changed successfully!')
+ACCOUNT_LOGOUT_SUCCESS = _lazy('Success, you have logged out!')
+
+
+# TITLES
+TITLE_SIGN_UP = _lazy('Sign Up')
+TITLE_LOGIN = _lazy('Login')
+TITLE_DELETE_ACCOUNT = _lazy('Delete your account')

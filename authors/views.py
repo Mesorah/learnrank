@@ -10,12 +10,11 @@ from django.contrib.auth.views import (
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
-from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 from django.views.generic.base import View
 
+import authors.constants as const
 from authors.forms import (
     ConfirmForm,
     CustomAuthenticationForm,
@@ -28,7 +27,7 @@ User = get_user_model()
 
 
 class LoginErrorMixin:
-    message = _lazy('You cannot access this while logged in.')
+    message = const.CANNOT_ACCESS_LOGGED_ERROR
     authenticated_user = False
 
     def dispatch(self, request, *args, **kwargs):
@@ -58,17 +57,17 @@ class CreateAuthorView(LoginErrorMixin, CreateView):
         self.object = form.save()
         login(self.request, self.object)
 
-        messages.success(self.request, _('Account created!'))
+        messages.success(self.request, const.ACCOUNT_CREATED_SUCCESS)
         return redirect(self.get_success_url())
 
     def form_invalid(self, form):
-        messages.error(self.request, _('Form invalid.'))
+        messages.error(self.request, const.FORM_INVALID_ERROR)
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        ctx['title'] = _('Sign Up')
+        ctx['title'] = const.TITLE_SIGN_UP
         ctx['html_language'] = translation.get_language()
         ctx['form_action'] = 'authors:signup'
         ctx['is_signup'] = True
@@ -81,7 +80,7 @@ class CreateAuthorView(LoginErrorMixin, CreateView):
 @login_required(login_url=reverse_lazy('authors:login'))
 def logout_author(request):
     logout(request)
-    messages.success(request, _('Success, you have logged out!'))
+    messages.success(request, const.ACCOUNT_LOGOUT_SUCCESS)
 
     return redirect('authors:login')
 
@@ -95,13 +94,13 @@ class LoginAuthorView(LoginErrorMixin, LoginView):
         return self.success_url
 
     def form_valid(self, form):
-        messages.success(self.request, _('Account logged!'))
+        messages.success(self.request, const.ACCOUNT_LOGGED_SUCCESS)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        ctx['title'] = _('Login')
+        ctx['title'] = const.TITLE_LOGIN
         ctx['html_language'] = translation.get_language()
         ctx['form_action'] = 'authors:login'
         ctx['title_key'] = 'Login'
@@ -110,14 +109,14 @@ class LoginAuthorView(LoginErrorMixin, LoginView):
 
 
 class DeleteAuthorView(LoginErrorMixin, View):
-    message = _lazy('You cannot access this while not logged in.')
+    message = const.CANNOT_ACCESS_NOT_LOGGED_ERROR
     authenticated_user = True
 
     def render_form(self, form):
         return render(self.request, 'authors/pages/authors.html', context={
             'form_action': 'authors:delete',
             'form': form,
-            'title': _('Delete your account'),
+            'title': const.TITLE_DELETE_ACCOUNT,
         })
 
     def get(self, request, *args, **kwargs):
@@ -132,7 +131,7 @@ class DeleteAuthorView(LoginErrorMixin, View):
             user.delete()
 
             messages.success(
-                request, _('Your account has been successfully deleted!')
+                request, const.ACCOUNT_DELETED_SUCCESS
             )
 
             return redirect('home:index')
@@ -157,5 +156,5 @@ class PasswordResetConfirmAuthorView(PasswordResetConfirmView):
     form_class = CustomSetPasswordForm
 
     def form_valid(self, form):
-        messages.success(self.request, _('Password changed successfully!'))
+        messages.success(self.request, const.PASSWORD_CHANGED_SUCCESS)
         return super().form_valid(form)
