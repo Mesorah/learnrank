@@ -9,7 +9,6 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 
 import authors.constants as const
 
@@ -18,11 +17,9 @@ User = get_user_model()
 
 class ConfirmForm(forms.Form):
     confirm = forms.CharField(
-        label=_(const.DELETE_CONFIRMATION_LABEL),
+        label=const.DELETE_CONFIRMATION_LABEL,
         widget=forms.TextInput(
-            attrs={'placeholder': _(
-                const.DELETE_ACCOUNT_PLACEHOLDER
-            )}
+            attrs={'placeholder': const.DELETE_ACCOUNT_PLACEHOLDER}
         )
     )
 
@@ -30,9 +27,7 @@ class ConfirmForm(forms.Form):
         confirm = self.cleaned_data['confirm']
 
         if str(confirm) != 'DELETE':
-            raise ValidationError(
-                _(const.DELETE_ACCOUNT_ERROR)
-            )
+            raise ValidationError(const.DELETE_ACCOUNT_ERROR)
 
         return confirm
 
@@ -44,11 +39,11 @@ class CustomSetPasswordForm(SetPasswordForm):
         self.fields['new_password1'].help_text = ''
         self.fields['new_password2'].help_text = ''
 
-        self.fields['new_password1'].widget.attrs['placeholder'] = _(
+        self.fields['new_password1'].widget.attrs['placeholder'] = (
             const.NEW_PASSWORD1_PLACEHOLDER
         )
 
-        self.fields['new_password2'].widget.attrs['placeholder'] = _(
+        self.fields['new_password2'].widget.attrs['placeholder'] = (
             const.NEW_PASSWORD2_PLACEHOLDER
         )
 
@@ -57,7 +52,7 @@ class CustomPasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['email'].widget.attrs['placeholder'] = _(
+        self.fields['email'].widget.attrs['placeholder'] = (
             const.EMAIL_PLACEHOLDER
         )
 
@@ -66,10 +61,10 @@ class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs['placeholder'] = _(
+        self.fields['username'].widget.attrs['placeholder'] = (
             const.USERNAME_PLACEHOLDER
         )
-        self.fields['password'].widget.attrs['placeholder'] = _(
+        self.fields['password'].widget.attrs['placeholder'] = (
             const.PASSWORD_PLACEHOLDER
         )
 
@@ -82,37 +77,33 @@ class CustomSignupForm(UserCreationForm):
             'password1', 'password2'
         ]
     username = forms.CharField(
-        label=_(const.USERNAME_LABEL),
+        label=const.USERNAME_LABEL,
         min_length=4,
-        error_messages={'min_length': _(const.USERNAME_MIN_LENGTH_ERROR)},
+        error_messages={'min_length': const.USERNAME_MIN_LENGTH_ERROR},
         max_length=30, widget=forms.TextInput(
             attrs={'placeholder': const.SIGNUP_USERNAME_PLACEHOLDER}
         ),
     )
     email = forms.EmailField(
-        label=_(const.EMAIL_LABEL),
+        label=const.EMAIL_LABEL,
         max_length=256, widget=forms.EmailInput(
             attrs={'placeholder': const.SIGNUP_EMAIL_PLACEHOLDER}
         )
     )
     password1 = forms.CharField(
-        label=_(const.PASSWORD1_LABEL),
+        label=const.PASSWORD1_LABEL,
         min_length=8,
-        error_messages={'min_length': _(
-            const.PASSWORD1_MIN_LENGTH_ERROR
-        )},
+        error_messages={'min_length': const.PASSWORD1_MIN_LENGTH_ERROR},
         max_length=50, widget=forms.PasswordInput(
             attrs={'placeholder': const.SIGNUP_PASSWORD1_PLACEHOLDER}
         )
     )
     password2 = forms.CharField(
-        label=_(const.PASSWORD2_LABEL),
+        label=const.PASSWORD2_LABEL,
         min_length=8,
-        error_messages={'min_length': _(
-            const.PASSWORD2_MIN_LENGTH_ERROR
-        )},
+        error_messages={'min_length': const.PASSWORD2_MIN_LENGTH_ERROR},
         max_length=50, widget=forms.PasswordInput(
-            attrs={'placeholder': _(const.SIGNUP_PASSWORD2_PLACEHOLDER)}
+            attrs={'placeholder': const.SIGNUP_PASSWORD2_PLACEHOLDER}
         )
     )
 
@@ -120,7 +111,7 @@ class CustomSignupForm(UserCreationForm):
         username = self.cleaned_data['username']
 
         if User.objects.filter(username=username).exists():
-            raise ValidationError(_(const.USERNAME_TAKEN_ALREADY_ERROR))
+            raise ValidationError(const.USERNAME_TAKEN_ALREADY_ERROR)
 
         return username
 
@@ -128,7 +119,7 @@ class CustomSignupForm(UserCreationForm):
         email = self.cleaned_data['email']
 
         if User.objects.filter(email=email).exists():
-            raise ValidationError(_(const.EMAIL_ALREADY_REGISTERED_ERROR))
+            raise ValidationError(const.EMAIL_ALREADY_REGISTERED_ERROR)
 
         return email
 
@@ -138,24 +129,24 @@ class CustomSignupForm(UserCreationForm):
         password2 = cleaned_data.get('password2')
 
         if password1 != password2:
-            self.add_error('password2', _(const.PASSWORDS_DO_NOT_MATCH_ERROR))
+            self.add_error('password2', const.PASSWORDS_DO_NOT_MATCH_ERROR)
 
         # Verify if password1 have [a-z] or [1-9] and don't have symbols
         if password1 and password1.isalnum():
-            self.add_error('password1', _(
-                const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
-            ))
+            self.add_error(
+                'password1', const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
+            )
 
         # Verify if password1 don't have numbers [1-9]
         if not re.search(r'\d', password1):
-            self.add_error('password1', _(
-                const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
-            ))
+            self.add_error(
+                'password1', const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
+            )
 
         if not re.search(r'[A-Za-z]', password1):
-            self.add_error('password1', _(
-                const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
-            ))
+            self.add_error(
+                'password1', const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
+            )
 
         return cleaned_data
 
