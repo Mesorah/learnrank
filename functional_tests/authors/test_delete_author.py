@@ -49,7 +49,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
-        self.assertEqual(self.browser.title, 'Delete your account')
+        self.assertEqual(self.browser.title, const.TITLE_DELETE_ACCOUNT)
 
         # Check that all inputs have placeholders.
         confirm_input = form.find_element(
@@ -100,7 +100,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            message_success, 'Your account has been successfully deleted!'  # TODO
+            message_success, const.ACCOUNT_DELETED_SUCCESS
         )
 
         # It worked and was redirected already logged in to the homepage.
@@ -122,7 +122,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while not logged in.'  # TODO
+            error_message, const.CANNOT_ACCESS_NOT_LOGGED_ERROR
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

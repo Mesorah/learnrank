@@ -91,7 +91,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
-        self.assertEqual(self.browser.title, 'Sign Up')
+        self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
         # Check that all inputs have placeholders.
         inputs = form.find_elements(By.CLASS_NAME, 'form-control')
@@ -104,7 +104,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.browser.maximize_window()
 
-        self.assertEqual(self.browser.title, 'Sign Up')
+        self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
@@ -116,7 +116,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-error'
         ))).text
 
-        self.assertEqual(error_message, 'Form invalid.')
+        self.assertEqual(error_message, const.FORM_INVALID_ERROR)
 
         self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
@@ -146,7 +146,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(message_success, 'Account created!')
+        self.assertEqual(message_success, const.ACCOUNT_CREATED_SUCCESS)
 
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((
@@ -180,7 +180,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'  # TODO
+            error_message, const.CANNOT_ACCESS_LOGGED_ERROR
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

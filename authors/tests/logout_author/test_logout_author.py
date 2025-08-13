@@ -5,6 +5,7 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
+import authors.constants as const
 from authors import views
 
 User = get_user_model()
@@ -34,7 +35,7 @@ class TestLogoutAuthor(TestCase):
 
         self.assertFalse(
             any(
-                actual_message.message == 'Success, you have logged out!'  # TODO
+                actual_message.message == const.ACCOUNT_LOGOUT_SUCCESS
                 for actual_message in messages
             )
         )

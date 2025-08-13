@@ -91,7 +91,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         form = self.wait.until(EC.visibility_of_element_located((
             By.CLASS_NAME, 'author-form'
         )))
-        self.assertEqual(self.browser.title, 'Login')
+        self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
         # Check that all inputs have placeholders.
         inputs = form.find_elements(By.CLASS_NAME, 'form-control')
@@ -102,7 +102,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.browser.get(self.live_server_url + reverse('authors:login'))
 
-        self.assertEqual(self.browser.title, 'Login')
+        self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
@@ -128,7 +128,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(message_success, 'Account logged!')
+        self.assertEqual(message_success, const.ACCOUNT_LOGGED_SUCCESS)
 
         # It worked and was redirected already logged in to the homepage.
         self.wait.until(EC.visibility_of_element_located((
@@ -159,7 +159,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'  # TODO
+            error_message, const.ACCOUNT_LOGGED_SUCCESS
         )
 
     def test_user_can_see_the_page_styling_and_layout(self):

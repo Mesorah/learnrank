@@ -3,6 +3,7 @@ from django.urls import resolve, reverse
 from django.utils import html
 from django.utils.translation import activate
 
+import authors.constants as const
 from authors.forms import CustomSignupForm
 from authors.views import DeleteAuthorView
 
@@ -57,7 +58,7 @@ class TestDeleteAuthor(TestCase):
         self.assertRedirects(response, reverse('home:index'))
 
         self.assertNotContains(
-            response, 'Your account has been successfully deleted!'  # TODO
+            response, const.ACCOUNT_DELETED_SUCCESS
         )
 
     # Override_settings in this test confirms that it will change the language.

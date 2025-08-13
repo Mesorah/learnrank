@@ -50,7 +50,7 @@ class TestDeleteAuthorForm(TestCase):
         self.assertFalse(user)
         self.assertRedirects(response, reverse('home:index'))
         self.assertContains(
-            response, 'Your account has been successfully deleted!'  # TODO
+            response, consts.ACCOUNT_DELETED_SUCCESS
         )
 
     def test_renders_input_form(self):

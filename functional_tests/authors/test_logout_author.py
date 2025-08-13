@@ -2,6 +2,7 @@ from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -27,7 +28,7 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
         ))).text
 
         self.assertEqual(
-            error_message, 'You cannot access this while logged in.'  # TODO
+            error_message, const.CANNOT_ACCESS_LOGGED_ERROR
         )
 
         # So he decided to log out there to be able to access the page.
@@ -40,12 +41,12 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'alert-success'
         ))).text
 
-        self.assertEqual(success_message, 'Success, you have logged out!')  # TODO
+        self.assertEqual(success_message, const.ACCOUNT_LOGOUT_SUCCESS)
 
         # And managed to enter the sign-up page
         self.browser.get(self.live_server_url + reverse('authors:signup'))
 
-        self.assertEqual(self.browser.title, 'Sign Up')
+        self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
 
 class TestLogoutAuthorPtBRFT(BaseWebDriverForFunctionalTests):

@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\authors\constants.py:5
+#: .\authors\constants.py:4
 msgid "Incorrect confirmation. Please type \"DELETE\" to delete your account."
 msgstr "Confirmação incorreta. Por favor, digite \"DELETE\" para deletar sua conta."
 
