@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
@@ -32,12 +31,11 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the password reset confirm screen
+
         self.browser.get(self.live_server_url + self.url)
 
         # See the registration screen
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
         self.assertEqual(self.browser.title, 'Enter new password')
 
         # Check that all inputs have placeholders.
@@ -76,9 +74,8 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+
         new_password1 = form.find_element(By.ID, 'id_new_password1')
         new_password2 = form.find_element(By.ID, 'id_new_password2')
 
@@ -87,17 +84,15 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        error_message = self.wait.until(EC.visibility_of_element_located((
+        error_message = self.wait_until_element(
             By.CLASS_NAME, 'errorlist'
-        ))).text
+        ).text
 
         self.assertEqual(
             error_message, "The two password fields didn’t match."
         )
 
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         new_password1 = form.find_element(By.ID, 'id_new_password1')
         new_password2 = form.find_element(By.ID, 'id_new_password2')
@@ -107,9 +102,9 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        errors = self.wait.until(EC.visibility_of_all_elements_located((
-            By.CLASS_NAME, 'errorlist'
-        )))
+        errors = self.wait_until_element(
+            By.CLASS_NAME, 'errorlist', all_element=True
+        )
 
         errors_messages = [error.text for error in errors]
 
@@ -125,9 +120,7 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # Decided to fix the gaps that caused errors and resend it again.
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         new_password1 = form.find_element(By.ID, 'id_new_password1')
         new_password2 = form.find_element(By.ID, 'id_new_password2')
@@ -137,16 +130,14 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        message_success = self.wait.until(EC.visibility_of_element_located((
+        message_success = self.wait_until_element(
             By.CLASS_NAME, 'alert-success'
-        ))).text
+        ).text
 
         self.assertEqual(message_success, 'Password changed successfully!')
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'test'
-        )))
+        self.wait_until_element(By.CLASS_NAME, 'test')
         self.assertEqual(self.browser.title, 'Document')
 
     def test_user_can_see_the_page_styling_and_layout(self):
@@ -189,9 +180,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.browser.get(self.live_server_url + self.url)
 
         # And he found the form in portuguese
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         new_password1 = form.find_element(
             By.XPATH, '//label[@for="id_new_password1"]'

@@ -2,7 +2,9 @@ from time import sleep
 
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.urls import reverse
 from django.utils.translation import activate
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from utils.browser import get_chrome_driver
@@ -41,6 +43,23 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
         })
 
         self.browser.refresh()
+
+    def wait_until_element(self, by, element, all_element=False):
+        if all_element:
+            return self.wait.until(EC.visibility_of_all_elements_located((
+                by, element
+            )))
+
+        return self.wait.until(EC.visibility_of_element_located((
+            by, element
+        )))
+
+    def go_to_url(self, reverse_url=None):
+        self.browser.get(
+            self.live_server_url + (
+                reverse(reverse_url)
+                if reverse_url else '')
+        )
 
     def logout_user(self):
         self.client.logout()

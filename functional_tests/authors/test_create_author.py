@@ -1,4 +1,3 @@
-from django.urls import reverse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -74,23 +73,18 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
 
         # He sees the Login button and presses it.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'login-button'
-        ))).click()
+        self.wait_until_element(By.CLASS_NAME, 'login-button').click()
 
         # He realizes that he doesn't have an account
         # and clicks the Sign up link.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'sign-up-link'
-        ))).click()
+        self.wait_until_element(By.CLASS_NAME, 'sign-up-link').click()
 
         # See the registration screen
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+
         self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
         # Check that all inputs have placeholders.
@@ -100,9 +94,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_registration_invalid_fields_and_success_redirect(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
-
-        self.browser.maximize_window()
+        self.go_to_url('authors:signup')
 
         self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
@@ -112,15 +104,15 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
         )
 
-        error_message = self.wait.until(EC.visibility_of_element_located((
+        self.browser.maximize_window()
+
+        error_message = self.wait_until_element(
             By.CLASS_NAME, 'alert-error'
-        ))).text
+        ).text
 
         self.assertEqual(error_message, const.FORM_INVALID_ERROR)
 
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         errors = self.browser.find_elements(By.CLASS_NAME, 'errorlist')
 
@@ -142,16 +134,15 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             'testing12!@1dsFG', 'testing12!@1dsFG'
         )
 
-        message_success = self.wait.until(EC.visibility_of_element_located((
+        message_success = self.wait_until_element(
             By.CLASS_NAME, 'alert-success'
-        ))).text
+        ).text
 
         self.assertEqual(message_success, const.ACCOUNT_CREATED_SUCCESS)
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'test'
-        )))
+        self.wait_until_element(By.CLASS_NAME, 'test')
+
         self.assertEqual(self.browser.title, 'Document')
 
         username = self.browser.find_element(
@@ -162,7 +153,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_logged_user_cannot_access_registration_page(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.go_to_url('authors:signup')
 
         # He registers himself
         self.send_input_keys(
@@ -171,13 +162,13 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # He tries to go back to the registration page.
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.go_to_url('authors:signup')
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait.until(EC.visibility_of_element_located((
+        error_message = self.wait_until_element(
             By.CLASS_NAME, 'alert-error'
-        ))).text
+        ).text
 
         self.assertEqual(
             error_message, const.CANNOT_ACCESS_LOGGED_ERROR
@@ -185,7 +176,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.go_to_url('authors:signup')
 
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
@@ -211,12 +202,10 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:signup'))
+        self.go_to_url('authors:signup')
 
         # And he found the form in portuguese
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         username = form.find_element(
             By.XPATH, '//label[@for="id_username"]'

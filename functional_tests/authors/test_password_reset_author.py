@@ -1,6 +1,4 @@
-from django.urls import reverse
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
@@ -17,18 +15,14 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
 
         self.login_user()
 
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset')
-        )
+        self.go_to_url('authors:password_reset')
 
         # See the password reset page
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
         self.assertEqual(self.browser.title, 'Password reset')
 
         # Check that all inputs have placeholders.
@@ -46,14 +40,12 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
 
         self.login_user()
 
         # User enters the password reset page
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset')
-        )
+        self.go_to_url('authors:password_reset')
 
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
@@ -79,18 +71,14 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation(self):
         # So he logged into his account.
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
         self.login_user()
 
         # And decided to change his password
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset')
-        )
+        self.go_to_url('authors:password_reset')
 
         # He found the form in portuguese
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         email_input = form.find_element(By.ID, 'id_email')
 

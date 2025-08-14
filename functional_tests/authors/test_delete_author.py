@@ -1,6 +1,5 @@
 from django.urls import reverse
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 import authors.constants as const
 from authors.forms import CustomSignupForm
@@ -37,18 +36,17 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         }
 
         # User login in your account
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
 
         self.login_user()
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the delete screen
-        self.browser.get(self.live_server_url + reverse('authors:delete'))
+        self.go_to_url('authors:delete')
 
         # See the delete page
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+
         self.assertEqual(self.browser.title, const.TITLE_DELETE_ACCOUNT)
 
         # Check that all inputs have placeholders.
@@ -67,27 +65,23 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_form_invalid_fields_and_success_redirect(self):
         # User enters the delete screen
-        self.browser.get(self.live_server_url + reverse('authors:delete'))
+        self.go_to_url('authors:delete')
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         confirm_field = form.find_element(By.ID, 'id_confirm')
         confirm_field.send_keys('false')
         form.submit()
 
-        error_message = self.wait.until(EC.visibility_of_element_located((
+        error_message = self.wait_until_element(
             By.CLASS_NAME, 'errorlist'
-        ))).text
+        ).text
 
         self.assertEqual(error_message, const.DELETE_ACCOUNT_ERROR)
 
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         # Decided to fix the gaps that caused errors and resend it again.
         confirm_field = form.find_element(By.ID, 'id_confirm')
@@ -95,31 +89,29 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         confirm_field.send_keys('DELETE')
         form.submit()
 
-        message_success = self.wait.until(EC.visibility_of_element_located((
+        message_success = self.wait_until_element(
             By.CLASS_NAME, 'alert-success'
-        ))).text
+        ).text
 
         self.assertEqual(
             message_success, const.ACCOUNT_DELETED_SUCCESS
         )
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'test'
-        )))
+        self.wait_until_element(By.CLASS_NAME, 'test')
         self.assertEqual(self.browser.title, 'Document')
 
     def test_not_logged_user_cannot_access_login_page(self):
         self.logout_user()
 
         # User enters the delete screen
-        self.browser.get(self.live_server_url + reverse('authors:delete'))
+        self.go_to_url('authors:delete')
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait.until(EC.visibility_of_element_located((
+        error_message = self.wait_until_element(
             By.CLASS_NAME, 'alert-error'
-        ))).text
+        ).text
 
         self.assertEqual(
             error_message, const.CANNOT_ACCESS_NOT_LOGGED_ERROR
@@ -127,7 +119,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the home screen
-        self.browser.get(self.live_server_url + reverse('authors:delete'))
+        self.go_to_url('authors:delete')
 
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
@@ -152,18 +144,16 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.wait = self.delay()
 
         # User login in your account
-        self.browser.get(self.live_server_url)
+        self.go_to_url()
 
         self.login_user()
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the delete screen
-        self.browser.get(self.live_server_url + reverse('authors:delete'))
+        self.go_to_url('authors:delete')
 
         # And he found the form in portuguese
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
 
         confirm = form.find_element(
             By.XPATH, '//label[@for="id_confirm"]'

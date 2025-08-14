@@ -1,6 +1,4 @@
-from django.urls import reverse
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
@@ -16,14 +14,12 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_messages_are_correct(self):
         # User enters the reset password done page
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset_done')
-        )
+        self.go_to_url('authors:password_reset_done')
 
         # He found the container in portuguese
-        container = self.wait.until(EC.visibility_of_element_located((
+        container = self.wait_until_element(
             By.CLASS_NAME, 'author-password-container'
-        )))
+        )
 
         h1 = container.find_element(By.TAG_NAME, 'h1').text
         p = container.find_element(By.TAG_NAME, 'p').text
@@ -39,9 +35,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_the_page_styling_and_layout(self):
         # User enters the reset password done page
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset_done')
-        )
+        self.go_to_url('authors:password_reset_done')
 
         # He notices the Submit button color
         text = self.browser.find_element(
@@ -64,14 +58,12 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the reset password done page
-        self.browser.get(
-            self.live_server_url + reverse('authors:password_reset_done')
-        )
+        self.go_to_url('authors:password_reset_done')
 
         # He found the container in portuguese
-        container = self.wait.until(EC.visibility_of_element_located((
+        container = self.wait_until_element(
             By.CLASS_NAME, 'author-password-container'
-        )))
+        )
 
         h1 = container.find_element(By.TAG_NAME, 'h1').text
         p = container.find_element(By.TAG_NAME, 'p').text
