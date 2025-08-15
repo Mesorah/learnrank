@@ -22,7 +22,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset')
 
         # See the password reset page
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
         self.assertEqual(self.browser.title, 'Password reset')
 
         # Check that all inputs have placeholders.
@@ -51,7 +51,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.browser.set_window_size(1024, 768)
 
         # He notices the Submit button color
-        submit_button = self.browser.find_element(
+        submit_button = self.find_element(
             By.XPATH, '//button[text()="Submit"]'
         )
         self.assertEqual(
@@ -78,7 +78,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset')
 
         # He found the form in portuguese
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         email_input = form.find_element(By.ID, 'id_email')
 

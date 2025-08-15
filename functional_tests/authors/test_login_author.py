@@ -59,7 +59,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
                 self.fail((placeholder, input))
 
     def send_input_keys(self, username, password):
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         username_field = form.find_element(By.ID, 'id_username')
         password_field = form.find_element(By.ID, 'id_password')
@@ -79,10 +79,10 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url()
 
         # He sees the Login button and presses it.
-        self.wait_until_element(By.CLASS_NAME, 'login-button').click()
+        self.click_when_visible(By.CLASS_NAME, 'login-button')
 
         # See the login page
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
         self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
         # Check that all inputs have placeholders.
@@ -100,7 +100,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         # the form and notice errors on your screen
         self.send_input_keys('abcd', 'abcd1234')
 
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'errorlist'
         ).text
 
@@ -109,22 +109,22 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
             'Note that both fields may be case-sensitive.'
         ))
 
-        self.wait_until_element(By.CLASS_NAME, 'author-form')
+        self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         # Decided to fix the gaps that caused errors and resend it again.
         self.send_input_keys('testing', 'testing12!@1dsFG')
 
-        message_success = self.wait_until_element(
+        message_success = self.wait_for_element(
             By.CLASS_NAME, 'alert-success'
         ).text
 
         self.assertEqual(message_success, const.ACCOUNT_LOGGED_SUCCESS)
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait_until_element(By.CLASS_NAME, 'test')
+        self.wait_for_element(By.CLASS_NAME, 'test')
         self.assertEqual(self.browser.title, 'Document')
 
-        username = self.browser.find_element(
+        username = self.find_element(
             By.CLASS_NAME, 'username-profile'
         ).text
 
@@ -142,7 +142,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-error'
         ).text
 
@@ -158,7 +158,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.browser.set_window_size(1024, 768)
 
         # He notices the Submit button color
-        submit_button = self.browser.find_element(
+        submit_button = self.find_element(
             By.XPATH, '//button[text()="Submit"]'
         )
         self.assertEqual(
@@ -181,7 +181,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:login')
 
         # And he found the form in portuguese
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         username = form.find_element(
             By.XPATH, '//label[@for="id_username"]'

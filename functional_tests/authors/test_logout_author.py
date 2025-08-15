@@ -21,7 +21,7 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:signup')
 
         # He saw that he couldn't enter there while logged in.
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-error'
         ).text
 
@@ -30,12 +30,10 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # So he decided to log out there to be able to access the page.
-        self.browser.find_element(
-            By.CLASS_NAME, 'author-logout-button'
-        ).click()
+        self.click_when_visible(By.CLASS_NAME, 'author-logout-button')
 
         # He saw the success message
-        success_message = self.wait_until_element(
+        success_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-success'
         ).text
 
@@ -64,11 +62,9 @@ class TestLogoutAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.login_user()
 
         # And he found the sucess message in portuguese
-        self.wait_until_element(
-            By.CLASS_NAME, 'author-logout-button'
-        ).click()
+        self.click_when_visible(By.CLASS_NAME, 'author-logout-button')
 
-        success_message = self.wait_until_element(
+        success_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-success'
         ).text
 

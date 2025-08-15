@@ -1,4 +1,3 @@
-from django.urls import reverse
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
@@ -45,7 +44,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:delete')
 
         # See the delete page
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         self.assertEqual(self.browser.title, const.TITLE_DELETE_ACCOUNT)
 
@@ -69,19 +68,19 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         confirm_field = form.find_element(By.ID, 'id_confirm')
         confirm_field.send_keys('false')
         form.submit()
 
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'errorlist'
         ).text
 
         self.assertEqual(error_message, const.DELETE_ACCOUNT_ERROR)
 
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         # Decided to fix the gaps that caused errors and resend it again.
         confirm_field = form.find_element(By.ID, 'id_confirm')
@@ -89,7 +88,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         confirm_field.send_keys('DELETE')
         form.submit()
 
-        message_success = self.wait_until_element(
+        message_success = self.wait_for_element(
             By.CLASS_NAME, 'alert-success'
         ).text
 
@@ -98,7 +97,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait_until_element(By.CLASS_NAME, 'test')
+        self.wait_for_element(By.CLASS_NAME, 'test')
         self.assertEqual(self.browser.title, 'Document')
 
     def test_not_logged_user_cannot_access_login_page(self):
@@ -109,7 +108,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-error'
         ).text
 
@@ -125,7 +124,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         self.browser.set_window_size(1024, 768)
 
         # He notices the Submit button color
-        submit_button = self.browser.find_element(
+        submit_button = self.find_element(
             By.XPATH, '//button[text()="Submit"]'
         )
         self.assertEqual(
@@ -153,7 +152,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:delete')
 
         # And he found the form in portuguese
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         confirm = form.find_element(
             By.XPATH, '//label[@for="id_confirm"]'

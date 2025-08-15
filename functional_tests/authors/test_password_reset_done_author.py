@@ -17,7 +17,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset_done')
 
         # He found the container in portuguese
-        container = self.wait_until_element(
+        container = self.wait_for_element(
             By.CLASS_NAME, 'author-password-container'
         )
 
@@ -38,7 +38,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset_done')
 
         # He notices the Submit button color
-        text = self.browser.find_element(
+        text = self.find_element(
             By.TAG_NAME, 'p'
         )
         self.assertEqual(
@@ -61,7 +61,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset_done')
 
         # He found the container in portuguese
-        container = self.wait_until_element(
+        container = self.wait_for_element(
             By.CLASS_NAME, 'author-password-container'
         )
 

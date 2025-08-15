@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
@@ -48,9 +47,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
                 self.fail((placeholder, input))
 
     def send_input_keys(self, username, email, password1, password2):
-        form = self.wait.until(EC.visibility_of_element_located((
-            By.CLASS_NAME, 'author-form'
-        )))
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         username_field = form.find_element(By.ID, 'id_username')
         email_field = form.find_element(By.ID, 'id_email')
@@ -76,14 +73,14 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url()
 
         # He sees the Login button and presses it.
-        self.wait_until_element(By.CLASS_NAME, 'login-button').click()
+        self.click_when_visible(By.CLASS_NAME, 'login-button')
 
         # He realizes that he doesn't have an account
         # and clicks the Sign up link.
-        self.wait_until_element(By.CLASS_NAME, 'sign-up-link').click()
+        self.click_when_visible(By.CLASS_NAME, 'sign-up-link')
 
         # See the registration screen
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
@@ -106,15 +103,17 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.browser.maximize_window()
 
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-error'
         ).text
 
         self.assertEqual(error_message, const.FORM_INVALID_ERROR)
 
-        self.wait_until_element(By.CLASS_NAME, 'author-form')
+        self.wait_for_element(By.CLASS_NAME, 'author-form')
 
-        errors = self.browser.find_elements(By.CLASS_NAME, 'errorlist')
+        errors = self.find_element(
+            By.CLASS_NAME, 'errorlist', all_element=True
+        )
 
         errors_messages = [error.text for error in errors]
 
@@ -134,18 +133,18 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             'testing12!@1dsFG', 'testing12!@1dsFG'
         )
 
-        message_success = self.wait_until_element(
+        message_success = self.wait_for_element(
             By.CLASS_NAME, 'alert-success'
         ).text
 
         self.assertEqual(message_success, const.ACCOUNT_CREATED_SUCCESS)
 
         # It worked and was redirected already logged in to the homepage.
-        self.wait_until_element(By.CLASS_NAME, 'test')
+        self.wait_for_element(By.CLASS_NAME, 'test')
 
         self.assertEqual(self.browser.title, 'Document')
 
-        username = self.browser.find_element(
+        username = self.find_element(
             By.CLASS_NAME, 'username-profile'
         ).text
 
@@ -166,7 +165,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait_until_element(
+        error_message = self.wait_for_element(
             By.CLASS_NAME, 'alert-error'
         ).text
 
@@ -182,7 +181,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         self.browser.set_window_size(1024, 768)
 
         # He notices the Submit button color
-        submit_button = self.browser.find_element(
+        submit_button = self.find_element(
             By.XPATH, '//button[text()="Submit"]'
         )
         self.assertEqual(
@@ -205,7 +204,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:signup')
 
         # And he found the form in portuguese
-        form = self.wait_until_element(By.CLASS_NAME, 'author-form')
+        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         username = form.find_element(
             By.XPATH, '//label[@for="id_username"]'

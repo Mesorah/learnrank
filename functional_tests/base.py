@@ -44,7 +44,12 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
         self.browser.refresh()
 
-    def wait_until_element(self, by, element, all_element=False):
+    def logout_user(self):
+        self.client.logout()
+        self.browser.delete_all_cookies()
+        self.browser.refresh()
+
+    def wait_for_element(self, by, element, all_element=False):
         if all_element:
             return self.wait.until(EC.visibility_of_all_elements_located((
                 by, element
@@ -54,18 +59,47 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
             by, element
         )))
 
+    def find_element(self, by, element, all_element=False):
+        if all_element:
+            return self.browser.find_elements(by, element)
+
+        return self.browser.find_element(by, element)
+
     def go_to_url(self, reverse_url=None):
         self.browser.get(
             self.live_server_url + (
                 reverse(reverse_url)
-                if reverse_url else '')
+                if reverse_url else ''
+            )
         )
 
-    def logout_user(self):
-        self.client.logout()
-        self.browser.delete_all_cookies()
-        self.browser.refresh()
+    def click_when_visible(
+            self, by, element, all_element=False, wait_for_element=False
+    ):
+
+        if wait_for_element:
+            return self.wait_for_element(by, element, all_element).click()
+
+        return self.find_element(by, element, all_element).click()
+
+    def get_text(self, by, element, all_element):
+        self.wait_for_element(by, element, all_element).click()
+
+        self.find_element(by, element, all_element).click()
+
+    def fill_field(self): ...
+
+    def is_element_present(self): ...
+
+    def create_valid_user(self): ...
+
+    def create_invalid_user(self): ...
+
+    def fill_credentials(self): ...
 
     @staticmethod
     def sleep(time=5):
         sleep(time)
+
+
+# fill_credentials(username, password) (pode interagir com SeleniumHelpers)
