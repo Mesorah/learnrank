@@ -100,9 +100,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         # the form and notice errors on your screen
         self.send_input_keys('abcd', 'abcd1234')
 
-        error_message = self.wait_for_element(
-            By.CLASS_NAME, 'errorlist'
-        ).text
+        error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
         self.assertEqual(error_message, (
             'Please enter a correct username and password. '
@@ -114,9 +112,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         # Decided to fix the gaps that caused errors and resend it again.
         self.send_input_keys('testing', 'testing12!@1dsFG')
 
-        message_success = self.wait_for_element(
-            By.CLASS_NAME, 'alert-success'
-        ).text
+        message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 
         self.assertEqual(message_success, const.ACCOUNT_LOGGED_SUCCESS)
 
@@ -124,9 +120,9 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.wait_for_element(By.CLASS_NAME, 'test')
         self.assertEqual(self.browser.title, 'Document')
 
-        username = self.find_element(
-            By.CLASS_NAME, 'username-profile'
-        ).text
+        username = self.get_text(
+            By.CLASS_NAME, 'username-profile', wait_for_element=False
+        )
 
         self.assertEqual(username, 'testing')
 
@@ -142,9 +138,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait_for_element(
-            By.CLASS_NAME, 'alert-error'
-        ).text
+        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
         self.assertEqual(
             error_message, const.CANNOT_ACCESS_LOGGED_ERROR
@@ -181,21 +175,19 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:login')
 
         # And he found the form in portuguese
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
+        username = self.get_text(
+            By.XPATH, '//label[@for="id_username"]', wait_for_element=False
+        )
 
-        username = form.find_element(
-            By.XPATH, '//label[@for="id_username"]'
-        ).text
-
-        username_input = form.find_element(By.ID, 'id_username')
+        username_input = self.find_element(By.ID, 'id_username')
 
         username_placeholder = username_input.get_attribute('placeholder')
 
-        password = form.find_element(
-            By.XPATH, '//label[@for="id_password"]'
-        ).text
+        password = self.get_text(
+            By.XPATH, '//label[@for="id_password"]', wait_for_element=False
+        )
 
-        password_input = form.find_element(By.ID, 'id_password')
+        password_input = self.find_element(By.ID, 'id_password')
 
         password_placeholder = password_input.get_attribute('placeholder')
 

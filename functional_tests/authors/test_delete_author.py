@@ -74,9 +74,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         confirm_field.send_keys('false')
         form.submit()
 
-        error_message = self.wait_for_element(
-            By.CLASS_NAME, 'errorlist'
-        ).text
+        error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
         self.assertEqual(error_message, const.DELETE_ACCOUNT_ERROR)
 
@@ -88,9 +86,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
         confirm_field.send_keys('DELETE')
         form.submit()
 
-        message_success = self.wait_for_element(
-            By.CLASS_NAME, 'alert-success'
-        ).text
+        message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 
         self.assertEqual(
             message_success, const.ACCOUNT_DELETED_SUCCESS
@@ -108,9 +104,7 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         # He noticed that he can no longer enter there and
         # received an error notifying him.
-        error_message = self.wait_for_element(
-            By.CLASS_NAME, 'alert-error'
-        ).text
+        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
         self.assertEqual(
             error_message, const.CANNOT_ACCESS_NOT_LOGGED_ERROR
@@ -152,13 +146,12 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:delete')
 
         # And he found the form in portuguese
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
+        confirm = self.get_text(
+            By.XPATH, '//label[@for="id_confirm"]',
+            wait_for_element=False
+        )
 
-        confirm = form.find_element(
-            By.XPATH, '//label[@for="id_confirm"]'
-        ).text
-
-        confirm_input = form.find_element(By.ID, 'id_confirm')
+        confirm_input = self.find_element(By.ID, 'id_confirm')
 
         confirm_placeholder = confirm_input.get_attribute('placeholder')
 

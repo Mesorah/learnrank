@@ -84,9 +84,7 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        error_message = self.wait_for_element(
-            By.CLASS_NAME, 'errorlist'
-        ).text
+        error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
         self.assertEqual(
             error_message, "The two password fields didn’t match."
@@ -130,9 +128,7 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         form.submit()
 
-        message_success = self.wait_for_element(
-            By.CLASS_NAME, 'alert-success'
-        ).text
+        message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 
         self.assertEqual(message_success, 'Password changed successfully!')
 
@@ -180,18 +176,18 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.browser.get(self.live_server_url + self.url)
 
         # And he found the form in portuguese
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
+        new_password1 = self.get_text(
+            By.XPATH, '//label[@for="id_new_password1"]',
+            wait_for_element=False
+        )
 
-        new_password1 = form.find_element(
-            By.XPATH, '//label[@for="id_new_password1"]'
-        ).text
+        new_password2 = self.get_text(
+            By.XPATH, '//label[@for="id_new_password2"]',
+            wait_for_element=False
+        )
 
-        new_password2 = form.find_element(
-            By.XPATH, '//label[@for="id_new_password2"]'
-        ).text
-
-        password1_input = form.find_element(By.ID, 'id_new_password1')
-        password2_input = form.find_element(By.ID, 'id_new_password2')
+        password1_input = self.find_element(By.ID, 'id_new_password1')
+        password2_input = self.find_element(By.ID, 'id_new_password2')
 
         password1_placeholder = password1_input.get_attribute('placeholder')
         password2_placeholder = password2_input.get_attribute('placeholder')

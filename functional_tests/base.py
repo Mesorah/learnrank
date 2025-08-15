@@ -82,10 +82,11 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
         return self.find_element(by, element, all_element).click()
 
-    def get_text(self, by, element, all_element):
-        self.wait_for_element(by, element, all_element).click()
+    def get_text(self, by, element, all_element=False, wait_for_element=True):
+        if wait_for_element:
+            return self.wait_for_element(by, element, all_element).text
 
-        self.find_element(by, element, all_element).click()
+        return self.find_element(by, element, all_element).text
 
     def fill_field(self): ...
 

@@ -38,7 +38,7 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.go_to_url('authors:password_reset_done')
 
         # He notices the Submit button color
-        text = self.find_element(
+        text = self.browser.find_element(
             By.TAG_NAME, 'p'
         )
         self.assertEqual(
