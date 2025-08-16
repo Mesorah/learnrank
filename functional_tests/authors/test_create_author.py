@@ -101,9 +101,9 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
         )
 
-        self.browser.maximize_window()
+        self.browser.set_window_size(1200, 800)
 
-        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        error_message = self.get_text(By.CLASS_NAME, 'alert')
 
         self.assertEqual(error_message, const.FORM_INVALID_ERROR)
 
@@ -140,7 +140,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.assertEqual(self.browser.title, 'Document')
 
-        username = self.find_element(
+        username = self.get_text(
             By.CLASS_NAME, 'username-profile'
         )
 
