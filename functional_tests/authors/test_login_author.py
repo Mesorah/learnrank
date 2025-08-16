@@ -15,16 +15,6 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.create_valid_user()
 
-    def get_all_placeholders(self, inputs):
-        inputs_information = []
-
-        for input in inputs:
-            placeholder = input.get_attribute('placeholder')
-            name = input.get_attribute('name')
-            inputs_information.append((name, placeholder))
-
-        return inputs_information
-
     def validate_placeholders(self, inputs_information):
         correct_inputs = {
             'username': const.SIGNUP_USERNAME_PLACEHOLDER,
@@ -46,14 +36,10 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         # He sees the Login button and presses it.
         self.click_when_visible(By.CLASS_NAME, 'login-button')
 
-        # See the login page
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
         self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
         # Check that all inputs have placeholders.
-        inputs = form.find_elements(By.CLASS_NAME, 'form-control')
-        inputs_information = self.get_all_placeholders(inputs)
+        inputs_information = self.get_all_placeholders()
         self.validate_placeholders(inputs_information)
 
     def test_login_invalid_fields_and_success_redirect(self):

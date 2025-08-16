@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse
 from django.utils.translation import activate
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -58,7 +59,7 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
     ):
 
         if wait_for_element:
-            return self.wait_for_element(by, element, all_element).click()
+            return self.wait_for_element(by, element).click()
 
         return self.find_element(by, element, all_element).click()
 
@@ -67,10 +68,6 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
             return self.wait_for_element(by, element, all_element).text
 
         return self.find_element(by, element, all_element).text
-
-    def fill_field(self): ...
-
-    def is_element_present(self): ...
 
     def login_user(self, username='testing', password='testing12!@1dsFG'):
         self.client.login(username=username, password=password)
@@ -109,13 +106,9 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
         return user
 
-    def create_invalid_user(self): ...
-
     def fill_credentials(
             self, form_class='author-form', submit=False, **kwargs
     ):
-
-        from selenium.webdriver.common.by import By
 
         for id_name, message in kwargs.items():
             item = self.wait_for_element(By.ID, id_name)
@@ -126,9 +119,19 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
             form = self.find_element(By.CLASS_NAME, form_class)
             form.submit()
 
-    def validate_placeholders(self): ...
+    def get_all_placeholders(self, form_class='form-control'):
+        inputs = self.find_element(
+            By.CLASS_NAME, form_class, all_element=True
+        )
 
-    def get_all_placeholders(self): ...
+        inputs_information = []
+
+        for input in inputs:
+            placeholder = input.get_attribute('placeholder')
+            name = input.get_attribute('name')
+            inputs_information.append((name, placeholder))
+
+        return inputs_information
 
     @staticmethod
     def sleep(time=5):

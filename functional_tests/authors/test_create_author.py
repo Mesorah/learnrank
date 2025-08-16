@@ -13,23 +13,6 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-    def get_all_placeholders(self, inputs):
-        inputs_information = []
-
-        for input in inputs:
-            placeholder = input.get_attribute('placeholder')
-            name = input.get_attribute('name')
-            inputs_information.append((name, placeholder))
-
-        return inputs_information
-
     def validate_placeholders(self, inputs_information):
         correct_inputs = {
             'username': const.SIGNUP_USERNAME_PLACEHOLDER,
@@ -57,14 +40,11 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         # and clicks the Sign up link.
         self.click_when_visible(By.CLASS_NAME, 'sign-up-link')
 
-        # See the registration screen
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
         self.assertEqual(self.browser.title, const.TITLE_SIGN_UP)
 
         # Check that all inputs have placeholders.
-        inputs = form.find_elements(By.CLASS_NAME, 'form-control')
-        inputs_information = self.get_all_placeholders(inputs)
+        inputs_information = self.get_all_placeholders()
+
         self.validate_placeholders(inputs_information)
 
     def test_registration_invalid_fields_and_success_redirect(self):
