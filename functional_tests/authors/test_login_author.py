@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
-from authors.forms import CustomSignupForm
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -14,25 +13,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.form_data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
-        }
-
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
-
-        self.form_data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
-        }
+        self.create_valid_user()
 
     def get_all_placeholders(self, inputs):
         inputs_information = []
@@ -83,6 +64,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the login page
         form = self.wait_for_element(By.CLASS_NAME, 'author-form')
+
         self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
         # Check that all inputs have placeholders.
@@ -127,11 +109,10 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(username, 'testing')
 
     def test_logged_user_cannot_access_login_page(self):
-        # User enters the home screen
-        self.go_to_url('authors:login')
+        self.go_to_url()
 
         # He login himself
-        self.send_input_keys('testing', 'testing12!@1dsFG',)
+        self.login_user()
 
         # He tries to go back to the login page.
         self.go_to_url('authors:login')

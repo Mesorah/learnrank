@@ -10,12 +10,11 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_logged_in_user_logout_flow(self):
-        # User accessed the site
-        self.go_to_url('authors:signup')
+        self.go_to_url()
 
+    def test_logged_in_user_logout_flow(self):
         # User logged into the site
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
         # He tried to access the signup page.
         self.go_to_url('authors:signup')
@@ -50,12 +49,11 @@ class TestLogoutAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_user_can_see_portuguese_translation(self):
-        # User accessed the site
         self.go_to_url()
 
+    def test_user_can_see_portuguese_translation(self):
         # User logged into the site
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
         # And he found the sucess message in portuguese
         self.click_when_visible(By.CLASS_NAME, 'author-logout-button')

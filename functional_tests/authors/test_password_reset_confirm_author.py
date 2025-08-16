@@ -20,7 +20,7 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.user = User.objects.create(username='test')
+        self.user = self.create_valid_user()
 
         self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
         self.token = default_token_generator.make_token(self.user)
@@ -31,7 +31,6 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the password reset confirm screen
-
         self.browser.get(self.live_server_url + self.url)
 
         # See the registration screen
@@ -69,8 +68,6 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
     def test_registration_invalid_fields_and_success_redirect(self):
         # User enters the password reset confirm screen
         self.browser.get(self.live_server_url + self.url)
-
-        self.browser.maximize_window()
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
@@ -162,7 +159,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.user = User.objects.create(username='test')
+        self.user = self.create_valid_user()
 
         self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
         self.token = default_token_generator.make_token(self.user)

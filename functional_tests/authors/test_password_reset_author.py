@@ -13,12 +13,12 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_user_can_see_all_the_placeholders(self):
-        # User enters the home screen
         self.go_to_url()
 
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
+    def test_user_can_see_all_the_placeholders(self):
+        # User go to the password reset page
         self.go_to_url('authors:password_reset')
 
         # See the password reset page
@@ -39,11 +39,6 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
             self.fail((placeholder, correct_input[name]))
 
     def test_user_can_see_the_page_styling_and_layout(self):
-        # User enters the home screen
-        self.go_to_url()
-
-        self.login_user()
-
         # User enters the password reset page
         self.go_to_url('authors:password_reset')
 
@@ -69,11 +64,11 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_user_can_see_portuguese_translation(self):
-        # So he logged into his account.
         self.go_to_url()
-        self.login_user()
 
+        self.create_valid_user(auto_login=True)
+
+    def test_user_can_see_portuguese_translation(self):
         # And decided to change his password
         self.go_to_url('authors:password_reset')
 

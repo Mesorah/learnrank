@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
-from authors.forms import CustomSignupForm
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -14,30 +13,10 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-        self.form_data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
-        }
-
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
-
-        self.form_data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
-        }
-
         # User login in your account
         self.go_to_url()
 
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the delete screen
@@ -139,7 +118,7 @@ class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         # User login in your account
         self.go_to_url()
 
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the delete screen

@@ -29,26 +29,6 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
     def delay(self, time=5):
         return WebDriverWait(self.browser, time)
 
-    def login_user(self):
-        user = User.objects.create(username='test')
-        self.client.force_login(user=user)
-
-        # Used to login user
-        cookie = self.client.cookies['sessionid']
-        self.browser.add_cookie({
-            'name': 'sessionid',
-            'value': cookie.value,
-            'secure': False,
-            'path': '/'
-        })
-
-        self.browser.refresh()
-
-    def logout_user(self):
-        self.client.logout()
-        self.browser.delete_all_cookies()
-        self.browser.refresh()
-
     def wait_for_element(self, by, element, all_element=False):
         if all_element:
             return self.wait.until(EC.visibility_of_all_elements_located((
@@ -92,7 +72,42 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
     def is_element_present(self): ...
 
-    def create_valid_user(self): ...
+    def login_user(self, username='testing', password='testing12!@1dsFG'):
+        self.client.login(username=username, password=password)
+
+        cookie = self.client.cookies['sessionid']
+        self.browser.add_cookie({
+            'name': 'sessionid',
+            'value': cookie.value,
+            'secure': False,
+            'path': '/'
+        })
+
+        self.browser.refresh()
+
+    def logout_user(self):
+        self.client.logout()
+        self.browser.delete_all_cookies()
+        self.browser.refresh()
+
+    def create_valid_user(
+            self,
+            username='testing',
+            email='testing@example.com',
+            password='testing12!@1dsFG',
+            auto_login=False
+    ):
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        if auto_login:
+            self.login_user()
+
+        return user
 
     def create_invalid_user(self): ...
 
