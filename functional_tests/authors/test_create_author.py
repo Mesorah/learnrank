@@ -46,28 +46,6 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             else:
                 self.fail((placeholder, input))
 
-    def send_input_keys(self, username, email, password1, password2):
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        username_field = form.find_element(By.ID, 'id_username')
-        email_field = form.find_element(By.ID, 'id_email')
-        password1_field = form.find_element(By.ID, 'id_password1')
-        password2_field = form.find_element(By.ID, 'id_password2')
-
-        username_field.clear()
-        email_field.clear()
-        password1_field.clear()
-        password2_field.clear()
-
-        username_field.send_keys(username)
-        email_field.send_keys(email)
-        password1_field.send_keys(password1)
-        password2_field.send_keys(password2)
-
-        form.submit()
-
-        return form
-
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
         self.go_to_url()
@@ -97,8 +75,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        self.send_input_keys(
-            'abcd', 'testing@example.com', 'abcd1234', 'defg5678'
+        self.fill_credentials(
+            id_username='abcd', id_email='testing@example.com',
+            id_password1='abcd1234', id_password2='defg5678',
+            submit=True,
         )
 
         self.browser.set_window_size(1200, 800)
@@ -126,9 +106,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # Decided to fix the gaps that caused errors and resend it again.
-        self.send_input_keys(
-            'testing', 'testing@example.com',
-            'testing12!@1dsFG', 'testing12!@1dsFG'
+        self.fill_credentials(
+            id_username='testing', id_email='testing@example.com',
+            id_password1='testing12!@1dsFG', id_password2='testing12!@1dsFG',
+            submit=True,
         )
 
         message_success = self.get_text(By.CLASS_NAME, 'alert-success')
@@ -150,10 +131,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         # User enters the home screen
         self.go_to_url('authors:signup')
 
-        # He registers himself
-        self.send_input_keys(
-            'testing', 'testing@example.com',
-            'testing12!@1dsFG', 'testing12!@1dsFG'
+        self.fill_credentials(
+            id_username='testing', id_email='testing@example.com',
+            id_password1='testing12!@1dsFG', id_password2='testing12!@1dsFG',
+            submit=True,
         )
 
         # He tries to go back to the registration page.

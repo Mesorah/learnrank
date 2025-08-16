@@ -111,11 +111,25 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
     def create_invalid_user(self): ...
 
-    def fill_credentials(self): ...
+    def fill_credentials(
+            self, form_class='author-form', submit=False, **kwargs
+    ):
+
+        from selenium.webdriver.common.by import By
+
+        for id_name, message in kwargs.items():
+            item = self.wait_for_element(By.ID, id_name)
+            item.clear()
+            item.send_keys(message)
+
+        if submit:
+            form = self.find_element(By.CLASS_NAME, form_class)
+            form.submit()
+
+    def validate_placeholders(self): ...
+
+    def get_all_placeholders(self): ...
 
     @staticmethod
     def sleep(time=5):
         sleep(time)
-
-
-# fill_credentials(username, password) (pode interagir com SeleniumHelpers)

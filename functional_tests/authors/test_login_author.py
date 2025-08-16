@@ -39,22 +39,6 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
             else:
                 self.fail((placeholder, input))
 
-    def send_input_keys(self, username, password):
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        username_field = form.find_element(By.ID, 'id_username')
-        password_field = form.find_element(By.ID, 'id_password')
-
-        username_field.clear()
-        password_field.clear()
-
-        username_field.send_keys(username)
-        password_field.send_keys(password)
-
-        form.submit()
-
-        return form
-
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen
         self.go_to_url()
@@ -80,7 +64,9 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        self.send_input_keys('abcd', 'abcd1234')
+        self.fill_credentials(
+            id_username='abcd', id_password='abcd1234', submit=True
+        )
 
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
@@ -92,7 +78,9 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
         self.wait_for_element(By.CLASS_NAME, 'author-form')
 
         # Decided to fix the gaps that caused errors and resend it again.
-        self.send_input_keys('testing', 'testing12!@1dsFG')
+        self.fill_credentials(
+            id_username='testing', id_password='testing12!@1dsFG', submit=True
+        )
 
         message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 

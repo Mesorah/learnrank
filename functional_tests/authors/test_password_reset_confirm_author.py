@@ -71,15 +71,9 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        new_password1 = form.find_element(By.ID, 'id_new_password1')
-        new_password2 = form.find_element(By.ID, 'id_new_password2')
-
-        new_password1.send_keys('abcd')
-        new_password2.send_keys('efgh')
-
-        form.submit()
+        self.fill_credentials(
+            id_new_password1='abcd', id_new_password2='efgh', submit=True
+        )
 
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
@@ -87,15 +81,9 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
             error_message, "The two password fields didn’t match."
         )
 
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        new_password1 = form.find_element(By.ID, 'id_new_password1')
-        new_password2 = form.find_element(By.ID, 'id_new_password2')
-
-        new_password1.send_keys('abcd')
-        new_password2.send_keys('abcd')
-
-        form.submit()
+        self.fill_credentials(
+            id_new_password1='abcd', id_new_password2='abcd', submit=True
+        )
 
         errors = self.wait_for_element(
             By.CLASS_NAME, 'errorlist', all_element=True
@@ -115,15 +103,11 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # Decided to fix the gaps that caused errors and resend it again.
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        new_password1 = form.find_element(By.ID, 'id_new_password1')
-        new_password2 = form.find_element(By.ID, 'id_new_password2')
-
-        new_password1.send_keys('testing12!@1dsFG')
-        new_password2.send_keys('testing12!@1dsFG')
-
-        form.submit()
+        self.fill_credentials(
+            id_new_password1='testing12!@1dsFG',
+            id_new_password2='testing12!@1dsFG',
+            submit=True
+        )
 
         message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 

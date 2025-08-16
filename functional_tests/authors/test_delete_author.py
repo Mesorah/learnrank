@@ -47,23 +47,14 @@ class TestDeleteAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
-        confirm_field = form.find_element(By.ID, 'id_confirm')
-        confirm_field.send_keys('false')
-        form.submit()
+        self.fill_credentials(id_confirm='false', submit=True)
 
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
         self.assertEqual(error_message, const.DELETE_ACCOUNT_ERROR)
 
-        form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-
         # Decided to fix the gaps that caused errors and resend it again.
-        confirm_field = form.find_element(By.ID, 'id_confirm')
-        confirm_field.clear()
-        confirm_field.send_keys('DELETE')
-        form.submit()
+        self.fill_credentials(id_confirm='DELETE', submit=True)
 
         message_success = self.get_text(By.CLASS_NAME, 'alert-success')
 
