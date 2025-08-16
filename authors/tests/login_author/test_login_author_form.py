@@ -3,22 +3,16 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from authors.forms import CustomAuthenticationForm, CustomSignupForm
+from authors.forms import CustomAuthenticationForm
+
+from ..helpers import create_user
 
 User = get_user_model()
 
 
 class TestLoginAuthorForm(TestCase):
     def setUp(self):
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
+        create_user(client=self.client)
 
         self.form_data = {
             'username': 'testing',

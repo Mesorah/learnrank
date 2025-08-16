@@ -6,14 +6,14 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
+from ..helpers import create_user
+
 User = get_user_model()
 
 
 class TestPasswordResetConfirmAuthorForm(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='user', password='oldpassword'
-        )
+        self.user = create_user(client=self.client, password='oldpassword')
 
         self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
         self.token = default_token_generator.make_token(self.user)

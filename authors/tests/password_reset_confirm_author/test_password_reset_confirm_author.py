@@ -8,6 +8,8 @@ from django.utils.translation import activate
 
 from authors.views import PasswordResetConfirmAuthorView
 
+from ..helpers import create_user
+
 User = get_user_model()
 
 
@@ -47,9 +49,7 @@ class TestPasswordResetConfirmAuthor(TestCase):
     def test_portuguese_translate_is_load_and_is_correct(self):
         activate('pt-br')
 
-        user = User.objects.create_user(
-            username='user', password='oldpassword'
-        )
+        user = create_user(client=self.client)
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)

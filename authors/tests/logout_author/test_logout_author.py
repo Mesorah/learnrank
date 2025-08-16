@@ -8,6 +8,8 @@ from django.utils.translation import activate
 import authors.constants as const
 from authors import views
 
+from ..helpers import create_user
+
 User = get_user_model()
 
 
@@ -48,8 +50,7 @@ class TestLogoutAuthor(TestCase):
         self.assertRedirects(response, expected_url)
 
     def test_logged_out_user_can_access_auth_pages(self):
-        user = User.objects.create(username='test')
-        self.client.force_login(user=user)
+        create_user(client=self.client, auto_login=True)
 
         # Logged
         response = self.client.get(reverse('authors:signup'))
@@ -64,8 +65,8 @@ class TestLogoutAuthor(TestCase):
     def test_portuguese_translate_message_is_correct(self):
         activate('pt-br')
 
-        user = User.objects.create(username='test')
-        self.client.force_login(user=user)
+        create_user(client=self.client, auto_login=True)
+
         response = self.client.post(reverse('authors:logout'), follow=True)
         messages = list(response.context['messages'])
 

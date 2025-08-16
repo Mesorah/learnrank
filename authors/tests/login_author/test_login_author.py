@@ -2,21 +2,14 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
-from authors.forms import CustomSignupForm
 from authors.views import LoginAuthorView
+
+from ..helpers import create_user
 
 
 class TestLoginAuthor(TestCase):
     def setUp(self):
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
+        create_user(client=self.client)
 
         self.data = {
             'username': 'testing',

@@ -3,25 +3,16 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
-from authors.forms import CustomSignupForm
 from authors.views import PasswordResetAuthorView
+
+from ..helpers import create_user
 
 
 class TestPasswordResetAuthor(TestCase):
     def setUp(self):
-        self.form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
+        create_user(client=self.client, auto_login=True)
 
-        form = CustomSignupForm(data=self.form_data)
-        form.save()
-
-        self.user = self.client.login(
-            username='testing', password='testing12!@1dsFG'
-        )
+        self.email_data = 'testing@example.com'
 
         return super().setUp()
 
@@ -45,7 +36,7 @@ class TestPasswordResetAuthor(TestCase):
 
     def test_email_was_sent_correctly(self):
         url = reverse('authors:password_reset')
-        self.client.post(url, {'email': self.form_data['email']})
+        self.client.post(url, {'email': self.email_data})
 
         email = mail.outbox
 
@@ -76,7 +67,7 @@ class TestPasswordResetAuthor(TestCase):
         self.assertContains(response, 'Enviar')
 
         url = reverse('authors:password_reset')
-        self.client.post(url, {'email': self.form_data['email']})
+        self.client.post(url, {'email': self.email_data})
 
         email = mail.outbox
 

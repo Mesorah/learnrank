@@ -4,25 +4,14 @@ from django.utils import html
 from django.utils.translation import activate
 
 import authors.constants as const
-from authors.forms import CustomSignupForm
 from authors.views import DeleteAuthorView
+
+from ..helpers import create_user
 
 
 class TestDeleteAuthor(TestCase):
     def setUp(self):
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
-
-        self.client.login(
-            username='testing', password='testing12!@1dsFG'
-        )
+        create_user(client=self.client, auto_login=True)
 
         return super().setUp()
 

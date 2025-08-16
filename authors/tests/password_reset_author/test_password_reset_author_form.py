@@ -3,26 +3,14 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from authors.forms import CustomSignupForm
+from ..helpers import create_user
 
 User = get_user_model()
 
 
 class TestPasswordResetAuthorForm(TestCase):
     def setUp(self):
-        self.form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=self.form_data)
-        form.save()
-
-        self.user = self.client.login(
-            username='testing', password='testing12!@1dsFG'
-        )
+        create_user(client=self.client, auto_login=True)
 
         return super().setUp()
 

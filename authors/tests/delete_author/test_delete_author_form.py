@@ -5,26 +5,15 @@ from django.urls import reverse
 from django.utils import html
 
 import authors.constants as consts
-from authors.forms import CustomSignupForm
+
+from ..helpers import create_user
 
 User = get_user_model()
 
 
 class TestDeleteAuthorForm(TestCase):
     def setUp(self):
-        form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
-        }
-
-        form = CustomSignupForm(data=form_data)
-        form.save()
-
-        self.client.login(
-            username='testing', password='testing12!@1dsFG'
-        )
+        create_user(client=self.client, auto_login=True)
 
         return super().setUp()
 
