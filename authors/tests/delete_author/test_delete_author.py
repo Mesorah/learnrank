@@ -33,7 +33,7 @@ class TestDeleteAuthor(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_user_not_authenticated_cant_get_200_in_delete(self):
+    def test_anonymous_user_cannot_get_page(self):
         self.client.logout()
 
         response = self.client.get(reverse('authors:delete'))

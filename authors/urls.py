@@ -11,6 +11,12 @@ urlpatterns = [
     path('delete/', views.DeleteAuthorView.as_view(), name='delete'),
 
     path(
+        'change-information/',
+        views.change_information,
+        name='change_information'
+    ),
+
+    path(
         'password-reset/',
         views.PasswordResetAuthorView.as_view(),
         name='password_reset'

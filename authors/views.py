@@ -119,24 +119,32 @@ class DeleteAuthorView(LoginErrorMixin, View):
             'title': const.TITLE_DELETE_ACCOUNT,
         })
 
-    def get(self, request, *args, **kwargs):
+    def get(self, *args, **kwargs):
         form = ConfirmForm()
         return self.render_form(form)
 
-    def post(self, request, *args, **kwargs):
-        form = ConfirmForm(request.POST)
+    def post(self, *args, **kwargs):
+        form = ConfirmForm(self.request.POST)
 
         if form.is_valid():
-            user = request.user
+            user = self.request.user
             user.delete()
 
             messages.success(
-                request, const.ACCOUNT_DELETED_SUCCESS
+                self.request, const.ACCOUNT_DELETED_SUCCESS
             )
 
             return redirect('home:index')
 
         return self.render_form(form)
+
+
+@login_required(login_url=reverse_lazy('authors:login'))
+def change_information(request):
+    return render(request, 'authors/pages/authors.html', context={
+        'form_action': 'authors:change_information',
+        'title': 'Change username'  # TODO change the title
+    })
 
 
 class PasswordResetAuthorView(PasswordResetView):
