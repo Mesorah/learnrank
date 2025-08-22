@@ -154,7 +154,7 @@ def change_information(request):
 
     return render(request, 'authors/pages/authors.html', context={
         'form_action': 'authors:change_information',
-        'title': 'Change username',  # TODO change the title
+        'title': const.TITLE_CHANGE_INFORMATION,
         'form': form
     })
 

@@ -181,3 +181,17 @@ msgstr "Senha alterada com sucesso!"
 
 msgid "You cannot access this while logged in."
 msgstr "Você não pode acessar esta página enquanto estiver logado."
+
+msgid "Your actual username"
+msgstr "Seu nome de usuário atual"
+
+msgid "New username"
+msgstr "Novo nome de usuário"
+
+msgid "Write your new username."
+msgstr "Escreva seu novo nome de usuário."
+
+msgid "Change information"
+msgstr "Mudar informações"
+
+
