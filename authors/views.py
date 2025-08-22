@@ -142,7 +142,13 @@ class DeleteAuthorView(LoginErrorMixin, View):
 
 @login_required(login_url=reverse_lazy('authors:login'))
 def change_information(request):
-    form = ChangeInformationForm()
+    form = ChangeInformationForm(request.user)
+
+    if request.method == 'POST':
+        form = ChangeInformationForm(request.POST)
+        if form.is_valid():
+
+            form.save()
 
     return render(request, 'authors/pages/authors.html', context={
         'form_action': 'authors:change_information',

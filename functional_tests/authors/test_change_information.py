@@ -41,6 +41,12 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # TODO make the extra URL stay on the same page
         self.assertEqual(self.browser.title, 'Change username')
 
+        # He saw that his name was in the current username.
+        current_username = self.find_element(By.ID, 'id_current_username')
+        current_username_value = current_username.get_attribute('value')
+
+        self.assertEqual(current_username_value, 'testing')
+
         # He changes the username
         self.fill_credentials(id_new_username='new_username', submit=True)
 

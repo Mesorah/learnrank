@@ -37,7 +37,7 @@ USERNAME_LABEL = _lazy('Username')
 EMAIL_LABEL = _lazy('Email')
 PASSWORD1_LABEL = _lazy('Password')
 PASSWORD2_LABEL = _lazy('Repeat password')
-ACTUAL_USERNAME_LABEL = _lazy('Your actual username')
+CURRENT_USERNAME_LABEL = _lazy('Your actual username')
 NEW_USERNAME_LABEL = _lazy('New username')
 
 

@@ -19,7 +19,7 @@ class TestChangeInformationForm(TestCase):
         )
 
         inputs_names = {
-            'actual_username': 'text',
+            'current_username': 'text',
             'new_username': 'text',
         }
 
@@ -32,4 +32,4 @@ class TestChangeInformationForm(TestCase):
         create_user(client=self.client, auto_login=True)
 
         form = ChangeInformationForm()
-        self.assertIn('readonly', form.fields['actual_username'].widget.attrs)
+        self.assertIn('readonly', form.fields['current_username'].widget.attrs)

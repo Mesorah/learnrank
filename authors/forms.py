@@ -16,8 +16,9 @@ User = get_user_model()
 
 
 class ChangeInformationForm(forms.Form):
-    actual_username = forms.CharField(
-        label=const.ACTUAL_USERNAME_LABEL,
+    current_username = forms.CharField(
+        label=const.CURRENT_USERNAME_LABEL,
+        required=False,
     )
 
     new_username = forms.CharField(
@@ -27,10 +28,14 @@ class ChangeInformationForm(forms.Form):
         )
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields.get('actual_username').widget.attrs['readonly'] = True
+        self.user = user
+
+        self.fields.get('current_username').initial = self.user.username
+
+        self.fields.get('current_username').widget.attrs['readonly'] = True
 
 
 class ConfirmForm(forms.Form):

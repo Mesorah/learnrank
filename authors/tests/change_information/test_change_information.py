@@ -31,6 +31,15 @@ class TestChangeInformation(TestCase):
 
         self.assertRedirects(response, expected_url)
 
+    def test_initual_current_username_is_correct(self):
+        create_user(client=self.client, auto_login=True)
+
+        response = self.client.get(reverse('authors:change_information'))
+
+        content = response.content.decode()
+
+        self.assertIn('value="testing"', content)
+
     def test_post_change_username_and_return_to_dashboard(self):
         create_user(client=self.client, auto_login=True)
 
