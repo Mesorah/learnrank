@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -60,3 +61,25 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
         self.assertEqual(error_message, 'FAIL')
+
+    def test_user_can_not_change_username(self):
+        # User enters the website
+        self.go_to_url()
+
+        # Log into your profile
+        # TODO leave it to log in through the dashboard
+
+        self.create_valid_user()
+
+        # He logged in
+        self.create_valid_user(username='testing2', auto_login=True)
+
+        # Click on change the username
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+
+        # He try change the username
+        self.fill_credentials(id_new_username='testing', submit=True)
+
+        # He saw a form error
+        error_message = self.get_text(By.CLASS_NAME, 'errorlist')
+        self.assertEqual(error_message, const.USERNAME_TAKEN_ALREADY_ERROR)

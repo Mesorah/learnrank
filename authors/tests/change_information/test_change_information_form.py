@@ -2,6 +2,7 @@ import lxml.html
 from django.test import TestCase
 from django.urls import reverse
 
+import authors.constants as const
 from authors.forms import ChangeInformationForm
 from authors.tests.helpers import create_user
 
@@ -29,16 +30,31 @@ class TestChangeInformationForm(TestCase):
             self.assertEqual(input.get('type'), expected_type)
 
     def test_form_reand_only_is_active(self):
-        create_user(client=self.client, auto_login=True)
+        user = create_user(client=self.client, auto_login=True)
 
-        form = ChangeInformationForm()
+        form = ChangeInformationForm(user)
         self.assertIn('readonly', form.fields['current_username'].widget.attrs)
 
-    # def test_a(self):
-    #     user = create_user(client=self.client, auto_login=True)
+    def test_form_is_correct(self):
+        user = create_user(client=self.client, auto_login=True)
 
-    #     form = ChangeInformationForm(user=user, data={
-    #         'new_username': 'new_username'
-    #     })
+        form = ChangeInformationForm(user=user, data={
+            'new_username': 'new_username'
+        })
 
-    #     self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid())
+
+    def test_form_username_already_taken(self):
+        create_user(client=self.client)
+        user = create_user(
+            client=self.client, username='testing2', auto_login=True
+        )
+
+        form = ChangeInformationForm(user=user, data={
+            'new_username': 'testing'
+        })
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors['new_username'][0], const.USERNAME_TAKEN_ALREADY_ERROR
+        )

@@ -20,6 +20,8 @@ class TestChangeInformation(TestCase):
         self.assertEqual(response.func, change_information)
 
     def test_view_load_correct_template(self):
+        create_user(client=self.client, auto_login=True)
+
         response = self.get_change_information()
 
         self.assertTemplateUsed(response, 'authors/pages/authors.html')

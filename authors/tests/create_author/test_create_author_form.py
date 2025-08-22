@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-import authors.constants as consts
+import authors.constants as const
 from authors.forms import CustomSignupForm
 
 User = get_user_model()
@@ -25,7 +25,7 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['username'][0], consts.USERNAME_MIN_LENGTH_ERROR
+            form.errors['username'][0], const.USERNAME_MIN_LENGTH_ERROR
         )
 
         self.form_data['username'] = 'abcd'
@@ -38,7 +38,7 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['username'][0], consts.USERNAME_TAKEN_ALREADY_ERROR
+            form.errors['username'][0], const.USERNAME_TAKEN_ALREADY_ERROR
         )
 
     def test_email_validator_is_correct(self):
@@ -50,7 +50,7 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['email'][0], consts.EMAIL_ALREADY_REGISTERED_ERROR
+            form.errors['email'][0], const.EMAIL_ALREADY_REGISTERED_ERROR
         )
 
     def test_password_validator_is_correct(self):
@@ -59,11 +59,11 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            consts.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
+            const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
             form.errors['password1']
         )
         self.assertIn(
-            consts.PASSWORD_MUST_CONTAIN_LETTERS_ERROR,
+            const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR,
             form.errors['password1']
         )
 
@@ -72,7 +72,7 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            consts.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR,
+            const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR,
             form.errors['password1']
         )
 
@@ -81,7 +81,7 @@ class TestCreateAuthorForm(TestCase):
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
-            consts.PASSWORDS_DO_NOT_MATCH_ERROR,
+            const.PASSWORDS_DO_NOT_MATCH_ERROR,
             form.errors['password2']
         )
 

@@ -46,6 +46,14 @@ class ChangeInformationForm(forms.Form):
 
         user.save()
 
+    def clean_new_username(self):
+        new_username = self.cleaned_data['new_username']
+
+        if User.objects.filter(username=new_username).exists():
+            raise ValidationError(const.USERNAME_TAKEN_ALREADY_ERROR)
+
+        return new_username
+
 
 class ConfirmForm(forms.Form):
     confirm = forms.CharField(
