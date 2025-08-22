@@ -33,3 +33,12 @@ class TestChangeInformationForm(TestCase):
 
         form = ChangeInformationForm()
         self.assertIn('readonly', form.fields['current_username'].widget.attrs)
+
+    # def test_a(self):
+    #     user = create_user(client=self.client, auto_login=True)
+
+    #     form = ChangeInformationForm(user=user, data={
+    #         'new_username': 'new_username'
+    #     })
+
+    #     self.assertTrue(form.is_valid())

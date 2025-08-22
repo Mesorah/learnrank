@@ -145,10 +145,12 @@ def change_information(request):
     form = ChangeInformationForm(request.user)
 
     if request.method == 'POST':
-        form = ChangeInformationForm(request.POST)
-        if form.is_valid():
+        form = ChangeInformationForm(request.user, request.POST)
 
+        if form.is_valid():
             form.save()
+
+            return redirect('home:index')
 
     return render(request, 'authors/pages/authors.html', context={
         'form_action': 'authors:change_information',

@@ -37,6 +37,15 @@ class ChangeInformationForm(forms.Form):
 
         self.fields.get('current_username').widget.attrs['readonly'] = True
 
+    def save(self):
+        user = User.objects.get(id=self.user.id)
+
+        user.username = self.cleaned_data.get(
+            'new_username', 'actual_username'
+        )
+
+        user.save()
+
 
 class ConfirmForm(forms.Form):
     confirm = forms.CharField(
@@ -99,6 +108,7 @@ class CustomSignupForm(UserCreationForm):
             'username', 'email',
             'password1', 'password2'
         ]
+
     username = forms.CharField(
         label=const.USERNAME_LABEL,
         min_length=4,

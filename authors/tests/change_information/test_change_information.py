@@ -1,10 +1,13 @@
 from urllib.parse import urlencode
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import resolve, reverse
 
 from authors.tests.helpers import create_user
 from authors.views import change_information
+
+User = get_user_model()
 
 
 class TestChangeInformation(TestCase):
@@ -43,6 +46,9 @@ class TestChangeInformation(TestCase):
     def test_post_change_username_and_return_to_dashboard(self):
         create_user(client=self.client, auto_login=True)
 
+        users = User.objects.get()
+        self.assertEqual(users.username, 'testing')
+
         response = self.client.post(
             reverse('authors:change_information'),
             data={
@@ -50,4 +56,8 @@ class TestChangeInformation(TestCase):
             }
         )
 
+        users = User.objects.get()
+        self.assertEqual(users.username, 'new_username')
+
+        # TODO switch to dashboard
         self.assertRedirects(response, reverse('home:index'))

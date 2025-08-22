@@ -6,6 +6,8 @@
     <title>Document</title>
 </head>
 <body>
+	<p class="username">{{ user.username }}</p>
+
 	{{ user.is_authenticated }}
 	{% if user.is_authenticated %}
 		<form action="{% url "authors:logout" %}" method="post">

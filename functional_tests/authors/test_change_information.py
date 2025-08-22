@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 
-import authors.constants as const
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
