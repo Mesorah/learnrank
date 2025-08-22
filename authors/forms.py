@@ -15,6 +15,24 @@ import authors.constants as const
 User = get_user_model()
 
 
+class ChangeInformationForm(forms.Form):
+    actual_username = forms.CharField(
+        label=const.ACTUAL_USERNAME_LABEL,
+    )
+
+    new_username = forms.CharField(
+        label=const.NEW_USERNAME_LABEL,
+        widget=forms.TextInput(
+            attrs={'placeholder': const.NEW_USERNAME_PLACEHOLDER}
+        )
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields.get('actual_username').widget.attrs['readonly'] = True
+
+
 class ConfirmForm(forms.Form):
     confirm = forms.CharField(
         label=const.DELETE_CONFIRMATION_LABEL,

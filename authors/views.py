@@ -16,6 +16,7 @@ from django.views.generic.base import View
 
 import authors.constants as const
 from authors.forms import (
+    ChangeInformationForm,
     ConfirmForm,
     CustomAuthenticationForm,
     CustomPasswordResetForm,
@@ -141,9 +142,12 @@ class DeleteAuthorView(LoginErrorMixin, View):
 
 @login_required(login_url=reverse_lazy('authors:login'))
 def change_information(request):
+    form = ChangeInformationForm()
+
     return render(request, 'authors/pages/authors.html', context={
         'form_action': 'authors:change_information',
-        'title': 'Change username'  # TODO change the title
+        'title': 'Change username',  # TODO change the title
+        'form': form
     })
 
 

@@ -2,8 +2,8 @@ from urllib.parse import urlencode
 
 from django.test import TestCase
 from django.urls import resolve, reverse
-from tests.helpers import create_user
 
+from authors.tests.helpers import create_user
 from authors.views import change_information
 
 
@@ -41,4 +41,4 @@ class TestChangeInformation(TestCase):
             }
         )
 
-        self.assertRedirects(response, reverse('authors:home'))
+        self.assertRedirects(response, reverse('home:index'))

@@ -5,6 +5,11 @@ from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
 class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
+    def setUp(self):
+        super().setUp()
+
+        self.wait = self.delay()
+
     def test_user_can_change_username(self):
         # User enters the website
         self.go_to_url()
@@ -27,8 +32,7 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(self.browser.title, 'Login')
 
         # He realizes that he needs to be logged in.
-        self.create_valid_user()
-        self.login_user()
+        self.create_valid_user(auto_login=True)
 
         # Click on change the username again
         self.click_when_visible(By.CLASS_NAME, 'change-information')
@@ -50,4 +54,4 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # Sees that now you need to wait 7 days
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
-        self.assertEqual(error_message, 'READ-ME')
+        self.assertEqual(error_message, 'FAIL')

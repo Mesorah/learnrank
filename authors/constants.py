@@ -28,6 +28,7 @@ SIGNUP_USERNAME_PLACEHOLDER = _lazy('Ex: Gabriel Rodrigues')
 SIGNUP_EMAIL_PLACEHOLDER = _lazy('Ex: gabrielrodrigues@example.com')
 SIGNUP_PASSWORD1_PLACEHOLDER = _lazy('Ex 23#$1fsgKDL!')
 SIGNUP_PASSWORD2_PLACEHOLDER = _lazy('Repeat your password')
+NEW_USERNAME_PLACEHOLDER = _lazy('Write your new username.')
 
 
 # Labels
@@ -36,6 +37,8 @@ USERNAME_LABEL = _lazy('Username')
 EMAIL_LABEL = _lazy('Email')
 PASSWORD1_LABEL = _lazy('Password')
 PASSWORD2_LABEL = _lazy('Repeat password')
+ACTUAL_USERNAME_LABEL = _lazy('Your actual username')
+NEW_USERNAME_LABEL = _lazy('New username')
 
 
 # SUCCESS MESSAGES
