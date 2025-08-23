@@ -51,7 +51,7 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # He changes the username
         self.fill_credentials(id_new_username='new_username', submit=True)
         success_message = self.get_text(By.CLASS_NAME, 'alert-success')
-        self.assertEqual(success_message, 'Your username has been successfully updated!')  # TODO
+        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
 
         # He saw your new username
         username = self.get_text(By.CLASS_NAME, 'username')
@@ -63,10 +63,7 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # Sees that now you need to wait 7 days
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
-        self.assertEqual(
-            error_message,
-            'You need to wait 7 days before you can change your username again.'
-        )
+        self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
 
         # He decides to wait 7 days to change his name again.
         time_now = timezone.now()
@@ -82,7 +79,7 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         self.fill_credentials(id_new_username='new_username2', submit=True)
 
         success_message = self.get_text(By.CLASS_NAME, 'alert-success')
-        self.assertEqual(success_message, 'Your username has been successfully updated!')  # TODO
+        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
 
         username = self.get_text(By.CLASS_NAME, 'username')
         self.assertEqual(username, 'new_username2')
@@ -186,9 +183,14 @@ class TestChangeInformationPtBRFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(error_message, 'Este nome de usuário já está em uso.')
 
         self.go_to_url('authors:change_information')
+        self.fill_credentials(id_new_username='testing3', submit=True)
+
+        self.go_to_url('authors:change_information')
         success_message = self.get_text(By.CLASS_NAME, 'alert-error')
         self.assertEqual(
-            success_message, 'Você precisa esperar 7 dias antes de poder alterar seu nome de usuário novamente.'
+            success_message,
+            'Você precisa esperar 7 dias antes de poder '
+            'alterar seu nome de usuário novamente.'
         )
 
     def test_user_can_see_portuguese_translation_sucess(self):

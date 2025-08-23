@@ -164,10 +164,7 @@ def change_information(request):
             if form.is_valid():
                 form.save()
 
-                messages.success(
-                    request,
-                    'Your username has been successfully updated!'
-                )
+                messages.success(request, const.USERNAMED_CHANGED_SUCCESS)
 
                 return redirect('home:index')
 
@@ -177,10 +174,7 @@ def change_information(request):
             'form': form
         })
 
-    messages.error(
-        request,
-        'You need to wait 7 days before you can change your username again.'
-    )
+    messages.error(request, const.CANNOT_CHANGE_USERNAME_ERROR)
 
     return redirect('home:index')
 

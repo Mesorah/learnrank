@@ -15,6 +15,7 @@ PASSWORD_MUST_CONTAIN_LETTERS_ERROR = _lazy('Password must contain letters.')
 CANNOT_ACCESS_LOGGED_ERROR = _lazy('You cannot access this while logged in.')
 FORM_INVALID_ERROR = _lazy('Form invalid.')
 CANNOT_ACCESS_NOT_LOGGED_ERROR = _lazy('You cannot access this while not logged in.')
+CANNOT_CHANGE_USERNAME_ERROR = _lazy('You need to wait 7 days before you can change your username again.')
 
 
 # Placeholders
@@ -47,6 +48,7 @@ ACCOUNT_LOGGED_SUCCESS = _lazy('Account logged!')
 ACCOUNT_DELETED_SUCCESS = _lazy('Your account has been successfully deleted!')
 PASSWORD_CHANGED_SUCCESS = _lazy('Password changed successfully!')
 ACCOUNT_LOGOUT_SUCCESS = _lazy('Success, you have logged out!')
+USERNAMED_CHANGED_SUCCESS = _lazy('Your username has been successfully updated!')
 
 
 # TITLES

@@ -6,6 +6,7 @@ from django.urls import resolve, reverse
 from django.utils import timezone
 from django.utils.translation import activate
 
+import authors.constants as const
 from authors.tests.helpers import create_user
 from authors.views import change_information
 
@@ -80,10 +81,7 @@ class TestChangeInformation(TestCase):
             follow=True
         )
 
-        self.assertContains(
-            response,
-            'You need to wait 7 days before you can change your username again.'
-        )
+        self.assertContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
         self.assertRedirects(response, reverse('home:index'))
 
     def test_can_change_username_after_7_days(self):
@@ -107,13 +105,8 @@ class TestChangeInformation(TestCase):
             follow=True
         )
 
-        self.assertNotContains(
-            response,
-            'You need to wait 7 days before you can change your username again.'
-        )
-        self.assertContains(
-            response, 'Your username has been successfully updated!'
-        )
+        self.assertNotContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
+        self.assertContains(response, const.USERNAMED_CHANGED_SUCCESS)
 
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')
