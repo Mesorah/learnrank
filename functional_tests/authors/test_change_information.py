@@ -22,17 +22,17 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         self.click_when_visible(By.CLASS_NAME, 'change-information')
 
         # Receives the error message
-        # error_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
-        # self.assertEqual(error_message, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
-        # TODO When transforming into a class-based view,
-        # include the login error
+        self.assertEqual(error_message, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
 
         # He realized that he was redirected to the login
         # page and needs to be logged in.
         self.assertEqual(self.browser.title, 'Login')
 
         # He realizes that he needs to be logged in.
+        self.go_to_url()
+
         user = self.create_valid_user(auto_login=True)
 
         # Click on change the username again

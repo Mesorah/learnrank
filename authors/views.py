@@ -9,7 +9,7 @@ from django.contrib.auth.views import (
 )
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone, translation
+from django.utils import translation
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 from django.views.generic.base import View
@@ -43,7 +43,7 @@ class LoginErrorMixin:
 
         messages.error(request, self.message)
 
-        return redirect(reverse('home:index'))
+        return redirect(reverse('authors:login'))
 
 
 class CreateAuthorView(LoginErrorMixin, CreateView):
@@ -141,37 +141,56 @@ class DeleteAuthorView(LoginErrorMixin, View):
         return self.render_form(form)
 
 
-@login_required(login_url=reverse_lazy('authors:login'))
-def change_information(request):
-    change_username_data = request.user.change_username_data
+class ChangeInformationView(View):
+    """
 
-    if (
-            change_username_data is None
-            or
-            is_wait_time_done() > change_username_data
-    ):
+    The LoginErrorMixin cannot be used here due to the POST request.
 
-        form = ChangeInformationForm(request.user)
+    """
 
-        if request.method == 'POST':
-            form = ChangeInformationForm(request.user, request.POST)
-
-            if form.is_valid():
-                form.save()
-
-                messages.success(request, const.USERNAMED_CHANGED_SUCCESS)
-
-                return redirect('home:index')
-
-        return render(request, 'authors/pages/authors.html', context={
+    def render_form(self, form):
+        return render(self.request, 'authors/pages/authors.html', context={
             'form_action': 'authors:change_information',
             'title': const.TITLE_CHANGE_INFORMATION,
             'form': form
         })
 
-    messages.error(request, const.CANNOT_CHANGE_USERNAME_ERROR)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
 
-    return redirect('home:index')
+            return redirect('authors:login')
+
+        change_username_data = self.request.user.change_username_data
+
+        if (
+            change_username_data is not None
+            and
+            is_wait_time_done() < change_username_data
+        ):
+
+            messages.error(self.request, const.CANNOT_CHANGE_USERNAME_ERROR)
+
+            return redirect('home:index')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        form = ChangeInformationForm(self.request.user)
+
+        return self.render_form(form)
+
+    def post(self, *args, **kwargs):
+        form = ChangeInformationForm(self.request.user, self.request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(self.request, const.USERNAMED_CHANGED_SUCCESS)
+
+            return redirect('home:index')
+
+        return self.render_form(form)
 
 
 class PasswordResetAuthorView(PasswordResetView):

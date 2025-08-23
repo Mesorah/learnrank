@@ -1,5 +1,3 @@
-from urllib.parse import urlencode
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
@@ -8,7 +6,7 @@ from django.utils.translation import activate
 import authors.constants as const
 from authors.tests.helpers import create_user
 from authors.utils import is_wait_time_done
-from authors.views import change_information
+from authors.views import ChangeInformationView
 
 User = get_user_model()
 
@@ -26,7 +24,7 @@ class TestChangeInformation(TestCase):
         self.client.logout()
         response = resolve(reverse('authors:change_information'))
 
-        self.assertEqual(response.func, change_information)
+        self.assertEqual(response.func.view_class, ChangeInformationView)
 
     def test_view_load_correct_template(self):
         response = self.get_change_information()
@@ -37,12 +35,7 @@ class TestChangeInformation(TestCase):
         self.client.logout()
         response = self.get_change_information()
 
-        expected_url = (
-            f'{reverse('authors:login')}'
-            f'?{urlencode({'next': reverse('authors:change_information')})}'
-        )
-
-        self.assertRedirects(response, expected_url)
+        self.assertRedirects(response, reverse('authors:login'))
 
     def test_initual_current_username_is_correct(self):
         response = self.client.get(reverse('authors:change_information'))
@@ -68,7 +61,7 @@ class TestChangeInformation(TestCase):
         # TODO switch to dashboard
         self.assertRedirects(response, reverse('home:index'))
 
-    def test_wait_time_after_change_username_was_set_correctly(self):
+    def test_wait_time_after_change_username_was_set_correctly_use_GET(self):
         self.client.post(
             reverse('authors:change_information'),
             data={
@@ -79,6 +72,24 @@ class TestChangeInformation(TestCase):
         response = self.client.get(
             reverse('authors:change_information'),
             follow=True
+        )
+
+        self.assertContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
+        self.assertRedirects(response, reverse('home:index'))
+
+    def test_wait_time_after_change_username_was_set_correctly_use_POST(self):
+        self.client.post(
+            reverse('authors:change_information'),
+            data={
+                'new_username': 'new_username'
+            }
+        )
+
+        response = self.client.post(
+            reverse('authors:change_information'),
+            data={
+                'new_username': 'new_username2'
+            }, follow=True
         )
 
         self.assertContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
