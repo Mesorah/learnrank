@@ -3,11 +3,11 @@ from django.test import TestCase
 from django.urls import reverse
 
 import authors.constants as const
-from authors.forms import ChangeInformationForm
+from authors.forms import ChangeUsernameForm
 from authors.tests.helpers import create_user
 
 
-class TestChangeInformationForm(TestCase):
+class TestChangeUsernameForm(TestCase):
     # TODO create a helper to create_user
 
     def test_renders_input_form(self):
@@ -34,13 +34,13 @@ class TestChangeInformationForm(TestCase):
     def test_form_reand_only_is_active(self):
         user = create_user(client=self.client, auto_login=True)
 
-        form = ChangeInformationForm(user)
+        form = ChangeUsernameForm(user)
         self.assertIn('readonly', form.fields['current_username'].widget.attrs)
 
     def test_form_is_correct(self):
         user = create_user(client=self.client, auto_login=True)
 
-        form = ChangeInformationForm(user=user, data={
+        form = ChangeUsernameForm(user=user, data={
             'new_username': 'new_username'
         })
 
@@ -52,7 +52,7 @@ class TestChangeInformationForm(TestCase):
             client=self.client, username='testing2', auto_login=True
         )
 
-        form = ChangeInformationForm(user=user, data={
+        form = ChangeUsernameForm(user=user, data={
             'new_username': 'testing'
         })
 

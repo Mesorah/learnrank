@@ -5,7 +5,7 @@ from authors.utils import is_wait_time_done
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
-class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
+class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
     def setUp(self):
         super().setUp()
 
@@ -124,7 +124,7 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         )
 
 
-class TestChangeInformationPtBRFT(BaseWebDriverForFunctionalTests):
+class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
     language = 'pt-BR,pt'
     locale = 'pt-br'
 

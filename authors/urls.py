@@ -12,7 +12,7 @@ urlpatterns = [
 
     path(
         'change-information/',
-        views.ChangeInformationView.as_view(),
+        views.ChangeUsernameView.as_view(),
         name='change_information'
     ),
 

@@ -16,7 +16,7 @@ from django.views.generic.base import View
 
 import authors.constants as const
 from authors.forms import (
-    ChangeInformationForm,
+    ChangeUsernameForm,
     ConfirmForm,
     CustomAuthenticationForm,
     CustomPasswordResetForm,
@@ -43,7 +43,7 @@ class LoginErrorMixin:
 
         messages.error(request, self.message)
 
-        return redirect(reverse('authors:login'))
+        return redirect(reverse('home:index'))
 
 
 class CreateAuthorView(LoginErrorMixin, CreateView):
@@ -141,7 +141,7 @@ class DeleteAuthorView(LoginErrorMixin, View):
         return self.render_form(form)
 
 
-class ChangeInformationView(View):
+class ChangeUsernameView(View):
     """
 
     The LoginErrorMixin cannot be used here due to the POST request.
@@ -176,12 +176,12 @@ class ChangeInformationView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
-        form = ChangeInformationForm(self.request.user)
+        form = ChangeUsernameForm(self.request.user)
 
         return self.render_form(form)
 
     def post(self, *args, **kwargs):
-        form = ChangeInformationForm(self.request.user, self.request.POST)
+        form = ChangeUsernameForm(self.request.user, self.request.POST)
 
         if form.is_valid():
             form.save()
@@ -191,6 +191,10 @@ class ChangeInformationView(View):
             return redirect('home:index')
 
         return self.render_form(form)
+
+
+class ChangeEmailView(View):
+    pass
 
 
 class PasswordResetAuthorView(PasswordResetView):

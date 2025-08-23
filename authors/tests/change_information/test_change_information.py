@@ -6,12 +6,12 @@ from django.utils.translation import activate
 import authors.constants as const
 from authors.tests.helpers import create_user
 from authors.utils import is_wait_time_done
-from authors.views import ChangeInformationView
+from authors.views import ChangeUsernameView
 
 User = get_user_model()
 
 
-class TestChangeInformation(TestCase):
+class TestChangeUsername(TestCase):
     def setUp(self):
         self.user = create_user(client=self.client, auto_login=True)
 
@@ -24,7 +24,7 @@ class TestChangeInformation(TestCase):
         self.client.logout()
         response = resolve(reverse('authors:change_information'))
 
-        self.assertEqual(response.func.view_class, ChangeInformationView)
+        self.assertEqual(response.func.view_class, ChangeUsernameView)
 
     def test_view_load_correct_template(self):
         response = self.get_change_information()

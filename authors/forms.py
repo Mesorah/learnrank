@@ -16,7 +16,7 @@ import authors.constants as const
 User = get_user_model()
 
 
-class ChangeInformationForm(forms.Form):
+class ChangeUsernameForm(forms.Form):
     current_username = forms.CharField(
         label=const.CURRENT_USERNAME_LABEL,
         required=False,
