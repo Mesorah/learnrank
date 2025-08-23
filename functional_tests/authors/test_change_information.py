@@ -1,7 +1,7 @@
-from django.utils import timezone
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+from authors.utils import is_wait_time_done
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -66,10 +66,8 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
 
         # He decides to wait 7 days to change his name again.
-        time_now = timezone.now()
-        time_delta = timezone.timedelta(days=7)
 
-        new_data = time_now - time_delta
+        new_data = is_wait_time_done()
 
         user.change_username_data = new_data
         user.save()

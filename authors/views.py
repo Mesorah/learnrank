@@ -23,6 +23,7 @@ from authors.forms import (
     CustomSetPasswordForm,
     CustomSignupForm,
 )
+from authors.utils import is_wait_time_done
 
 User = get_user_model()
 
@@ -144,18 +145,12 @@ class DeleteAuthorView(LoginErrorMixin, View):
 def change_information(request):
     change_username_data = request.user.change_username_data
 
-    if change_username_data is not None:
-        time_now = timezone.now()
-        time_delta = timezone.timedelta(days=7)
+    if (
+            change_username_data is None
+            or
+            is_wait_time_done() > change_username_data
+    ):
 
-        new_date = time_now - time_delta
-
-        print('change_username_data', change_username_data)
-        print('new_date', new_date)
-
-        print(new_date > change_username_data)
-
-    if change_username_data is None or new_date > change_username_data:
         form = ChangeInformationForm(request.user)
 
         if request.method == 'POST':

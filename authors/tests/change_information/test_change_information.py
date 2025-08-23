@@ -3,11 +3,11 @@ from urllib.parse import urlencode
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
-from django.utils import timezone
 from django.utils.translation import activate
 
 import authors.constants as const
 from authors.tests.helpers import create_user
+from authors.utils import is_wait_time_done
 from authors.views import change_information
 
 User = get_user_model()
@@ -92,10 +92,7 @@ class TestChangeInformation(TestCase):
             }
         )
 
-        time_now = timezone.now()
-        time_delta = timezone.timedelta(days=7)
-
-        new_data = time_now - time_delta
+        new_data = is_wait_time_done()
 
         self.user.change_username_data = new_data
         self.user.save()
