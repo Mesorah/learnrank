@@ -9,7 +9,7 @@ from django.contrib.auth.views import (
 )
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
-from django.utils import translation
+from django.utils import timezone, translation
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 from django.views.generic.base import View
@@ -142,21 +142,47 @@ class DeleteAuthorView(LoginErrorMixin, View):
 
 @login_required(login_url=reverse_lazy('authors:login'))
 def change_information(request):
-    form = ChangeInformationForm(request.user)
+    change_username_data = request.user.change_username_data
 
-    if request.method == 'POST':
-        form = ChangeInformationForm(request.user, request.POST)
+    if change_username_data is not None:
+        time_now = timezone.now()
+        time_delta = timezone.timedelta(days=7)
 
-        if form.is_valid():
-            form.save()
+        new_date = time_now - time_delta
 
-            return redirect('home:index')
+        print('change_username_data', change_username_data)
+        print('new_date', new_date)
 
-    return render(request, 'authors/pages/authors.html', context={
-        'form_action': 'authors:change_information',
-        'title': const.TITLE_CHANGE_INFORMATION,
-        'form': form
-    })
+        print(new_date > change_username_data)
+
+    if change_username_data is None or new_date > change_username_data:
+        form = ChangeInformationForm(request.user)
+
+        if request.method == 'POST':
+            form = ChangeInformationForm(request.user, request.POST)
+
+            if form.is_valid():
+                form.save()
+
+                messages.success(
+                    request,
+                    'Your username has been successfully updated!'
+                )
+
+                return redirect('home:index')
+
+        return render(request, 'authors/pages/authors.html', context={
+            'form_action': 'authors:change_information',
+            'title': const.TITLE_CHANGE_INFORMATION,
+            'form': form
+        })
+
+    messages.error(
+        request,
+        'You need to wait 7 days before you can change your username again.'
+    )
+
+    return redirect('home:index')
 
 
 class PasswordResetAuthorView(PasswordResetView):

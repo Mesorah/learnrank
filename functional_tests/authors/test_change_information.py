@@ -1,3 +1,4 @@
+from django.utils import timezone
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
@@ -32,14 +33,14 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(self.browser.title, 'Login')
 
         # He realizes that he needs to be logged in.
-        self.create_valid_user(auto_login=True)
+        user = self.create_valid_user(auto_login=True)
 
         # Click on change the username again
         self.click_when_visible(By.CLASS_NAME, 'change-information')
 
         # It is redirected to the opening page
         # TODO make the extra URL stay on the same page
-        self.assertEqual(self.browser.title, 'Change username')
+        self.assertEqual(self.browser.title, 'Change information')
 
         # He saw that his name was in the current username.
         current_username = self.find_element(By.ID, 'id_current_username')
@@ -49,6 +50,8 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
 
         # He changes the username
         self.fill_credentials(id_new_username='new_username', submit=True)
+        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
+        self.assertEqual(success_message, 'Your username has been successfully updated!')  # TODO
 
         # He saw your new username
         username = self.get_text(By.CLASS_NAME, 'username')
@@ -60,9 +63,31 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # Sees that now you need to wait 7 days
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
-        self.assertEqual(error_message, 'FAIL')
+        self.assertEqual(
+            error_message,
+            'You need to wait 7 days before you can change your username again.'
+        )
 
-    def test_user_can_not_change_username(self):
+        # He decides to wait 7 days to change his name again.
+        time_now = timezone.now()
+        time_delta = timezone.timedelta(days=7)
+
+        new_data = time_now - time_delta
+
+        user.change_username_data = new_data
+        user.save()
+
+        # Clicks to change your username
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+        self.fill_credentials(id_new_username='new_username2', submit=True)
+
+        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
+        self.assertEqual(success_message, 'Your username has been successfully updated!')  # TODO
+
+        username = self.get_text(By.CLASS_NAME, 'username')
+        self.assertEqual(username, 'new_username2')
+
+    def test_username_exists_can_not_change_username(self):
         # User enters the website
         self.go_to_url()
 
@@ -83,3 +108,96 @@ class TestChangeInformationFT(BaseWebDriverForFunctionalTests):
         # He saw a form error
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
         self.assertEqual(error_message, const.USERNAME_TAKEN_ALREADY_ERROR)
+
+    def test_user_can_see_the_page_styling_and_layout(self):
+        self.go_to_url()
+        self.create_valid_user(auto_login=True)
+
+        # User enters the home screen
+        self.go_to_url('authors:change_information')
+
+        # His browser window is set to a very specific size
+        self.browser.set_window_size(1024, 768)
+
+        # He notices the Submit button color
+        submit_button = self.find_element(
+            By.XPATH, '//button[text()="Submit"]'
+        )
+        self.assertEqual(
+            submit_button.value_of_css_property('background-color'),
+            'rgba(38, 198, 218, 1)'
+        )
+
+
+class TestChangeInformationPtBRFT(BaseWebDriverForFunctionalTests):
+    language = 'pt-BR,pt'
+    locale = 'pt-br'
+
+    def setUp(self):
+        super().setUp()
+
+        self.wait = self.delay()
+
+        self.go_to_url()
+        self.create_valid_user(auto_login=True)
+
+    def test_user_can_see_portuguese_translation(self):
+        # User enters the home screen
+        self.go_to_url('authors:change_information')
+
+        # And he found the form in portuguese
+        current_username_label = self.get_text(
+            By.XPATH, '//label[@for="id_current_username"]',
+            wait_for_element=False
+        )
+
+        new_username_label = self.get_text(
+            By.XPATH, '//label[@for="id_new_username"]',
+            wait_for_element=False
+        )
+
+        new_username_input = self.find_element(
+            By.XPATH, '//input[@id="id_new_username"]',
+        )
+
+        new_username_placeholder = new_username_input.get_attribute(
+            'placeholder'
+        )
+
+        self.assertEqual(current_username_label, 'Seu nome de usuário atual:')
+        self.assertEqual(new_username_label, 'Novo nome de usuário:')
+
+        self.assertEqual(
+            new_username_placeholder, const.NEW_USERNAME_PLACEHOLDER
+        )
+
+        self.assertEqual(self.browser.title, 'Mudar informações')
+
+    def test_user_can_see_portuguese_translation_error(self):
+        # create another user
+        self.create_valid_user(username='testing2')
+
+        # User enters the home screen
+        self.go_to_url('authors:change_information')
+
+        self.fill_credentials(id_new_username='testing2', submit=True)
+
+        error_message = self.get_text(By.CLASS_NAME, 'errorlist')
+        self.assertEqual(error_message, 'Este nome de usuário já está em uso.')
+
+        self.go_to_url('authors:change_information')
+        success_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        self.assertEqual(
+            success_message, 'Você precisa esperar 7 dias antes de poder alterar seu nome de usuário novamente.'
+        )
+
+    def test_user_can_see_portuguese_translation_sucess(self):
+        # User enters the home screen
+        self.go_to_url('authors:change_information')
+
+        self.fill_credentials(id_new_username='new_username', submit=True)
+
+        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
+        self.assertEqual(
+            success_message, 'Seu nome de usuário foi alterado com sucesso!'
+        )

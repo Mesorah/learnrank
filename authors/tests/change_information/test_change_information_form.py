@@ -8,6 +8,8 @@ from authors.tests.helpers import create_user
 
 
 class TestChangeInformationForm(TestCase):
+    # TODO create a helper to create_user
+
     def test_renders_input_form(self):
         create_user(client=self.client, auto_login=True)
 

@@ -9,6 +9,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 import authors.constants as const
 
@@ -43,6 +44,8 @@ class ChangeInformationForm(forms.Form):
         user.username = self.cleaned_data.get(
             'new_username', 'actual_username'
         )
+
+        user.change_username_data = timezone.now()
 
         user.save()
 
