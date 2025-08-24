@@ -11,7 +11,59 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
 
         self.wait = self.delay()
 
-    def test_user_can_change_username(self):
+    def test_user_can_change_username_success(self):
+        # User enters the website
+        self.go_to_url()
+
+        # Log into your profile
+        # TODO leave it to log in through the dashboard
+
+        # He realizes that he needs to be logged in.
+        self.go_to_url()
+
+        user = self.create_valid_user(auto_login=True)
+
+        # Click on change the username
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+
+        # It is redirected to the opening page
+        # TODO make the extra URL stay on the same page
+        self.assertEqual(self.browser.title, 'Change information')
+
+        # He saw that his name was in the current username.
+        current_username = self.find_element(By.ID, 'id_current_username')
+        current_username_value = current_username.get_attribute('value')
+
+        self.assertEqual(current_username_value, 'testing')
+
+        # He changes the username
+        self.fill_credentials(id_new_username='new_username', submit=True)
+        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
+        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
+
+        # He saw your new username
+        username = self.get_text(By.CLASS_NAME, 'username')
+        self.assertEqual(username, 'new_username')
+
+        # He decides to wait 7 days to change his name again
+        new_data = is_wait_time_done()
+
+        user.change_username_data = new_data
+        user.save()
+
+        # Clicks to change your username
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+        self.fill_credentials(id_new_username='new_username2', submit=True)
+
+        # He received the success message
+        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
+        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
+
+        # He saw that he changed his username again.
+        username = self.get_text(By.CLASS_NAME, 'username')
+        self.assertEqual(username, 'new_username2')
+
+    def test_user_can_not_change_username_error(self):
         # User enters the website
         self.go_to_url()
 
@@ -35,32 +87,14 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
 
         user = self.create_valid_user(auto_login=True)
 
-        # Click on change the username again
+        # Clicks to change your username
         self.click_when_visible(By.CLASS_NAME, 'change-information')
-
-        # It is redirected to the opening page
-        # TODO make the extra URL stay on the same page
-        self.assertEqual(self.browser.title, 'Change information')
-
-        # He saw that his name was in the current username.
-        current_username = self.find_element(By.ID, 'id_current_username')
-        current_username_value = current_username.get_attribute('value')
-
-        self.assertEqual(current_username_value, 'testing')
-
-        # He changes the username
-        self.fill_credentials(id_new_username='new_username', submit=True)
-        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
-        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
-
-        # He saw your new username
-        username = self.get_text(By.CLASS_NAME, 'username')
-        self.assertEqual(username, 'new_username')
+        self.fill_credentials(id_new_username='new_username2', submit=True)
 
         # Decide to try the username again
         self.click_when_visible(By.CLASS_NAME, 'change-information')
 
-        # Sees that now you need to wait 7 days
+        # Sees that you need to wait 7 days
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
         self.assertEqual(
@@ -83,22 +117,6 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(
             error_message, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 6}
         )
-
-        # He decides to wait 7 days to change his name again.
-        new_data = is_wait_time_done()
-
-        user.change_username_data = new_data
-        user.save()
-
-        # Clicks to change your username
-        self.click_when_visible(By.CLASS_NAME, 'change-information')
-        self.fill_credentials(id_new_username='new_username2', submit=True)
-
-        success_message = self.get_text(By.CLASS_NAME, 'alert-success')
-        self.assertEqual(success_message, const.USERNAMED_CHANGED_SUCCESS)
-
-        username = self.get_text(By.CLASS_NAME, 'username')
-        self.assertEqual(username, 'new_username2')
 
     def test_username_exists_can_not_change_username(self):
         # User enters the website

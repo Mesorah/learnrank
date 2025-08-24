@@ -8,11 +8,12 @@ from authors.tests.helpers import create_user
 
 
 class TestChangeUsernameForm(TestCase):
-    # TODO create a helper to create_user
+    def setUp(self):
+        super().setUp()
+
+        self.user = create_user(client=self.client, auto_login=True)
 
     def test_renders_input_form(self):
-        create_user(client=self.client, auto_login=True)
-
         response = self.client.get(reverse('authors:change_username'))
         parsed = lxml.html.fromstring(response.content)
         [form] = parsed.cssselect('form[method=POST]')
@@ -32,28 +33,21 @@ class TestChangeUsernameForm(TestCase):
             self.assertEqual(input.get('type'), expected_type)
 
     def test_form_reand_only_is_active(self):
-        user = create_user(client=self.client, auto_login=True)
-
-        form = ChangeUsernameForm(user)
+        form = ChangeUsernameForm(self.user)
         self.assertIn('readonly', form.fields['current_username'].widget.attrs)
 
     def test_form_is_correct(self):
-        user = create_user(client=self.client, auto_login=True)
-
-        form = ChangeUsernameForm(user=user, data={
+        form = ChangeUsernameForm(user=self.user, data={
             'new_username': 'new_username'
         })
 
         self.assertTrue(form.is_valid())
 
     def test_form_username_already_taken(self):
-        create_user(client=self.client)
-        user = create_user(
-            client=self.client, username='testing2', auto_login=True
-        )
+        create_user(client=self.client, username='testing2')
 
-        form = ChangeUsernameForm(user=user, data={
-            'new_username': 'testing'
+        form = ChangeUsernameForm(user=self.user, data={
+            'new_username': 'testing2'
         })
 
         self.assertFalse(form.is_valid())
