@@ -15,7 +15,7 @@ PASSWORD_MUST_CONTAIN_LETTERS_ERROR = _lazy('Password must contain letters.')
 CANNOT_ACCESS_LOGGED_ERROR = _lazy('You cannot access this while logged in.')
 FORM_INVALID_ERROR = _lazy('Form invalid.')
 CANNOT_ACCESS_NOT_LOGGED_ERROR = _lazy('You cannot access this while not logged in.')
-CANNOT_CHANGE_USERNAME_ERROR = _lazy('You need to wait 7 days before you can change your username again.')
+CANNOT_CHANGE_USERNAME_ERROR = _lazy('You need to wait %(days)s days before you can change your username again.')
 
 
 # Placeholders

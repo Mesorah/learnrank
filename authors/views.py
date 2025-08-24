@@ -169,7 +169,15 @@ class ChangeUsernameView(View):
             is_wait_time_done() < change_username_data
         ):
 
-            messages.error(self.request, const.CANNOT_CHANGE_USERNAME_ERROR)
+            time_to_wait = change_username_data - is_wait_time_done()
+
+            # Because 7 days becomes 6 days and 23 hours.
+            wait_days = time_to_wait.days + 1
+
+            messages.error(
+                self.request,
+                const.CANNOT_CHANGE_USERNAME_ERROR % {'days': wait_days}
+            )
 
             return redirect('home:index')
 

@@ -63,7 +63,9 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         # Sees that now you need to wait 7 days
         error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
-        self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
+        self.assertEqual(
+            error_message, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
+        )
 
         # He decides to wait 1 days to change his name again.
         new_data = is_wait_time_done(wait_days=1)
@@ -71,11 +73,16 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         user.change_username_data = new_data
         user.save()
 
+        self.browser.refresh()
+
         # Decide to try the username again
         self.click_when_visible(By.CLASS_NAME, 'change-information')
+        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
 
         # And then noticed that now you need to wait 6 days
-        self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
+        self.assertEqual(
+            error_message, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 6}
+        )
 
         # He decides to wait 7 days to change his name again.
         new_data = is_wait_time_done()
@@ -184,20 +191,20 @@ class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
         self.create_valid_user(username='testing2')
 
         # User enters the home screen
-        self.go_to_url('authors:change_username')
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
 
         self.fill_credentials(id_new_username='testing2', submit=True)
 
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
         self.assertEqual(error_message, 'Este nome de usuário já está em uso.')
 
-        self.go_to_url('authors:change_username')
         self.fill_credentials(id_new_username='testing3', submit=True)
 
-        self.go_to_url('authors:change_username')
-        success_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+
+        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
         self.assertEqual(
-            success_message,
+            error_message,
             'Você precisa esperar 7 dias antes de poder '
             'alterar seu nome de usuário novamente.'
         )

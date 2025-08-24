@@ -197,5 +197,5 @@ msgstr "Mudar informações"
 msgid "Your username has been successfully updated!"
 msgstr "Seu nome de usuário foi alterado com sucesso!"
 
-msgid "You need to wait 7 days before you can change your username again."
-msgstr "Você precisa esperar 7 dias antes de poder alterar seu nome de usuário novamente."
+msgid "You need to wait %(days)s days before you can change your username again."
+msgstr "Você precisa esperar %(days)s dias antes de poder alterar seu nome de usuário novamente."

@@ -20,13 +20,21 @@ class TestChangeUsername(TestCase):
     def get_change_username(self):
         return self.client.get(reverse('authors:change_username'))
 
-    def change_username(self):
-        self.client.post(
+    def change_username(self, new_username_name='new_username', follow=False):
+        return self.client.post(
             reverse('authors:change_username'),
             data={
-                'new_username': 'new_username'
-            }
+                'new_username': new_username_name
+            }, follow=True if follow else False
         )
+
+    def change_username_data(self, wait_days=7):
+        new_data = is_wait_time_done(wait_days=wait_days)
+
+        self.user.change_username_data = new_data
+        self.user.save()
+
+        return self.user.change_username_data
 
     def test_view_is_correct(self):
         self.client.logout()
@@ -56,12 +64,7 @@ class TestChangeUsername(TestCase):
         users = User.objects.get()
         self.assertEqual(users.username, 'testing')
 
-        response = self.client.post(
-            reverse('authors:change_username'),
-            data={
-                'new_username': 'new_username'
-            }
-        )
+        response = self.change_username()
 
         users = User.objects.get()
         self.assertEqual(users.username, 'new_username')
@@ -70,51 +73,34 @@ class TestChangeUsername(TestCase):
         self.assertRedirects(response, reverse('home:index'))
 
     def test_wait_time_after_change_username_was_set_correctly_use_GET(self):
-        self.client.post(
-            reverse('authors:change_username'),
-            data={
-                'new_username': 'new_username'
-            }
-        )
+        self.change_username()
 
         response = self.client.get(
             reverse('authors:change_username'),
             follow=True
         )
 
-        self.assertContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
+        self.assertContains(
+            response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
+        )
         self.assertRedirects(response, reverse('home:index'))
 
     def test_wait_time_after_change_username_was_set_correctly_use_POST(self):
-        self.client.post(
-            reverse('authors:change_username'),
-            data={
-                'new_username': 'new_username'
-            }
+        self.change_username()
+
+        response = self.change_username(
+            new_username_name='new_username2', follow=True
         )
 
-        response = self.client.post(
-            reverse('authors:change_username'),
-            data={
-                'new_username': 'new_username2'
-            }, follow=True
+        self.assertContains(
+            response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
         )
-
-        self.assertContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
         self.assertRedirects(response, reverse('home:index'))
 
     def test_can_change_username_after_7_days(self):
-        self.client.post(
-            reverse('authors:change_username'),
-            data={
-                'new_username': 'new_username'
-            }
-        )
+        self.change_username()
 
-        new_data = is_wait_time_done()
-
-        self.user.change_username_data = new_data
-        self.user.save()
+        self.change_username_data()
 
         response = self.client.get(
             reverse('authors:change_username'),
@@ -124,8 +110,24 @@ class TestChangeUsername(TestCase):
         self.assertNotContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
         self.assertContains(response, const.USERNAMED_CHANGED_SUCCESS)
 
-    def test_message_1_day_wait_changed_to_6_days_wait_change_username(self):
-        pass
+    def test_username_change_wait_time_adjusts_after_repeated_changes(self):
+        self.change_username()
+
+        self.change_username_data(wait_days=2)
+
+        response = self.change_username(follow=True)
+
+        self.assertContains(
+            response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 5}
+        )
+
+        self.change_username_data(wait_days=4)
+
+        response = self.change_username(follow=True)
+
+        self.assertContains(
+            response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 3}
+        )
 
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')
