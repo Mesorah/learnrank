@@ -55,4 +55,4 @@ USERNAMED_CHANGED_SUCCESS = _lazy('Your username has been successfully updated!'
 TITLE_SIGN_UP = _lazy('Sign Up')
 TITLE_LOGIN = _lazy('Login')
 TITLE_DELETE_ACCOUNT = _lazy('Delete your account')
-TITLE_CHANGE_INFORMATION = _lazy('Change information')
+TITLE_CHANGE_USERNAME = _lazy('Change information')

@@ -13,12 +13,12 @@ class TestChangeUsernameForm(TestCase):
     def test_renders_input_form(self):
         create_user(client=self.client, auto_login=True)
 
-        response = self.client.get(reverse('authors:change_information'))
+        response = self.client.get(reverse('authors:change_username'))
         parsed = lxml.html.fromstring(response.content)
         [form] = parsed.cssselect('form[method=POST]')
 
         self.assertEqual(
-            form.get('action'), reverse('authors:change_information')
+            form.get('action'), reverse('authors:change_username')
         )
 
         inputs_names = {

@@ -17,28 +17,36 @@ class TestChangeUsername(TestCase):
 
         return super().setUp()
 
-    def get_change_information(self):
-        return self.client.get(reverse('authors:change_information'))
+    def get_change_username(self):
+        return self.client.get(reverse('authors:change_username'))
+
+    def change_username(self):
+        self.client.post(
+            reverse('authors:change_username'),
+            data={
+                'new_username': 'new_username'
+            }
+        )
 
     def test_view_is_correct(self):
         self.client.logout()
-        response = resolve(reverse('authors:change_information'))
+        response = resolve(reverse('authors:change_username'))
 
         self.assertEqual(response.func.view_class, ChangeUsernameView)
 
     def test_view_load_correct_template(self):
-        response = self.get_change_information()
+        response = self.get_change_username()
 
         self.assertTemplateUsed(response, 'authors/pages/authors.html')
 
     def test_anonymous_user_cannot_get_the_page(self):
         self.client.logout()
-        response = self.get_change_information()
+        response = self.get_change_username()
 
         self.assertRedirects(response, reverse('authors:login'))
 
     def test_initual_current_username_is_correct(self):
-        response = self.client.get(reverse('authors:change_information'))
+        response = self.client.get(reverse('authors:change_username'))
 
         content = response.content.decode()
 
@@ -49,7 +57,7 @@ class TestChangeUsername(TestCase):
         self.assertEqual(users.username, 'testing')
 
         response = self.client.post(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             data={
                 'new_username': 'new_username'
             }
@@ -63,14 +71,14 @@ class TestChangeUsername(TestCase):
 
     def test_wait_time_after_change_username_was_set_correctly_use_GET(self):
         self.client.post(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             data={
                 'new_username': 'new_username'
             }
         )
 
         response = self.client.get(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             follow=True
         )
 
@@ -79,14 +87,14 @@ class TestChangeUsername(TestCase):
 
     def test_wait_time_after_change_username_was_set_correctly_use_POST(self):
         self.client.post(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             data={
                 'new_username': 'new_username'
             }
         )
 
         response = self.client.post(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             data={
                 'new_username': 'new_username2'
             }, follow=True
@@ -97,7 +105,7 @@ class TestChangeUsername(TestCase):
 
     def test_can_change_username_after_7_days(self):
         self.client.post(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             data={
                 'new_username': 'new_username'
             }
@@ -109,17 +117,20 @@ class TestChangeUsername(TestCase):
         self.user.save()
 
         response = self.client.get(
-            reverse('authors:change_information'),
+            reverse('authors:change_username'),
             follow=True
         )
 
         self.assertNotContains(response, const.CANNOT_CHANGE_USERNAME_ERROR)
         self.assertContains(response, const.USERNAMED_CHANGED_SUCCESS)
 
+    def test_message_1_day_wait_changed_to_6_days_wait_change_username(self):
+        pass
+
     # Override_settings in this test confirms that it will change the language.
     @override_settings(LANGUAGE_CODE='pt-br')
     def test_portuguese_translate_is_load_and_is_correct(self):
         activate('pt-br')
 
-        response = self.client.get(reverse('authors:change_information'))
+        response = self.client.get(reverse('authors:change_username'))
         self.assertContains(response, 'Seu nome de usuário atual:')

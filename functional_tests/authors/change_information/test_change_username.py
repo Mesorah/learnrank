@@ -65,8 +65,19 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
 
         self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
 
-        # He decides to wait 7 days to change his name again.
+        # He decides to wait 1 days to change his name again.
+        new_data = is_wait_time_done(wait_days=1)
 
+        user.change_username_data = new_data
+        user.save()
+
+        # Decide to try the username again
+        self.click_when_visible(By.CLASS_NAME, 'change-information')
+
+        # And then noticed that now you need to wait 6 days
+        self.assertEqual(error_message, const.CANNOT_CHANGE_USERNAME_ERROR)
+
+        # He decides to wait 7 days to change his name again.
         new_data = is_wait_time_done()
 
         user.change_username_data = new_data
@@ -109,7 +120,7 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         self.create_valid_user(auto_login=True)
 
         # User enters the home screen
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
 
         # His browser window is set to a very specific size
         self.browser.set_window_size(1024, 768)
@@ -138,7 +149,7 @@ class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation(self):
         # User enters the home screen
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
 
         # And he found the form in portuguese
         current_username_label = self.get_text(
@@ -173,17 +184,17 @@ class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
         self.create_valid_user(username='testing2')
 
         # User enters the home screen
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
 
         self.fill_credentials(id_new_username='testing2', submit=True)
 
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
         self.assertEqual(error_message, 'Este nome de usuário já está em uso.')
 
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
         self.fill_credentials(id_new_username='testing3', submit=True)
 
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
         success_message = self.get_text(By.CLASS_NAME, 'alert-error')
         self.assertEqual(
             success_message,
@@ -193,7 +204,7 @@ class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
 
     def test_user_can_see_portuguese_translation_sucess(self):
         # User enters the home screen
-        self.go_to_url('authors:change_information')
+        self.go_to_url('authors:change_username')
 
         self.fill_credentials(id_new_username='new_username', submit=True)
 

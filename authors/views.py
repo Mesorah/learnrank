@@ -150,8 +150,8 @@ class ChangeUsernameView(View):
 
     def render_form(self, form):
         return render(self.request, 'authors/pages/authors.html', context={
-            'form_action': 'authors:change_information',
-            'title': const.TITLE_CHANGE_INFORMATION,
+            'form_action': 'authors:change_username',
+            'title': const.TITLE_CHANGE_USERNAME,
             'form': form
         })
 

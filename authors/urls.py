@@ -11,9 +11,9 @@ urlpatterns = [
     path('delete/', views.DeleteAuthorView.as_view(), name='delete'),
 
     path(
-        'change-information/',
+        'change-username/',
         views.ChangeUsernameView.as_view(),
-        name='change_information'
+        name='change_username'
     ),
 
     path(
