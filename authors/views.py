@@ -201,7 +201,8 @@ class ChangeUsernameView(View):
         return self.render_form(form)
 
 
-class ChangeEmailView(View):
+def change_email(request):
+    # TODO
     pass
 
 
