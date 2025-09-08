@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'authors',
     'home',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +154,20 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER_ENV', 'user')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD_ENV', 'password')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL_ENV', 'default')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'BLACKLIST_AFTER_ROTATION': False,
+    'SIGNING_KEY': os.getenv('SIGNING_KEY', 'INSECURE'),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 # For fast tests
 if bool(os.getenv('DJANGO_TEST')) is True:
