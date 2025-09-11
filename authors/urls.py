@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from authors import views
+from authors import api, views
 
 app_name = 'authors'
 
@@ -35,6 +35,12 @@ urlpatterns = [
         'password-reset/confirm/<uidb64>/<token>/',
         views.PasswordResetConfirmAuthorView.as_view(),
         name='password_reset_confirm'
+    ),
+
+    path(
+        'api/',
+        api.author_api_list,
+        name='author_api_list'
     ),
 
     path(
