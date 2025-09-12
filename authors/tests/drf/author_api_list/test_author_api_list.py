@@ -22,14 +22,6 @@ class AuthorAPIListTest(AuthorAPIMixin):
         self.assertEqual(response.status_code, 401)
 
     def test_user_with_permission_can_see_the_user_list(self):
-        admin_user = create_admin_user()
-
-        access_token = self.get_jwt_acess_token(
-            admin_user.username, 'testing12!@1dsFG'
-        )
-
-        response = self.get_api_list(
-            HTTP_AUTHORIZATION='Bearer ' + access_token,
-        )
+        response = self.get_authorized_view(self.get_api_list)
 
         self.assertEqual(len(response.data), 4)
