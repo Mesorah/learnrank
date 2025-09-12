@@ -18,3 +18,8 @@ class AuthorAPIMixin(APITestCase):
         return self.client.get(reverse(
             'authors:author_api_list'
         ), *args, **kwargs)
+
+    def post_api_list(self, *args, **kwargs):
+        return self.client.post(reverse(
+            'authors:author_api_list'
+        ), *args, **kwargs)

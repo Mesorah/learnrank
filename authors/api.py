@@ -1,17 +1,19 @@
 from django.contrib.auth import get_user_model
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from authors.serializers import AuthorSerializer
 
 User = get_user_model()
 
 
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def author_api_list(request):
-    users = User.objects.all()
-    serializer = AuthorSerializer(users, many=True)
+class AuthorAPIList(APIView):
+    permission_classes = [IsAdminUser]
+    http_method_names = ['get']
 
-    return Response(serializer.data)
+    def get(self, request):
+        users = User.objects.all()
+        serializer = AuthorSerializer(users, many=True)
+
+        return Response(serializer.data)

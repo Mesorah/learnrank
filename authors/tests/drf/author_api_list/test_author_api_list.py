@@ -1,8 +1,8 @@
 from django.urls import resolve, reverse
 
-from authors.api import author_api_list
+from authors.api import AuthorAPIList
 from authors.tests.helpers import create_admin_user, create_user
-from authors.tests.test_mixins import AuthorAPIMixin
+from authors.tests.mixins_test import AuthorAPIMixin
 
 
 class AuthorAPIListTest(AuthorAPIMixin):
@@ -14,7 +14,7 @@ class AuthorAPIListTest(AuthorAPIMixin):
     def test_view_is_correct(self):
         response = resolve(reverse('authors:author_api_list'))
 
-        self.assertEqual(response.func, author_api_list)
+        self.assertEqual(response.func.view_class, AuthorAPIList)
 
     def test_user_without_permission_cannot_see_the_user_list(self):
         response = self.get_api_list()

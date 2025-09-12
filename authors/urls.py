@@ -39,7 +39,7 @@ urlpatterns = [
 
     path(
         'api/',
-        api.author_api_list,
+        api.AuthorAPIList.as_view(),
         name='author_api_list'
     ),
 
