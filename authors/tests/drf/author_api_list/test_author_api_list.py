@@ -1,32 +1,15 @@
 from django.urls import resolve, reverse
-from rest_framework.test import APITestCase
 
 from authors.api import author_api_list
+from authors.tests.helpers import create_admin_user, create_user
+from authors.tests.test_mixins import AuthorAPIMixin
 
-from ..helpers import create_admin_user, create_user
 
-
-class AuthorAPIListTest(APITestCase):
+class AuthorAPIListTest(AuthorAPIMixin):
     def setUp(self):
         create_user(users=3)
 
         return super().setUp()
-
-    def get_jwt_acess_token(self, username, password):
-        response = self.client.post(
-            reverse('authors:token_obtain_pair'),
-            data={
-                'username': username,
-                'password': password
-            }
-        )
-
-        return response.data['access']
-
-    def get_api_list(self, *args, **kwargs):
-        return self.client.get(reverse(
-            'authors:author_api_list'
-        ), *args, **kwargs)
 
     def test_view_is_correct(self):
         response = resolve(reverse('authors:author_api_list'))
