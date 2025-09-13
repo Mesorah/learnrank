@@ -1,7 +1,7 @@
 from django.urls import resolve, reverse
 
 from authors.api import AuthorAPIList
-from authors.tests.helpers import create_admin_user, create_user
+from authors.tests.helpers import create_user
 from authors.tests.mixins_test import AuthorAPIMixin
 
 
