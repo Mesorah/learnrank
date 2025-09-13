@@ -47,6 +47,7 @@ class TestCreateAuthorForm(TestCase):
         form.save()
 
         # Email already in use
+        self.form_data['username'] = 'testing2'
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertEqual(

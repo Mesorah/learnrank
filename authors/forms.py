@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 import authors.constants as const
+from authors.validators import AuthorValidator
 
 User = get_user_model()
 
@@ -123,7 +124,10 @@ class CustomSignupForm(UserCreationForm):
     username = forms.CharField(
         label=const.USERNAME_LABEL,
         min_length=4,
-        error_messages={'min_length': const.USERNAME_MIN_LENGTH_ERROR},
+        error_messages={
+            'min_length': const.USERNAME_MIN_LENGTH_ERROR,
+            'unique': const.USERNAME_TAKEN_ALREADY_ERROR
+        },
         max_length=30, widget=forms.TextInput(
             attrs={'placeholder': const.SIGNUP_USERNAME_PLACEHOLDER}
         ),
@@ -151,48 +155,26 @@ class CustomSignupForm(UserCreationForm):
         )
     )
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
+    def get_clean_data(self, super_clean):
+        values = {}
 
-        if User.objects.filter(username=username).exists():
-            raise ValidationError(const.USERNAME_TAKEN_ALREADY_ERROR)
+        for field_name in ['username', 'email', 'password1', 'password2']:
+            values[field_name] = (
+                super_clean.get(field_name) or self.data.get(field_name, '')
+            )
 
-        return username
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-
-        if User.objects.filter(email=email).exists():
-            raise ValidationError(const.EMAIL_ALREADY_REGISTERED_ERROR)
-
-        return email
+        return values
 
     def clean(self):
-        cleaned_data = self.cleaned_data
-        password1 = cleaned_data.get('password1')
-        password2 = cleaned_data.get('password2')
+        super_clean = super().clean()
 
-        if password1 != password2:
-            self.add_error('password2', const.PASSWORDS_DO_NOT_MATCH_ERROR)
+        AuthorValidator(
+            values=self.get_clean_data(super_clean),
+            ValidationError=ValidationError,
+            add_error=self.add_error
+        )
 
-        # Verify if password1 have [a-z] or [1-9] and don't have symbols
-        if password1 and password1.isalnum():
-            self.add_error(
-                'password1', const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
-            )
-
-        # Verify if password1 don't have numbers [1-9]
-        if not re.search(r'\d', password1):
-            self.add_error(
-                'password1', const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
-            )
-
-        if not re.search(r'[A-Za-z]', password1):
-            self.add_error(
-                'password1', const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
-            )
-
-        return cleaned_data
+        return super_clean
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

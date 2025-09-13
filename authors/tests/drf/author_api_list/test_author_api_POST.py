@@ -33,8 +33,10 @@ class AuthorAPIPOSTTest(AuthorAPIMixin):
         self.assertIn('This field is required.', response.data['email'])
 
     def test_user_with_permission_can_create_user(self):
+        # username changed to avoid conflict with our user
         response = self.get_authorized_view(
-            self.post_api_list, admin_user=False, data={**self.data}
+            self.post_api_list, username='testing2', admin_user=False,
+            data={**self.data}
         )
 
         self.assertEqual(response.status_code, 201)
