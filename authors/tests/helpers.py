@@ -33,16 +33,13 @@ def create_user(
 
 def create_admin_user(
     username='testing',
+    email='testing@example.com',
     password='testing12!@1dsFG',
-    auto_login=False,
-    client=None,
 ):
     super_user = User.objects.create_superuser(
         username=username,
+        email=email,
         password=password
     )
-
-    if auto_login and client:
-        login(client)
 
     return super_user

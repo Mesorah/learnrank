@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
 
 from authors.api import AuthorAPIList
 from authors.tests.mixins_test import AuthorAPIMixin
+
+User = get_user_model()
 
 
 class AuthorAPIPOSTTest(AuthorAPIMixin):
@@ -30,13 +33,19 @@ class AuthorAPIPOSTTest(AuthorAPIMixin):
         )
 
         self.assertIn('This field is required.', response.data['username'])
+
+        response = self.get_authorized_view(
+            self.post_api_list, admin_user=False, username='test'
+        )
+
         self.assertIn('This field is required.', response.data['email'])
 
     def test_user_with_permission_can_create_user(self):
         # username changed to avoid conflict with our user
         response = self.get_authorized_view(
-            self.post_api_list, username='testing2', admin_user=False,
-            data={**self.data}
+            self.post_api_list,
+            username='testing2', email='testing2@example.com',
+            admin_user=False, data={**self.data}
         )
 
         self.assertEqual(response.status_code, 201)

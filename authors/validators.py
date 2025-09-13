@@ -1,7 +1,6 @@
 import re
 
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 
 import authors.constants as const
 
@@ -9,22 +8,29 @@ User = get_user_model()
 
 
 class AuthorValidator:
-    def __init__(self, values, ValidationError, add_error=None):
+    def __init__(self, values, ValidationError, add_error=None, context=None):
         self.values = values
         self.ValidationError = ValidationError
         self.add_error = (
             add_error if add_error else self.ValidationError
         )
+        self.context = context
 
-        self.validate()
+        self.control()
 
     def validate_username(self):
         username = self.values['username']
 
-        if User.objects.filter(username=username).exists():
+        if len(username) <= 3:
             raise self.ValidationError({
-                'username': const.USERNAME_TAKEN_ALREADY_ERROR
+                'username': const.USERNAME_MIN_LENGTH_ERROR
             })
+
+        if self.context == 'serializer':
+            if User.objects.filter(username=username).exists():
+                raise self.ValidationError({
+                    'username': const.USERNAME_TAKEN_ALREADY_ERROR
+                })
 
         return username
 
@@ -39,9 +45,6 @@ class AuthorValidator:
         return email
 
     def validate(self):
-        self.validate_username()
-        self.validate_email()
-
         password1 = self.values['password1']
         password2 = self.values['password2']
 
@@ -68,3 +71,10 @@ class AuthorValidator:
             )
 
         return self.values
+
+    def control(self):
+        self.validate_username()
+        self.validate_email()
+
+        if self.context == 'form':
+            self.validate()

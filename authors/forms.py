@@ -1,5 +1,3 @@
-import re
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
@@ -171,7 +169,8 @@ class CustomSignupForm(UserCreationForm):
         AuthorValidator(
             values=self.get_clean_data(super_clean),
             ValidationError=ValidationError,
-            add_error=self.add_error
+            add_error=self.add_error,
+            context='form'
         )
 
         return super_clean
