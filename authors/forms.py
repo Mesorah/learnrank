@@ -4,7 +4,6 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
     PasswordResetForm,
     SetPasswordForm,
-    UserCreationForm,
 )
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -111,7 +110,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         )
 
 
-class CustomSignupForm(UserCreationForm):
+class CustomSignupForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [

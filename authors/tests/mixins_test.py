@@ -33,16 +33,12 @@ class AuthorAPIMixin(APITestCase):
         username='testing',
         password='testing12!@1dsFG',
         email='testing@example.com',
-        auto_login=False,
-        client=None,
         *args, **kwargs
     ):
         data = {
             'username': username,
             'email': email,
             'password': password,
-            'auto_login': auto_login,
-            'client': client,
         }
 
         """
