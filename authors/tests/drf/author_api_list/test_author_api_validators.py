@@ -12,8 +12,7 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         self.data = {
             'username': 'testing',
             'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'password': 'testing12!@1dsFG',
         }
 
         return super().setUp()
@@ -52,6 +51,35 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         self.assertEqual(
             serializer.errors['email'][0], const.EMAIL_ALREADY_REGISTERED_ERROR
         )
+
+    def test_password_validator_is_correct(self):
+        self.data['password'] = '12345678'
+        serializer = AuthorSerializer(data=self.data)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn(
+            const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
+            serializer.errors['password']
+        )
+
+        self.data['password'] = '12345678!'
+        serializer = AuthorSerializer(data=self.data)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn(
+            const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR,
+            serializer.errors['password']
+        )
+
+        self.data['password'] = 'ab@cdefgh'
+        serializer = AuthorSerializer(data=self.data)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn(
+            const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR,
+            serializer.errors['password']
+        )
+
+        self.data['password'] = 'abcdef1!'
+        serializer = AuthorSerializer(data=self.data)
+        self.assertTrue(serializer.is_valid())
 
     def test_user_is_created(self):
         serializer = AuthorSerializer(data=self.data)

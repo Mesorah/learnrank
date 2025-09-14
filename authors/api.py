@@ -23,7 +23,7 @@ class AuthorAPIList(APIView):
         users = User.objects.all()
         serializer = AuthorSerializer(users, many=True)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = AuthorSerializer(data=request.data)

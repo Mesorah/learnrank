@@ -11,11 +11,12 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = [
-            'id', 'username', 'email', 'change_username_data'
+            'id', 'username', 'email', 'change_username_data',
+            'password'
         ]
 
     username = serializers.CharField(
-        min_length=4,
+        max_length=30,
         error_messages={
             'min_length': const.USERNAME_MIN_LENGTH_ERROR,
         },
@@ -24,6 +25,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         max_length=256, required=True
     )
+
+    password = serializers.CharField(write_only=True, required=True)
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
