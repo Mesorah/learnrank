@@ -78,7 +78,7 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
 
         self.assertEqual(
-            error_message, "The two password fields didn’t match."
+            error_message, "The two password fields didn’t match."  # TODO fix error message
         )
 
         self.fill_credentials(

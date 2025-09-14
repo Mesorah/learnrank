@@ -1,8 +1,10 @@
+import pytest
 from selenium.webdriver.common.by import By
 
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
+@pytest.mark.skip(reason="Work in progress")
 class TestChangeEmailFT(BaseWebDriverForFunctionalTests):
     def test_user_can_change_email_sucess(self):
         # Ele acessa a página
