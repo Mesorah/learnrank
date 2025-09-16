@@ -8,15 +8,6 @@ User = get_user_model()
 
 
 class AuthorAPIValidatorsTest(AuthorAPIMixin):
-    def setUp(self):
-        self.data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password': 'testing12!@1dsFG',
-        }
-
-        return super().setUp()
-
     def test_username_validator_is_correct(self):
         self.data['username'] = 'abc'
         serializer = AuthorSerializer(data=self.data)

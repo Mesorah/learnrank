@@ -13,11 +13,11 @@ def create_user(
     password='testing12!@1dsFG',
     auto_login=False,
     client=None,
-    users=1
+    qtd=1
 ):
-    for user in range(users):
-        final_username = f'{username}-{user}' if users != 1 else username
-        final_email = f'{username}-{user}' if users != 1 else email
+    for user in range(qtd):
+        final_username = f'{username}-{user}' if qtd != 1 else username
+        final_email = f'{username}-{user}' if qtd != 1 else email
 
         user = User.objects.create_user(
             username=final_username,
@@ -32,14 +32,19 @@ def create_user(
 
 
 def create_admin_user(
-    username='testing',
-    email='testing@example.com',
-    password='testing12!@1dsFG',
+    username='testingADMIN',
+    email='testingADMIN@example.com',
+    password='testing12ADMIN!@1dsFG',
+    auto_login=False,
+    client=None,
 ):
     super_user = User.objects.create_superuser(
         username=username,
         email=email,
         password=password
     )
+
+    if auto_login and client:
+        login(client)
 
     return super_user
