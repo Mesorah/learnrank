@@ -42,6 +42,11 @@ urlpatterns = [
         api.AuthorAPIList.as_view(),
         name='author_api_list'
     ),
+    path(
+        'api/<int:pk>/',
+        api.AuthorAPIDetail.as_view(),
+        name='author_api_detail'
+    ),
 
     path(
         'api/token/',
