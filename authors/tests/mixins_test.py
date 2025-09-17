@@ -25,15 +25,22 @@ class AuthorAPIMixin(APITestCase):
 
         return response.data['access']
 
-    def request_author_api_list(self, method='get', *args, **kwargs):
+    def request_author_api_list(self, method, *args, **kwargs):
         return getattr(self.client, method)(reverse(
             'authors:author_api_list'
+        ), *args, **kwargs)
+
+    def request_author_api_detail(self, method, pk, *args, **kwargs):
+        return getattr(self.client, method)(reverse(
+            'authors:author_api_detail', kwargs={'pk': pk}
         ), *args, **kwargs)
 
     def get_authorized_view(
         self,
         view_func,
         method='get',
+        pk=None,
+        create_new_user=True,
         admin_user=True,
         username='testing',
         password='testing12!@1dsFG',
@@ -50,7 +57,8 @@ class AuthorAPIMixin(APITestCase):
         If the user wants to be an admin, call the admin function,
         otherwise create the user without admin.
         """
-        create_admin_user(**data) if admin_user else create_user(**data)
+        if create_new_user:
+            create_admin_user(**data) if admin_user else create_user(**data)
 
         access_token = self.get_jwt_acess_token(
             username, password
@@ -62,6 +70,7 @@ class AuthorAPIMixin(APITestCase):
         """
         return view_func(
             method=method,
+            pk=pk,
             HTTP_AUTHORIZATION='Bearer ' + access_token,
             *args, **kwargs
         )
