@@ -3,22 +3,13 @@ import re
 from django.contrib.auth import get_user_model
 
 import authors.constants as const
+from authors.utils import is_wait_time_done
 
 User = get_user_model()
 
 
-class AuthorValidator:
-    def __init__(self, values, ValidationError, add_error=None, context=None):
-        self.values = values
-        self.ValidationError = ValidationError
-        self.add_error = add_error
-        self.context = context
-
-        self.control()
-
-    def validate_username(self, field_name, add_error=True):
-        username = self.values['username']
-
+class UsernameValidatorMixin:
+    def validate_username(self, field_name, username, add_error=True):
         if len(username) <= 3:
             msg = const.USERNAME_MIN_LENGTH_ERROR
 
@@ -36,6 +27,56 @@ class AuthorValidator:
                 raise self.ValidationError({field_name: msg})
 
         return username
+
+
+class ChangeUsernameValidator(UsernameValidatorMixin):
+    def __init__(self, user, new_username, ValidationError, context):
+        self.user = user
+        self.new_username = new_username
+        self.ValidationError = ValidationError
+        self.context = context
+
+        self.control()
+
+    def validate(self, field_name):
+        change_username_data = self.user.change_username_data
+
+        if (
+            change_username_data is not None
+            and
+            is_wait_time_done() < change_username_data
+        ):
+
+            time_to_wait = change_username_data - is_wait_time_done()
+
+            # Because 7 days becomes 6 days and 23 hours.
+            wait_days = time_to_wait.days + 1
+
+            raise self.ValidationError({
+                field_name:
+                const.CANNOT_CHANGE_USERNAME_ERROR % {'days': wait_days}
+            })
+
+    def control(self):
+        self.validate_username(
+            field_name='new_username', username=self.new_username,
+            add_error=False
+        )
+        self.validate(field_name='new_username')
+
+
+class AuthorValidator(UsernameValidatorMixin):
+    def __init__(
+            self, values, ValidationError, add_error=None,
+            context=None, method=None
+    ):
+        self.values = values
+        self.ValidationError = ValidationError
+        self.add_error = add_error
+        self.context = context
+        self.method = method
+
+        self.control()
 
     def validate_email(self, field_name, add_error=True):
         email = self.values['email']
@@ -95,13 +136,39 @@ class AuthorValidator:
 
         return self.values
 
+    def is_patch(self):
+        username = self.values.get('username')
+        email = self.values.get('email')
+        password = self.values.get('password')
+
+        if username is not None:
+            self.validate_username('username', add_error=False)
+
+        if email is not None:
+            self.validate_email('email', add_error=False)
+
+        if password is not None:
+            self.validate_serializer()
+
+        if username is None and email is None and password is None:
+            self.ValidationError(const.FORM_INVALID_ERROR)
+
     def control(self):
         if self.context == 'form':
-            self.validate_username('username')
+            self.validate_username(
+                'username', username=self.values['username']
+            )
             self.validate_email('email')
             self.validate_form()
 
         if self.context == 'serializer':
-            self.validate_username('username', add_error=False)
-            self.validate_email('email', add_error=False)
-            self.validate_serializer()
+            if self.method == 'PATCH':
+                self.is_patch()
+
+            else:
+                self.validate_username(
+                    'username', username=self.values['username'],
+                    add_error=False
+                )
+                self.validate_email('email', add_error=False)
+                self.validate_serializer()

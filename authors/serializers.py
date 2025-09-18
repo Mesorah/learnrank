@@ -30,11 +30,13 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
+        request = self.context.get('request')
 
         AuthorValidator(
             values=attrs,
             ValidationError=serializers.ValidationError,
-            context='serializer'
+            context='serializer',
+            method=request.method if request else None
         )
 
         return attrs

@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 import authors.constants as const
-from authors.validators import AuthorValidator
+from authors.validators import AuthorValidator, ChangeUsernameValidator
 
 User = get_user_model()
 
@@ -37,23 +37,30 @@ class ChangeUsernameForm(forms.Form):
         self.fields.get('current_username').widget.attrs['readonly'] = True
 
     def save(self):
-        user = User.objects.get(id=self.user.id)
-
-        user.username = self.cleaned_data.get(
-            'new_username', 'actual_username'
+        self.user.username = self.cleaned_data.get(
+            'new_username', self.user.username
         )
 
-        user.change_username_data = timezone.now()
+        self.user.change_username_data = timezone.now()
 
-        user.save()
+        self.user.save()
 
-    def clean_new_username(self):
-        new_username = self.cleaned_data['new_username']
+        return self.user
 
-        if User.objects.filter(username=new_username).exists():
-            raise ValidationError(const.USERNAME_TAKEN_ALREADY_ERROR)
+    def get_new_username(self, super_clean, field):
+        return super_clean.get(field) or self.data.get(field, '')
 
-        return new_username
+    def clean(self):
+        super_clean = super().clean()
+
+        ChangeUsernameValidator(
+            user=self.user,
+            new_username=self.get_new_username(super_clean, 'new_username'),
+            ValidationError=ValidationError,
+            context='form'
+        )
+
+        return super_clean
 
 
 class ConfirmForm(forms.Form):
