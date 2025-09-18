@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 
+from authors.utils import is_wait_time_done
+
 User = get_user_model()
 
 
@@ -44,7 +46,13 @@ def create_admin_user(
         password=password
     )
 
-    if auto_login and client:
-        login(client)
-
     return super_user
+
+
+def change_username_data(user, wait_days=7):
+    new_data = is_wait_time_done(wait_days=wait_days)
+
+    user.change_username_data = new_data
+    user.save()
+
+    return user.change_username_data
