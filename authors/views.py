@@ -23,7 +23,6 @@ from authors.forms import (
     CustomSetPasswordForm,
     CustomSignupForm,
 )
-from authors.utils import is_wait_time_done
 
 User = get_user_model()
 
@@ -160,26 +159,6 @@ class ChangeUsernameView(View):
             messages.error(request, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
 
             return redirect('authors:login')
-
-        change_username_data = self.request.user.change_username_data
-
-        if (
-            change_username_data is not None
-            and
-            is_wait_time_done() < change_username_data
-        ):
-
-            time_to_wait = change_username_data - is_wait_time_done()
-
-            # Because 7 days becomes 6 days and 23 hours.
-            wait_days = time_to_wait.days + 1
-
-            messages.error(
-                self.request,
-                const.CANNOT_CHANGE_USERNAME_ERROR % {'days': wait_days}
-            )
-
-            return redirect('home:index')
 
         return super().dispatch(request, *args, **kwargs)
 

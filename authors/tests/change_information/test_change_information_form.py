@@ -13,6 +13,11 @@ class TestChangeUsernameForm(TestCase):
 
         self.user = create_user(client=self.client, auto_login=True)
 
+    def change_username(self, user, new_username):
+        return ChangeUsernameForm(user=user, data={
+            'new_username': new_username
+        })
+
     def test_renders_input_form(self):
         response = self.client.get(reverse('authors:change_username'))
         parsed = lxml.html.fromstring(response.content)
@@ -37,20 +42,29 @@ class TestChangeUsernameForm(TestCase):
         self.assertIn('readonly', form.fields['current_username'].widget.attrs)
 
     def test_form_is_correct(self):
-        form = ChangeUsernameForm(user=self.user, data={
-            'new_username': 'new_username'
-        })
+        form = self.change_username(self.user, 'new_username')
 
         self.assertTrue(form.is_valid())
 
     def test_form_username_already_taken(self):
         create_user(client=self.client, username='testing2')
 
-        form = ChangeUsernameForm(user=self.user, data={
-            'new_username': 'testing2'
-        })
+        form = self.change_username(self.user, 'testing2')
 
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['new_username'][0], const.USERNAME_TAKEN_ALREADY_ERROR
+        )
+
+    def test_wait_time_after_change_username_was_set_correctly(self):
+        form = self.change_username(self.user, 'testing2')
+        self.assertTrue(form.is_valid())
+        form.save()
+
+        form = self.change_username(self.user, 'testing3')
+        self.assertFalse(form.is_valid())
+
+        self.assertEqual(
+            form.errors['new_username'][0],
+            const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
         )

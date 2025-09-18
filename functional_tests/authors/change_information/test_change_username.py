@@ -95,7 +95,8 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         self.click_when_visible(By.CLASS_NAME, 'change-information')
 
         # Sees that you need to wait 7 days
-        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        self.fill_credentials(id_new_username='new_username3', submit=True)
+        error_message = self.get_text(By.ID, 'id_new_username_error')
 
         self.assertEqual(
             error_message, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
@@ -110,8 +111,8 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         self.browser.refresh()
 
         # Decide to try the username again
-        self.click_when_visible(By.CLASS_NAME, 'change-information')
-        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        self.fill_credentials(id_new_username='new_username3', submit=True)
+        error_message = self.get_text(By.ID, 'id_new_username_error')
 
         # And then noticed that now you need to wait 6 days
         self.assertEqual(
@@ -216,11 +217,13 @@ class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
         self.assertEqual(error_message, 'Este nome de usuário já está em uso.')
 
+        self.browser.refresh()
+
         self.fill_credentials(id_new_username='testing3', submit=True)
 
         self.click_when_visible(By.CLASS_NAME, 'change-information')
-
-        error_message = self.get_text(By.CLASS_NAME, 'alert-error')
+        self.fill_credentials(id_new_username='testing4', submit=True)
+        error_message = self.get_text(By.ID, 'id_new_username_error')
         self.assertEqual(
             error_message,
             'Você precisa esperar 7 dias antes de poder '
