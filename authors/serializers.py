@@ -37,7 +37,8 @@ class AuthorSerializer(serializers.ModelSerializer):
         if self.request and self.request.method == 'PATCH':
             self.actual_username = instance.username
             self.change_username_data = instance.change_username_data
-            self.new_username = self.request.data['username']
+            self.new_username = data['username']
+            self.is_staff = self.request.user.is_staff
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
@@ -47,7 +48,7 @@ class AuthorSerializer(serializers.ModelSerializer):
                 change_username_data=self.change_username_data,
                 new_username=self.new_username,
                 ValidationError=serializers.ValidationError,
-                context='form'
+                is_staff=self.is_staff
             )
 
         else:

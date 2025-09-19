@@ -31,12 +31,12 @@ class UsernameValidatorMixin:
 
 class ChangeUsernameValidator(UsernameValidatorMixin):
     def __init__(
-            self, change_username_data, new_username, ValidationError, context
+            self, change_username_data, new_username, ValidationError, is_staff
     ):
         self.change_username_data = change_username_data
         self.new_username = new_username
         self.ValidationError = ValidationError
-        self.context = context
+        self.is_staff = is_staff
 
         self.control()
 
@@ -62,7 +62,9 @@ class ChangeUsernameValidator(UsernameValidatorMixin):
             field_name='new_username', username=self.new_username,
             add_error=False
         )
-        self.validate(field_name='new_username')
+
+        if not self.is_staff:
+            self.validate(field_name='new_username')
 
 
 class AuthorValidator(UsernameValidatorMixin):

@@ -46,7 +46,7 @@ class ChangeUsernameForm(forms.Form):
             change_username_data=self.user.change_username_data,
             new_username=self.get_new_username(super_clean, 'new_username'),
             ValidationError=ValidationError,
-            context='form'
+            is_staff=self.user.is_staff
         )
 
         return super_clean

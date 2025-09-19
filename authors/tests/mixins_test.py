@@ -35,10 +35,13 @@ class AuthorAPIMixin(APITestCase):
             'authors:author_api_detail', kwargs={'pk': pk}
         ), *args, **kwargs)
 
-    def change_username(self, username, create_new_user, pk, new_username):
+    def change_username(
+        self, username, create_new_user, pk,
+        new_username, password='testing12!@1dsFG'
+    ):
         return self.get_authorized_view(
             self.request_author_api_detail, method='patch',
-            username=username,
+            username=username, password=password,
             create_new_user=create_new_user, pk=pk,
             data={'username': new_username}
         )

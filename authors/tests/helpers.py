@@ -37,12 +37,17 @@ def create_admin_user(
     username='testingADMIN',
     email='testingADMIN@example.com',
     password='testing12ADMIN!@1dsFG',
+    auto_login=False,
+    client=None,
 ):
     super_user = User.objects.create_superuser(
         username=username,
         email=email,
         password=password
     )
+
+    if auto_login and client:
+        client.force_login(super_user)
 
     return super_user
 

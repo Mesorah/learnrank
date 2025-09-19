@@ -4,7 +4,11 @@ from django.urls import resolve, reverse
 from django.utils.translation import activate
 
 import authors.constants as const
-from authors.tests.helpers import change_username_data, create_user
+from authors.tests.helpers import (  # noqa E501
+    change_username_data,
+    create_admin_user,
+    create_user,
+)
 from authors.views import ChangeUsernameView
 
 User = get_user_model()
@@ -104,6 +108,22 @@ class TestChangeUsername(TestCase):
 
         self.assertContains(
             response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 3}
+        )
+
+    def test_wait_time_not_work_in_admin_user(self):
+        # logout of the account without being admin
+        self.client.logout()
+
+        create_admin_user(client=self.client, auto_login=True)
+
+        response = self.change_username()
+
+        response = self.change_username(
+            new_username_name='new_username2', follow=True
+        )
+
+        self.assertNotContains(
+            response, const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 7}
         )
 
     # Override_settings in this test confirms that it will change the language.

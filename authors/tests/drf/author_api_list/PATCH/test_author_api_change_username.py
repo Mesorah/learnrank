@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 
 import authors.constants as const
-from authors.tests.helpers import change_username_data, create_user
+from authors.tests.helpers import (  # noqa E501
+    change_username_data,
+    create_admin_user,
+    create_user,
+)
 from authors.tests.mixins_test import AuthorAPIMixin
 
 User = get_user_model()
@@ -84,3 +88,20 @@ class AuthorAPIChangeUsernameTest(AuthorAPIMixin):
             const.CANNOT_CHANGE_USERNAME_ERROR % {'days': 3},
             response.data['new_username']
         )
+
+    def test_wait_time_not_work_in_admin_user(self):
+        admin_user = create_admin_user()
+
+        self.change_username(
+            username=admin_user.username, password='testing12ADMIN!@1dsFG',
+            create_new_user=False, pk=admin_user.pk,
+            new_username='new_username'
+        )
+
+        response = self.change_username(
+            username=admin_user.username, password='testing12ADMIN!@1dsFG',
+            create_new_user=False, pk=admin_user.pk,
+            new_username='new_username2'
+        )
+
+        self.assertEqual(response.status_code, 200)
