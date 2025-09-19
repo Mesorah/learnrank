@@ -30,8 +30,10 @@ class UsernameValidatorMixin:
 
 
 class ChangeUsernameValidator(UsernameValidatorMixin):
-    def __init__(self, user, new_username, ValidationError, context):
-        self.user = user
+    def __init__(
+            self, change_username_data, new_username, ValidationError, context
+    ):
+        self.change_username_data = change_username_data
         self.new_username = new_username
         self.ValidationError = ValidationError
         self.context = context
@@ -39,15 +41,13 @@ class ChangeUsernameValidator(UsernameValidatorMixin):
         self.control()
 
     def validate(self, field_name):
-        change_username_data = self.user.change_username_data
-
         if (
-            change_username_data is not None
+            self.change_username_data is not None
             and
-            is_wait_time_done() < change_username_data
+            is_wait_time_done() < self.change_username_data
         ):
 
-            time_to_wait = change_username_data - is_wait_time_done()
+            time_to_wait = self.change_username_data - is_wait_time_done()
 
             # Because 7 days becomes 6 days and 23 hours.
             wait_days = time_to_wait.days + 1
@@ -136,23 +136,6 @@ class AuthorValidator(UsernameValidatorMixin):
 
         return self.values
 
-    def is_patch(self):
-        username = self.values.get('username')
-        email = self.values.get('email')
-        password = self.values.get('password')
-
-        if username is not None:
-            self.validate_username('username', add_error=False)
-
-        if email is not None:
-            self.validate_email('email', add_error=False)
-
-        if password is not None:
-            self.validate_serializer()
-
-        if username is None and email is None and password is None:
-            self.ValidationError(const.FORM_INVALID_ERROR)
-
     def control(self):
         if self.context == 'form':
             self.validate_username(
@@ -162,13 +145,9 @@ class AuthorValidator(UsernameValidatorMixin):
             self.validate_form()
 
         if self.context == 'serializer':
-            if self.method == 'PATCH':
-                self.is_patch()
-
-            else:
-                self.validate_username(
+            self.validate_username(
                     'username', username=self.values['username'],
                     add_error=False
                 )
-                self.validate_email('email', add_error=False)
-                self.validate_serializer()
+            self.validate_email('email', add_error=False)
+            self.validate_serializer()
