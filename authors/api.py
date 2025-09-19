@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,28 +13,21 @@ from authors.serializers import AuthorSerializer
 User = get_user_model()
 
 
-class AuthorAPIList(APIView):
+class AuthorAPIPagination(PageNumberPagination):
+    page_size = 5
+
+
+class AuthorAPIList(ListCreateAPIView):
+    queryset = User.objects.all()
     permission_classes = [IsAdminUser]
-    http_method_names = ['get', 'post', 'patch']
+    serializer_class = AuthorSerializer
+    pagination_class = AuthorAPIPagination
 
     def get_permissions(self):
         if self.request.method == 'POST':
             return [IsAuthenticated()]
 
         return [IsAdminUser()]
-
-    def get(self, request):
-        users = User.objects.all()
-        serializer = AuthorSerializer(users, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = AuthorSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class AuthorAPIDetail(APIView):

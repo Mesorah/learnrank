@@ -7,7 +7,7 @@ from authors.tests.mixins_test import AuthorAPIMixin
 
 class AuthorAPIListTest(AuthorAPIMixin):
     def setUp(self):
-        create_user(qtd=3)
+        create_user(qtd=5)
 
         return super().setUp()
 
@@ -21,9 +21,24 @@ class AuthorAPIListTest(AuthorAPIMixin):
 
         self.assertEqual(response.status_code, 401)
 
-    def test_user_with_permission_can_see_the_user_list(self):
+    def test_api_pagination(self):
         response = self.get_authorized_view(
-            self.request_author_api_list, method='get'
+            self.request_author_api_list, method='get',
+            create_new_user=True, page=1
         )
 
-        self.assertEqual(len(response.data), 4)
+        count = response.data.get('count')
+        user_in_a_one_page = len(response.data.get('results'))
+
+        self.assertEqual(user_in_a_one_page, 5)
+
+        # Because get_authorized_view create a new user
+        self.assertEqual(count, 6)
+
+        response = self.get_authorized_view(
+            self.request_author_api_list, method='get',
+            create_new_user=False, page=2
+        )
+        user_in_a_one_page = len(response.data.get('results'))
+
+        self.assertEqual(user_in_a_one_page, 1)

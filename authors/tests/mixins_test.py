@@ -25,10 +25,10 @@ class AuthorAPIMixin(APITestCase):
 
         return response.data['access']
 
-    def request_author_api_list(self, method, *args, **kwargs):
+    def request_author_api_list(self, method, page=1, *args, **kwargs):
         return getattr(self.client, method)(reverse(
             'authors:author_api_list'
-        ), *args, **kwargs)
+        ) + f'?page={page}', *args, **kwargs)
 
     def request_author_api_detail(self, method, pk, *args, **kwargs):
         return getattr(self.client, method)(reverse(
