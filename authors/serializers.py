@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.fields import empty
 
 import authors.constants as const
 from authors.utils import change_username
@@ -29,15 +30,15 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True, required=True)
 
-    def __init__(self, instance=None, data=None, **kwargs):
-        super().__init__(instance, data, **kwargs)
+    def __init__(self, instance=None, data=empty, **kwargs):
+        super().__init__(instance=instance, data=data, **kwargs)
 
         self.request = self.context.get('request')
 
         if self.request and self.request.method == 'PATCH':
             self.actual_username = instance.username
             self.change_username_data = instance.change_username_data
-            self.new_username = data['username']
+            self.new_username = data.get('username')
             self.is_staff = self.request.user.is_staff
 
     def validate(self, attrs):

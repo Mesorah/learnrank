@@ -32,7 +32,7 @@ class AuthorAPIList(ListCreateAPIView):
 
 class AuthorAPIDetail(APIView):
     def get_permissions(self):
-        if self.request.method == 'PATCH':
+        if self.request.method in ['GET', 'PATCH']:
             return [IsAdminOrSelf()]
 
         return [IsAdminUser()]
@@ -47,4 +47,10 @@ class AuthorAPIDetail(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        self.check_object_permissions(request, user)
+        serializer = AuthorSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
