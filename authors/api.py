@@ -1,11 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import (  # noqa E501
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from authors.permissions import IsAdminOrSelf
 from authors.serializers import AuthorSerializer
@@ -30,34 +29,14 @@ class AuthorAPIList(ListCreateAPIView):
         return [IsAdminUser()]
 
 
-class AuthorAPIDetail(APIView):
+class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
+    http_method_names = ['get', 'patch', 'delete', 'options', 'head']
+    queryset = User.objects.all()
+    permission_classes = [IsAdminUser]
+    serializer_class = AuthorSerializer
+
     def get_permissions(self):
         if self.request.method in ['GET', 'PATCH']:
             return [IsAdminOrSelf()]
 
         return [IsAdminUser()]
-
-    def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        self.check_object_permissions(request, user)
-        serializer = AuthorSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def patch(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        self.check_object_permissions(request, user)
-        serializer = AuthorSerializer(
-            user, data=request.data, partial=True,
-            context={'request': request, 'view': self}
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def delete(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        self.check_object_permissions(request, user)
-        user.delete()
-
-        return Response(status=status.HTTP_200_OK)

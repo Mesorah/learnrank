@@ -56,7 +56,7 @@ class AuthorAPIDELETETest(AuthorAPIMixin):
             }
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
 
     def test_user_can_delete_account_when_admin_and_owner(self):
         response = self.get_authorized_view(
@@ -67,4 +67,4 @@ class AuthorAPIDELETETest(AuthorAPIMixin):
             }
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
