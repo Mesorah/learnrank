@@ -37,6 +37,12 @@ class AuthorAPIDetail(APIView):
 
         return [IsAdminUser()]
 
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        self.check_object_permissions(request, user)
+        serializer = AuthorSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def patch(self, request, pk):
         user = get_object_or_404(User, pk=pk)
         self.check_object_permissions(request, user)
@@ -49,8 +55,9 @@ class AuthorAPIDetail(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def get(self, request, pk):
+    def delete(self, request, pk):
         user = get_object_or_404(User, pk=pk)
         self.check_object_permissions(request, user)
-        serializer = AuthorSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user.delete()
+
+        return Response(status=status.HTTP_200_OK)
