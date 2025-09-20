@@ -4,7 +4,7 @@ from rest_framework.fields import empty
 
 import authors.constants as const
 from authors.utils import change_username
-from authors.validators import AuthorValidator, ChangeUsernameValidator
+from authors.validators import AuthorPATCHValidator, AuthorValidator
 
 User = get_user_model()
 
@@ -45,9 +45,9 @@ class AuthorSerializer(serializers.ModelSerializer):
         attrs = super().validate(attrs)
 
         if self.request and self.request.method == 'PATCH':
-            ChangeUsernameValidator(
+            AuthorPATCHValidator(
+                values=attrs,
                 change_username_data=self.change_username_data,
-                new_username=self.new_username,
                 ValidationError=serializers.ValidationError,
                 is_staff=self.is_staff
             )
