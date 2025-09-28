@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.generics import (  # noqa E501
     ListCreateAPIView,
@@ -45,22 +45,13 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
         return [IsAdminUser()]
 
 
+@csrf_exempt
 @api_view(http_method_names=['POST'])
 def author_api_check_username(request):
     serializer = CheckAuthorUsernameSerializer(data=request.data)
-
     username = request.data.get('username')
-    username_already_exists = User.objects.filter(
-        username=username
-    ).exists()
 
-    if serializer.is_valid():
-        return Response({
-            'username_is_valid': True,
-            'username_already_exists': username_already_exists
-        })
-    else:
-        return Response({
-            'username_is_valid': False,
-            'username_already_exists': username_already_exists
-        })
+    can_use = not User.objects.filter(username=username).exists()
+    username_is_valid = serializer.is_valid()
+
+    return Response({'success': username_is_valid and can_use})
