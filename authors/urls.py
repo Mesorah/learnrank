@@ -49,6 +49,13 @@ urlpatterns = [
     ),
 
     path(
+        'api/check-username/',
+        api.author_api_check_username,
+        name='author_api_check_username'
+    ),
+
+
+    path(
         'api/token/',
         TokenObtainPairView.as_view(),
         name='token_obtain_pair'

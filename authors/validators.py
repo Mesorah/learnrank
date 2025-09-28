@@ -150,13 +150,12 @@ class AuthorPATCHValidator(AuthorValidatorMixin):
 class AuthorValidator(AuthorValidatorMixin):
     def __init__(
             self, values, ValidationError, add_error=None,
-            context=None, method=None
+            context=None
     ):
         self.values = values
         self.ValidationError = ValidationError
         self.add_error = add_error
         self.context = context
-        self.method = method
 
         self.control()
 
@@ -199,3 +198,19 @@ class AuthorValidator(AuthorValidatorMixin):
                 'email', email=self.values['email'], add_error=False
             )
             self.validate_serializer()
+
+
+class CheckAuthorUsernameValidator(AuthorValidatorMixin):
+    def __init__(
+            self, values, ValidationError
+    ):
+        self.values = values
+        self.ValidationError = ValidationError
+
+        self.control()
+
+    def control(self):
+
+        self.validate_username(
+            'username', username=self.values['username'], add_error=False
+        )

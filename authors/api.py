@@ -1,13 +1,16 @@
 from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import (  # noqa E501
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 
 from authors.permissions import IsAdminOrSelf
-from authors.serializers import AuthorSerializer
+from authors.serializers import AuthorSerializer, CheckAuthorUsernameSerializer
 
 User = get_user_model()
 
@@ -40,3 +43,11 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
             return [IsAdminOrSelf()]
 
         return [IsAdminUser()]
+
+
+@api_view(http_method_names=['POST'])
+def author_api_check_username(request):
+    serializer = CheckAuthorUsernameSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    return Response(status=status.HTTP_200_OK)
