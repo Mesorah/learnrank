@@ -77,12 +77,8 @@ class AuthorSerializer(serializers.ModelSerializer):
         return super_save
 
 
-class CheckAuthorUsernameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = [
-            'id', 'username'
-        ]
+class CheckAuthorUsernameSerializer(serializers.Serializer):
+    username = serializers.CharField(min_length=4, max_length=30)
 
     def validate(self, attrs):
         attrs = super().validate(attrs)

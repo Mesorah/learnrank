@@ -9,7 +9,9 @@ User = get_user_model()
 
 
 class AuthorValidatorMixin:
-    def validate_username(self, field_name, username, add_error=True):
+    def validate_username_length(
+            self, field_name, username, add_error=True
+    ):
         if len(username) <= 3:
             msg = const.USERNAME_MIN_LENGTH_ERROR
 
@@ -18,6 +20,11 @@ class AuthorValidatorMixin:
             else:
                 raise self.ValidationError({field_name: msg})
 
+        return username
+
+    def validade_username_already_exists(
+            self, field_name, username, add_error=True
+    ):
         if User.objects.filter(username=username).exists():
             msg = const.USERNAME_TAKEN_ALREADY_ERROR
 
@@ -98,7 +105,12 @@ class ChangeUsernameValidator(AuthorValidatorMixin):
         self.control()
 
     def control(self):
-        self.validate_username(
+        self.validate_username_length(
+            field_name='new_username', username=self.new_username,
+            add_error=False
+        )
+
+        self.validade_username_already_exists(
             field_name='new_username', username=self.new_username,
             add_error=False
         )
@@ -129,7 +141,12 @@ class AuthorPATCHValidator(AuthorValidatorMixin):
                     field_name='new_username'
                 )
 
-            self.validate_username(
+            self.validate_username_length(
+                field_name='new_username', username=self.values['username'],
+                add_error=False
+            )
+
+            self.validade_username_already_exists(
                 field_name='new_username', username=self.values['username'],
                 add_error=False
             )
@@ -183,17 +200,28 @@ class AuthorValidator(AuthorValidatorMixin):
 
     def control(self):
         if self.context == 'form':
-            self.validate_username(
-                'username', username=self.values['username']
+            self.validate_username_length(
+                field_name='username', username=self.values['username'],
+                add_error=False
+            )
+
+            self.validade_username_already_exists(
+                field_name='username', username=self.values['username'],
+                add_error=False
             )
             self.validate_email('email', email=self.values['email'])
             self.validate_form()
 
         if self.context == 'serializer':
-            self.validate_username(
-                    'username', username=self.values['username'],
-                    add_error=False
-                )
+            self.validate_username_length(
+                field_name='username', username=self.values['username'],
+                add_error=False
+            )
+
+            self.validade_username_already_exists(
+                field_name='username', username=self.values['username'],
+                add_error=False
+            )
             self.validate_email(
                 'email', email=self.values['email'], add_error=False
             )
@@ -210,7 +238,7 @@ class CheckAuthorUsernameValidator(AuthorValidatorMixin):
         self.control()
 
     def control(self):
-
-        self.validate_username(
-            'username', username=self.values['username'], add_error=False
+        self.validate_username_length(
+            field_name='username', username=self.values['username'],
+            add_error=False
         )

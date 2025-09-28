@@ -48,6 +48,19 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
 @api_view(http_method_names=['POST'])
 def author_api_check_username(request):
     serializer = CheckAuthorUsernameSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
 
-    return Response(status=status.HTTP_200_OK)
+    username = request.data.get('username')
+    username_already_exists = User.objects.filter(
+        username=username
+    ).exists()
+
+    if serializer.is_valid():
+        return Response({
+            'username_is_valid': True,
+            'username_already_exists': username_already_exists
+        })
+    else:
+        return Response({
+            'username_is_valid': False,
+            'username_already_exists': username_already_exists
+        })
