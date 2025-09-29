@@ -140,5 +140,8 @@ GitHub.sublime-settings
 # Translation
 *.mo
 
+# Jest
+node_modules
+
 # Me
 _me

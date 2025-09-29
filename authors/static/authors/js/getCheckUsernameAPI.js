@@ -1,6 +1,6 @@
 const apiURL = 'http://127.0.0.1:8000/authors/api/check-username/';
 
-async function fetchCheckUsername(username) {
+export async function fetchCheckUsername(username) {
     const options = {
         method: 'POST',
         headers: {
@@ -29,5 +29,3 @@ async function fetchCheckUsername(username) {
         console.error('Request Error', error);
     }
 }
-
-fetchCheckUsername('test');
