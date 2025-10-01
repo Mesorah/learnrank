@@ -1,5 +1,6 @@
 {% extends "authors/base.html" %}
 {% load i18n %}
+{% load static %}
 
 
 {% block content %}
@@ -19,4 +20,11 @@
             {% endif %}
         </div>
     {% endif %}
+
+    <script type="module">
+        import { main } from "{% static 'authors/js/validateForms.js' %}";
+        document.addEventListener("DOMContentLoaded", () => {
+            main();
+        });
+    </script>
 {% endblock content %}

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { attachUsernameListener, validateUsernameLength } from '@js/validateForms';
+import { main, validateUsernameLength } from '@js/validateForms';
 
 describe('Test input form validations', () => {
     const formClass = 'author-form';
@@ -26,7 +26,7 @@ describe('Test input form validations', () => {
         form = document.querySelector(`.${formClass}`);
         usernameInput = form.querySelector(`#${usernameInputID}`);
 
-        attachUsernameListener();
+        main();
     });
 
     test('username length validator message', () => {
@@ -42,6 +42,15 @@ describe('Test input form validations', () => {
 
         const errorSpan = document.querySelector(`.${errorSpanClass}`);
         expect(errorSpan).not.toBeNull();
-        expect(errorSpan.textContent).toBe('Please enter at least 4 characters.')
+        expect(errorSpan.textContent).toBe('Please enter at least 4 characters.');
+    })
+
+    test('not displays error message', () => {
+        usernameInput.value = 'abcd';
+        usernameInput.dispatchEvent(new Event('input'));
+
+        const errorSpan = document.querySelector(`.${errorSpanClass}`);
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe('');
     })
 });
