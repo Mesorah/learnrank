@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { main, validatePasswordHasSymbols, validateUsernameLength } from '@js/validateForms';
+import { main } from '@js/validateForms';
 
 
 const FORM_CLASS = 'author-form';
@@ -45,16 +45,6 @@ describe('Test Username input form validations', () => {
         ({ usernameInput } = setupFormTest());
     });
 
-    test('username length validator message success', () => {
-        expect(validateUsernameLength('abcd')).toBe(true);
-    });
-
-    test('username length validator message error', () => {
-        expect(validateUsernameLength('abc')).toBe(
-            'Please enter at least 4 characters.'
-        );
-    });
-
     test('displays error message when username is too short', () => {
         usernameInput.value = 'abc';
         usernameInput.dispatchEvent(new Event('input'));
@@ -80,16 +70,6 @@ describe('Test Password input form validations', () => {
 
     beforeEach(() => {
         ({ password1Input } = setupFormTest());
-    });
-
-    test('password symbols validator message success', () => {
-        expect(validatePasswordHasSymbols('ab12!')).toBe(true);
-    });
-
-    test('password symbols validator message error', () => {
-        expect(validatePasswordHasSymbols('ab12')).toBe(
-            'The password must contain symbols.'
-        );
     });
 
     test('password no has symbols show error', () => {
