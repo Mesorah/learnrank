@@ -11,32 +11,63 @@ export function validateUsernameLength(username) {
 // validade_username_already_exists
 // validate_email
 
-export function validatePasswordHasSymbols(password) {
-    if(password.length <= 0) return true;
-    
-    // password do not have symbols
-    if(/\W/.test(password) === false) {
-        // colocar tradução
-        return 'The password must contain symbols.';
+// validatePasswordLength
+export class PasswordValidators {
+    constructor() {
+        this._errors = [];
     }
 
-    return true;
-}
-
-function attachPasswordListener(passwordInput, form, errorSpan) {
-    passwordInput.addEventListener('input', () => {
-        const validation = validatePasswordHasSymbols(passwordInput.value);
-
-        if(validation !== true) {
-            errorSpan.textContent = validation;
-        } else {
-            errorSpan.textContent = '';
+    validatePasswordContainsSymbols(password) {
+        if(password.length <= 0) return true;
+        
+        // password do not have symbols
+        if(/\W/.test(password) === false) {
+            // colocar tradução
+            const msg = 'The password must contain symbols.';
+            this._errors.push(msg);
+            return msg;
         }
 
+        return true;
+    };
+
+    validatePasswordContainsNumbers(password) {
+        if(password.length <= 0) return true;
+        
+        // password do not have numbers
+        if(/\d/.test(password) === false) {
+            // colocar tradução
+            const msg = 'Password must contain numbers.';
+            this._errors.push(msg);
+            return msg;
+        }
+
+        return true;
+    };
+
+    get errors() {
+        return this._errors;
+    }
+};
+
+
+function attachPasswordListener(passwordInput, errorSpan) {
+    passwordInput.addEventListener('input', () => {
+        const passwordValidators = new PasswordValidators();
+
+        passwordValidators.validatePasswordContainsSymbols(passwordInput.value);
+        passwordValidators.validatePasswordContainsNumbers(passwordInput.value);
+
+        const errors = passwordValidators.errors;
+
+        errorSpan.textContent = '';
+        for(let error of errors) {
+            errorSpan.textContent += error;
+        }
     })
 }
 
-function attachUsernameListener(usernameInput, form, errorSpan) {
+function attachUsernameListener(usernameInput, errorSpan) {
     usernameInput.addEventListener('input', () => {
         const validation = validateUsernameLength(usernameInput.value);
 
@@ -72,6 +103,6 @@ export function main() {
     const {form, usernameInput, passwordInput} = getElements();
     const errorSpan = createErrorSpan(form);
 
-    attachUsernameListener(usernameInput, form, errorSpan);
-    attachPasswordListener(passwordInput, form, errorSpan);
+    attachUsernameListener(usernameInput, errorSpan);
+    attachPasswordListener(passwordInput, errorSpan);
 }

@@ -1,8 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-
-import { validatePasswordHasSymbols, validateUsernameLength } from '@js/validateForms';
+import { PasswordValidators, validateUsernameLength } from '@js/validateForms';
 
 
 describe('Test Username form validations', () => {
@@ -19,13 +15,37 @@ describe('Test Username form validations', () => {
 
 
 describe('Test Password form validations', () => {
-    test('password symbols validator message success', () => {
-        expect(validatePasswordHasSymbols('ab12!')).toBe(true);
+    let passwordValidators;
+
+    beforeEach(() => {
+        passwordValidators = new PasswordValidators();
+    })
+    
+    describe('password contains symbols', () => {
+            test('should show validator success message', () => {
+                expect(
+                    passwordValidators.validatePasswordContainsSymbols('ab12!')
+                ).toBe(true);
+        });
+
+        test('should show validator error message', () => {
+            expect(
+                passwordValidators.validatePasswordContainsSymbols('ab12')
+            ).toBe(
+                'The password must contain symbols.'
+            );
+        });
     });
 
-    test('password symbols validator message error', () => {
-        expect(validatePasswordHasSymbols('ab12')).toBe(
-            'The password must contain symbols.'
-        );
+    describe('password contains numbers', () => {
+        test('should show validator success message', () => {
+            expect(passwordValidators.validatePasswordContainsNumbers('ab12!')).toBe(true);
+        });
+
+        test('should snow validator error message', () => {
+            expect(passwordValidators.validatePasswordContainsNumbers('abc!')).toBe(
+                'Password must contain numbers.'
+            );
+        });
     });
-})
+});

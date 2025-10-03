@@ -1,6 +1,6 @@
 /**
  * @jest-environment jsdom
- */
+*/
 
 import { main } from '@js/validateForms';
 
@@ -32,6 +32,7 @@ function setupFormTest() {
         usernameInput, password1Input
     };
 }
+
 
 function getErrorSpan() {
     return document.querySelector(`.${ERROR_SPAN_CLASS}`);
@@ -72,21 +73,43 @@ describe('Test Password input form validations', () => {
         ({ password1Input } = setupFormTest());
     });
 
-    test('password no has symbols show error', () => {
-        password1Input.value = '123456ab';
-        password1Input.dispatchEvent(new Event('input'));
+    describe('password contains symbols', () => {
+        test('should show validator error message', () => {
+            password1Input.value = '123456ab';
+            password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
-        expect(errorSpan).not.toBeNull();
-        expect(errorSpan.textContent).toBe('The password must contain symbols.');
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('The password must contain symbols.');
+        });
+
+        test('should show validator success message', () => {
+            password1Input.value = '123456a!';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('');
+        });
     });
 
-    test('password has symbols do not show error', () => {
-        password1Input.value = '123456a!';
-        password1Input.dispatchEvent(new Event('input'));
+    describe('password contains numbers', () => {
+        test('should show validator error message', () => {
+            password1Input.value = 'abcd!@';
+            password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
-        expect(errorSpan).not.toBeNull();
-        expect(errorSpan.textContent).toBe('');
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('Password must contain numbers.');
+        });
+
+        test('should show validator sucess message', () => {
+            password1Input.value = 'abcd1234!';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('');
+        });
     });
 })
