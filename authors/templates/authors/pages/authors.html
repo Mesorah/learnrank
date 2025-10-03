@@ -21,6 +21,8 @@
         </div>
     {% endif %}
 
+    <script src="{% url 'javascript-catalog' %}"></script>
+
     <script type="module">
         import { main } from "{% static 'authors/js/validateForms.js' %}";
         document.addEventListener("DOMContentLoaded", () => {

@@ -1,7 +1,7 @@
 export function validateUsernameLength(username) {
-    if(username.length <= 3) {
-        // colocar tradução
-        return 'Please enter at least 4 characters.';
+    if(username.length < 4) {
+        // deixar a msg tipo a do length da password
+        return gettext('Please enter at least 4 characters.');
     }
     
     return true;
@@ -14,6 +14,18 @@ export function validateUsernameLength(username) {
 
 // validatePasswordMatch
 
+// | Função         | Uso                                        |
+// | -------------- | ------------------------------------------ |
+// | `gettext`      | Tradução simples                           |
+// | `ngettext`     | Tradução plural                            |
+// | `interpolate`  | Substituição de variáveis dentro da string |
+// | `get_format`   | Pega formato de datas, números etc.        |
+// | `gettext_noop` | Marca string para tradução posterior       |
+// | `pgettext`     | Tradução com contexto                      |
+// | `npgettext`    | Plural + contexto                          |
+// | `pluralidx`    | Define índice do plural (interno)          |
+
+
 export class PasswordValidators {
     constructor() {
         this._errors = [];
@@ -23,8 +35,12 @@ export class PasswordValidators {
         const passwordLength = password.length;
 
         if(passwordLength < 8) {
-            // colocar tradução
-            const msg = `Please lengthen this text to 8 characters or more (you are currently using ${passwordLength} characters).`;
+            const string = gettext(
+                'Please lengthen this text to 8 characters or more (you are currently using %(passwordLength)s characters).'
+            );
+
+            const msg = interpolate(string, {passwordLength}, true);
+
             this._errors.push(msg);
 
             return msg;
@@ -36,8 +52,7 @@ export class PasswordValidators {
     validatePasswordContainsSymbols(password) {        
         // password do not have symbols
         if(/\W/.test(password) === false) {
-            // colocar tradução
-            const msg = 'The password must contain symbols.';
+            const msg = gettext('The password must contain symbols.');
             this._errors.push(msg);
 
             return msg;
@@ -50,7 +65,7 @@ export class PasswordValidators {
         // password do not have numbers
         if(/\d/.test(password) === false) {
             // colocar tradução
-            const msg = 'Password must contain numbers.';
+            const msg = gettext('Password must contain numbers.');
             this._errors.push(msg);
 
             return msg;
