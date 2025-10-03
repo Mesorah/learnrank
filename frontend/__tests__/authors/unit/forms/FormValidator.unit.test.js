@@ -20,6 +20,32 @@ describe('Test Password form validations', () => {
     beforeEach(() => {
         passwordValidators = new PasswordValidators();
     })
+
+    describe('password length validor', () => {
+        test('should show valiidator success message', () => {
+            expect(
+                passwordValidators.validatePasswordLength('abcd12!@')
+            ).toBe(true);
+        });
+
+        test('should show valiidator error message', () => {
+            expect(
+                passwordValidators.validatePasswordLength(
+                    'abc12!@'
+                )).toBe(
+                'Please lengthen this text to 8 characters or more (you are currently using 7 characters).'
+            );
+        });
+
+        test('should show valiidator error message different length of characters', () => {
+            expect(
+                passwordValidators.validatePasswordLength(
+                'abc12@'
+            )).toBe(
+                'Please lengthen this text to 8 characters or more (you are currently using 6 characters).'
+            );
+        });
+    });
     
     describe('password contains symbols', () => {
             test('should show validator success message', () => {

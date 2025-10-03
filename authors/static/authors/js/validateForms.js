@@ -8,23 +8,38 @@ export function validateUsernameLength(username) {
     
 }
 
+
 // validade_username_already_exists
 // validate_email
 
-// validatePasswordLength
+// validatePasswordMatch
+
 export class PasswordValidators {
     constructor() {
         this._errors = [];
     }
 
-    validatePasswordContainsSymbols(password) {
-        if(password.length <= 0) return true;
-        
+    validatePasswordLength(password) {
+        const passwordLength = password.length;
+
+        if(passwordLength < 8) {
+            // colocar tradução
+            const msg = `Please lengthen this text to 8 characters or more (you are currently using ${passwordLength} characters).`;
+            this._errors.push(msg);
+
+            return msg;
+        }
+
+        return true;
+    };
+
+    validatePasswordContainsSymbols(password) {        
         // password do not have symbols
         if(/\W/.test(password) === false) {
             // colocar tradução
             const msg = 'The password must contain symbols.';
             this._errors.push(msg);
+
             return msg;
         }
 
@@ -32,13 +47,12 @@ export class PasswordValidators {
     };
 
     validatePasswordContainsNumbers(password) {
-        if(password.length <= 0) return true;
-        
         // password do not have numbers
         if(/\d/.test(password) === false) {
             // colocar tradução
             const msg = 'Password must contain numbers.';
             this._errors.push(msg);
+
             return msg;
         }
 
@@ -55,6 +69,7 @@ function attachPasswordListener(passwordInput, errorSpan) {
     passwordInput.addEventListener('input', () => {
         const passwordValidators = new PasswordValidators();
 
+        passwordValidators.validatePasswordLength(passwordInput.value);
         passwordValidators.validatePasswordContainsSymbols(passwordInput.value);
         passwordValidators.validatePasswordContainsNumbers(passwordInput.value);
 
@@ -66,6 +81,7 @@ function attachPasswordListener(passwordInput, errorSpan) {
         }
     })
 }
+
 
 function attachUsernameListener(usernameInput, errorSpan) {
     usernameInput.addEventListener('input', () => {

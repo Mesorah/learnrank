@@ -73,6 +73,26 @@ describe('Test Password input form validations', () => {
         ({ password1Input } = setupFormTest());
     });
 
+    describe('password length validor', () => {
+        test('should show valiidator error message', () => {
+            password1Input.value = 'abc12!@';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('Please lengthen this text to 8 characters or more (you are currently using 7 characters).');
+        });
+
+        test('should show valiidator success message', () => {
+            password1Input.value = 'abcd12!@';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('');
+        });
+    });
+
     describe('password contains symbols', () => {
         test('should show validator error message', () => {
             password1Input.value = '123456ab';
@@ -95,7 +115,7 @@ describe('Test Password input form validations', () => {
 
     describe('password contains numbers', () => {
         test('should show validator error message', () => {
-            password1Input.value = 'abcd!@';
+            password1Input.value = 'abcde!@#';
             password1Input.dispatchEvent(new Event('input'));
 
             const errorSpan = getErrorSpan();
