@@ -9,7 +9,7 @@ describe('Test Username form validations', () => {
 
     test('username length validator message error', () => {
         expect(validateUsernameLength('abc')).toBe(
-            'Please enter at least 4 characters.'
+            ERRORS.USERNAME_MIN_LENGTH_ERROR(3)
         );
     });
 });

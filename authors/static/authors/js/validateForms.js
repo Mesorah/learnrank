@@ -2,14 +2,17 @@ import { ERRORS } from "./constants.js";
 
 
 export function validateUsernameLength(username) {
-    if(username.length < 4) {
-        // deixar a msg tipo a do length da password
-        return gettext('Please enter at least 4 characters.');
+    const usernameLength = username.length;
+
+    if(usernameLength < 4) {
+        const string = ERRORS.USERNAME_MIN_LENGTH_ERROR(usernameLength);
+        // return gettext('Please enter at least 4 characters (you are currently using ${usernameLength} characters).');
+
+        return interpolate(string, {usernameLength}, true);
     }
     
     return true;
-    
-}
+};
 
 
 // validade_username_already_exists
@@ -37,7 +40,7 @@ export class PasswordValidators {
         const passwordLength = password.length;
 
         if(passwordLength < 8) {
-            const string = gettext(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(passwordLength))
+            const string = ERRORS.PASSWORD1_MIN_LENGTH_ERROR(passwordLength);
 
             const msg = interpolate(string, {passwordLength}, true);
 
@@ -52,7 +55,7 @@ export class PasswordValidators {
     validatePasswordContainsSymbols(password) {        
         // password do not have symbols
         if(/\W/.test(password) === false) {
-            const msg = gettext(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
+            const msg = ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR;
             this._errors.push(msg);
 
             return msg;
@@ -64,7 +67,7 @@ export class PasswordValidators {
     validatePasswordContainsNumbers(password) {
         // password do not have numbers
         if(/\d/.test(password) === false) {
-            const msg = gettext(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
+            const msg = ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR;
             this._errors.push(msg);
 
             return msg;
@@ -78,7 +81,7 @@ export class PasswordValidators {
         if(password1.length === 0 || password2.length === 0) return;
 
         if(password1 !== password2) {
-            const msg = gettext(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
+            const msg = ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR;
             this._errors.push(msg);
 
             return msg;

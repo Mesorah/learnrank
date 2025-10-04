@@ -55,7 +55,7 @@ describe('Test Username input form validations', () => {
 
         const errorSpan = getErrorSpan();
         expect(errorSpan).not.toBeNull();
-        expect(errorSpan.textContent).toBe('Please enter at least 4 characters.');
+        expect(errorSpan.textContent).toBe(ERRORS.USERNAME_MIN_LENGTH_ERROR(3));
     })
 
     test('not displays error message', () => {

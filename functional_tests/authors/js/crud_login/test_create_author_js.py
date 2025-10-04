@@ -23,13 +23,15 @@ class CreateAuthorMessagesTest(BaseWebDriverForFunctionalTests):
         # Enter to signup page
         self.go_to_url('authors:signup')
 
-        # filled in the field with 'a'
-        self.fill_credentials(id_username='a')
+        # filled in the field with 'ab'
+        self.fill_credentials(id_username='ab')
 
         error_messages = self.get_errors()
 
         self.assertIn(
-            'Por favor, insira pelo menos 4 caracteres.', error_messages
+            'Por favor, insira pelo menos 4 caracteres '
+            '(você está usando atualmente 2 caracteres).',
+            error_messages
         )
 
     def test_password_length_error_message_portuguese_translation(self):
