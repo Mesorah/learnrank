@@ -5,9 +5,6 @@
   "scripts": {
     "test": "jest"
   },
-  "jest": {
-    "testEnvironment": "jest-environment-jsdom"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
