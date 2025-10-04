@@ -1,34 +1,49 @@
 import { ERRORS } from "./constants.js";
+import { fetchCheckUsername } from "./getCheckUsernameAPI.js";
 
 
-export function validateUsernameLength(username) {
-    const usernameLength = username.length;
-
-    if(usernameLength < 4) {
-        const string = ERRORS.USERNAME_MIN_LENGTH_ERROR(usernameLength);
-        // return gettext('Please enter at least 4 characters (you are currently using ${usernameLength} characters).');
-
-        return interpolate(string, {usernameLength}, true);
+export class UsernameValidators {
+    constructor() {
+        this._errors = [];
     }
-    
-    return true;
+
+    validateUsernameLength(username) {
+        const usernameLength = username.length;
+
+        if(usernameLength < 4) {
+            const string = ERRORS.USERNAME_MIN_LENGTH_ERROR(usernameLength);
+            
+            const msg = interpolate(string, {usernameLength}, true);
+
+            this._errors.push(msg);
+
+            return msg;
+        }
+        
+        return true;
+    };
+
+    async validateUsernameAlreadyRegistred(username) {
+        const result = await fetchCheckUsername(username);
+        const usernameAlreadyRegistred = result['username_already_registred'];
+
+        if(usernameAlreadyRegistred) {
+            const msg = ERRORS.USERNAME_TAKEN_ALREADY_ERROR;
+            this._errors.push(msg);
+
+            return msg;
+        }
+
+        return true;
+    };
+
+    get errors() {
+        return this._errors;
+    }
 };
 
 
-// validade_username_already_exists
 // validate_email
-
-
-// | Função         | Uso                                        |
-// | -------------- | ------------------------------------------ |
-// | `gettext`      | Tradução simples                           |
-// | `ngettext`     | Tradução plural                            |
-// | `interpolate`  | Substituição de variáveis dentro da string |
-// | `get_format`   | Pega formato de datas, números etc.        |
-// | `gettext_noop` | Marca string para tradução posterior       |
-// | `pgettext`     | Tradução com contexto                      |
-// | `npgettext`    | Plural + contexto                          |
-// | `pluralidx`    | Define índice do plural (interno)          |
 
 
 export class PasswordValidators {
@@ -104,6 +119,22 @@ function sendErrors(passwordValidators, errorSpan) {
     }
 };
 
+function attachUsernameListener(usernameInput, errorSpan) {
+    usernameInput.addEventListener('input', async () => {
+        const usernameValidators = new UsernameValidators();
+
+        usernameValidators.validateUsernameLength(usernameInput.value);
+        const msg = await usernameValidators.validateUsernameAlreadyRegistred(usernameInput.value);
+
+        const errors = usernameValidators.errors;
+
+        errorSpan.textContent = '';
+        for(let error of errors) {
+            errorSpan.textContent += error;
+        }
+    }) 
+};
+
 function validatePassword(password1Input, password2Input, errorSpan) {
     const passwordValidators = new PasswordValidators();
 
@@ -124,19 +155,6 @@ function attachPasswordListener(password1Input, password2Input, errorSpan) {
     password2Input.addEventListener('input', () => {
         validatePassword(password1Input, password2Input, errorSpan);
     })
-};
-
-
-function attachUsernameListener(usernameInput, errorSpan) {
-    usernameInput.addEventListener('input', () => {
-        const validation = validateUsernameLength(usernameInput.value);
-
-        if(validation !== true) {
-            errorSpan.textContent = validation;
-        } else {
-            errorSpan.textContent = '';
-        }
-    }) 
 };
 
 

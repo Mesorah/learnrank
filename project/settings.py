@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'debug_toolbar',
     'authors',
     'home',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,6 +144,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "authors.UserProfile"
+
+# SECURITY WARNING: don't run with CORS_ALLOW_ALL_ORIGINS turned on in production!
+CORS_ALLOW_ALL_ORIGINS = True
 
 if bool(os.getenv('DJANGO_TEST')) is True:
     EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
