@@ -15,14 +15,14 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
             data={'username': 'testing'}
         )
 
-        self.assertTrue(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])
 
     def test_check_user_there_are_no_other_users_fail(self):
         response = self.request_author_api_check_username(
             data={'username': 'abc'}
         )
 
-        self.assertFalse(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])
 
     def test_check_user_there_are_other_users_sucess(self):
         create_user(username='other_username')
@@ -31,7 +31,7 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
             data={'username': 'testing'}
         )
 
-        self.assertTrue(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])
 
     def test_check_user_there_are_other_users_fail(self):
         create_user()
@@ -40,20 +40,20 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
             data={'username': 'testing'}
         )
 
-        self.assertFalse(response.data['success'])
+        self.assertTrue(response.data['username_already_registred'])
 
     def test_user_did_not_submit_the_correct_field(self):
         response = self.request_author_api_check_username(
             data={'email': 'testing@example.com'}
         )
 
-        self.assertFalse(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])
 
         response = self.request_author_api_check_username(
             data={'password': 'testing12!@1dsFG'}
         )
 
-        self.assertFalse(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])
 
     def test_user_sends_more_than_one_argument_success(self):
         response = self.request_author_api_check_username(
@@ -64,4 +64,4 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
             }
         )
 
-        self.assertTrue(response.data['success'])
+        self.assertFalse(response.data['username_already_registred'])

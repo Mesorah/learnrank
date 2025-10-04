@@ -9,16 +9,20 @@ beforeEach(() => {
 
 describe('Check username API using mock', () => {
     test('should success is true if username do not exists', async() => {
-        fetch.mockResponseOnce(JSON.stringify({result: true}))
+        fetch.mockResponseOnce(JSON.stringify({
+            username_already_registred: false
+        }))
         const result = await fetchCheckUsername('usernameDoNotExists');
 
-        expect(result.result).toBe(true);
+        expect(result.username_already_registred).toBe(false);
     });
 
     test('should success is false if username exists', async() => {
-        fetch.mockResponseOnce(JSON.stringify({result: false}))
+        fetch.mockResponseOnce(JSON.stringify({
+            username_already_registred: true
+        }))
         const result = await fetchCheckUsername('usernameExists');
 
-        expect(result.result).toBe(false);
-    })
+        expect(result.username_already_registred).toBe(true);
+    });
 });

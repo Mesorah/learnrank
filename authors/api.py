@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from authors.permissions import IsAdminOrSelf
-from authors.serializers import AuthorSerializer, CheckAuthorUsernameSerializer
+from authors.serializers import AuthorSerializer
 
 User = get_user_model()
 
@@ -48,10 +48,12 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
 @csrf_exempt
 @api_view(http_method_names=['POST'])
 def author_api_check_username(request):
-    serializer = CheckAuthorUsernameSerializer(data=request.data)
     username = request.data.get('username')
 
-    can_use = not User.objects.filter(username=username).exists()
-    username_is_valid = serializer.is_valid()
+    username_already_registred = User.objects.filter(
+        username=username
+    ).exists()
 
-    return Response({'success': username_is_valid and can_use})
+    return Response({
+        'username_already_registred': username_already_registred
+    })

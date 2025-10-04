@@ -28,4 +28,4 @@ export async function fetchCheckUsername(username) {
     } catch(error) {
         console.error('Request Error', error);
     }
-}
+};
