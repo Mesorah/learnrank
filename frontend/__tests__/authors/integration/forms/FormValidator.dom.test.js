@@ -2,6 +2,7 @@
  * @jest-environment jsdom
 */
 
+import { ERRORS } from '@js/constants.js';
 import { main } from '@js/validateForms';
 
 
@@ -83,7 +84,7 @@ describe('Test Password input form validations', () => {
 
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('Please lengthen this text to 8 characters or more (you are currently using 7 characters).');
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(7));
         });
 
         test('should show valiidator success message', () => {
@@ -103,7 +104,7 @@ describe('Test Password input form validations', () => {
 
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('The password must contain symbols.');
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
         });
 
         test('should show validator success message', () => {
@@ -123,7 +124,7 @@ describe('Test Password input form validations', () => {
 
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('Password must contain numbers.');
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
         });
 
         test('should show validator sucess message', () => {
@@ -156,7 +157,7 @@ describe('Test Password input form validations', () => {
 
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('Passwords do not match.');
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
 
         test('should not show symbols, number and length errors', () => {
@@ -167,7 +168,7 @@ describe('Test Password input form validations', () => {
 
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('Passwords do not match.');
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
     });
 })

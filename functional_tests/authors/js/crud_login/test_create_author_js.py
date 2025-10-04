@@ -78,6 +78,4 @@ class CreateAuthorMessagesTest(BaseWebDriverForFunctionalTests):
 
         error_messages = self.get_errors()
 
-        self.fail(error_messages)
-
         self.assertIn('As senhas não coincidem.', error_messages)

@@ -1,3 +1,6 @@
+import { ERRORS } from "./constants.js";
+
+
 export function validateUsernameLength(username) {
     if(username.length < 4) {
         // deixar a msg tipo a do length da password
@@ -34,9 +37,7 @@ export class PasswordValidators {
         const passwordLength = password.length;
 
         if(passwordLength < 8) {
-            const string = gettext(
-                'Please lengthen this text to 8 characters or more (you are currently using %(passwordLength)s characters).'
-            );
+            const string = gettext(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(passwordLength))
 
             const msg = interpolate(string, {passwordLength}, true);
 
@@ -51,7 +52,7 @@ export class PasswordValidators {
     validatePasswordContainsSymbols(password) {        
         // password do not have symbols
         if(/\W/.test(password) === false) {
-            const msg = gettext('The password must contain symbols.');
+            const msg = gettext(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
             this._errors.push(msg);
 
             return msg;
@@ -63,7 +64,7 @@ export class PasswordValidators {
     validatePasswordContainsNumbers(password) {
         // password do not have numbers
         if(/\d/.test(password) === false) {
-            const msg = gettext('Password must contain numbers.');
+            const msg = gettext(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
             this._errors.push(msg);
 
             return msg;
@@ -77,7 +78,7 @@ export class PasswordValidators {
         if(password1.length === 0 || password2.length === 0) return;
 
         if(password1 !== password2) {
-            const msg = gettext('Passwords do not match.');
+            const msg = gettext(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
             this._errors.push(msg);
 
             return msg;
@@ -100,25 +101,25 @@ function sendErrors(passwordValidators, errorSpan) {
     }
 };
 
+function validatePassword(password1Input, password2Input, errorSpan) {
+    const passwordValidators = new PasswordValidators();
+
+    passwordValidators.validatePasswordLength(password1Input.value);
+    passwordValidators.validatePasswordContainsSymbols(password1Input.value);
+    passwordValidators.validatePasswordContainsNumbers(password1Input.value);
+    passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
+
+    sendErrors(passwordValidators, errorSpan);
+}
+
 
 function attachPasswordListener(password1Input, password2Input, errorSpan) {
     password1Input.addEventListener('input', () => {
-        const passwordValidators = new PasswordValidators();
-
-        passwordValidators.validatePasswordLength(password1Input.value);
-        passwordValidators.validatePasswordContainsSymbols(password1Input.value);
-        passwordValidators.validatePasswordContainsNumbers(password1Input.value);
-        passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
-
-        sendErrors(passwordValidators, errorSpan);
+        validatePassword(password1Input, password2Input, errorSpan);
     })
 
     password2Input.addEventListener('input', () => {
-        const passwordValidators = new PasswordValidators();
-
-        passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
-
-        sendErrors(passwordValidators, errorSpan);
+        validatePassword(password1Input, password2Input, errorSpan);
     })
 };
 

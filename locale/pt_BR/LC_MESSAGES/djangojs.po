@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 19:20-0300\n"
+"POT-Creation-Date: 2025-10-04 10:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Please enter at least 4 characters."
 msgstr "Por favor, insira pelo menos 4 caracteres."
 
-#: .\authors\static\authors\js\validateForms.js:39
+#: .\authors\static\authors\js\validateForms.js:38
 msgid ""
 "Please lengthen this text to 8 characters or more (you are currently using %"
 "(passwordLength)s characters)."
@@ -30,10 +30,14 @@ msgstr ""
 "Por favor, aumente este texto para 8 caracteres ou mais (você está usando "
 "atualmente %(passwordLength)s caracteres)."
 
-#: .\authors\static\authors\js\validateForms.js:56
+#: .\authors\static\authors\js\validateForms.js:54
 msgid "The password must contain symbols."
 msgstr "A senha deve conter símbolos."
 
-#: .\authors\static\authors\js\validateForms.js:69
+#: .\authors\static\authors\js\validateForms.js:66
 msgid "Password must contain numbers."
 msgstr "A senha deve conter números."
+
+#: .\authors\static\authors\js\validateForms.js:80
+msgid "Passwords do not match."
+msgstr "As senhas não coincidem."

@@ -1,3 +1,4 @@
+import { ERRORS } from '@js/constants.js';
 import { PasswordValidators, validateUsernameLength } from '@js/validateForms';
 
 
@@ -33,7 +34,7 @@ describe('Test Password form validations', () => {
                 passwordValidators.validatePasswordLength(
                     'abc12!@'
                 )).toBe(
-                'Please lengthen this text to 8 characters or more (you are currently using 7 characters).'
+                ERRORS.PASSWORD1_MIN_LENGTH_ERROR(7)
             );
         });
 
@@ -42,7 +43,7 @@ describe('Test Password form validations', () => {
                 passwordValidators.validatePasswordLength(
                 'abc12@'
             )).toBe(
-                'Please lengthen this text to 8 characters or more (you are currently using 6 characters).'
+                ERRORS.PASSWORD1_MIN_LENGTH_ERROR(6)
             );
         });
     });
@@ -58,7 +59,7 @@ describe('Test Password form validations', () => {
             expect(
                 passwordValidators.validatePasswordContainsSymbols('ab12')
             ).toBe(
-                'The password must contain symbols.'
+                ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
             );
         });
     });
@@ -70,7 +71,7 @@ describe('Test Password form validations', () => {
 
         test('should snow validator error message', () => {
             expect(passwordValidators.validatePasswordContainsNumbers('abc!')).toBe(
-                'Password must contain numbers.'
+                ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
             );
         });
     });
@@ -85,13 +86,13 @@ describe('Test Password form validations', () => {
         test('should show validator error message', () => {
             expect(passwordValidators.validatePasswordsMatch(
                 'abcde1234!@', 'abcde123!@'
-            )).toBe('Passwords do not match.');
+            )).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
 
         test('should not show symbols, number and length errors', () => {
             expect(passwordValidators.validatePasswordsMatch(
                 'abcde1234!@', 'abc'
-            )).toBe('Passwords do not match.');
+            )).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
     });
 });
