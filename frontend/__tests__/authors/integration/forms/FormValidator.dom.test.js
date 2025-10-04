@@ -8,6 +8,7 @@ import { main } from '@js/validateForms';
 const FORM_CLASS = 'author-form';
 const USERNAME_INPUT_ID = 'id_username';
 const PASSWORD1_INPUT_ID = 'id_password1';
+const PASSWORD2_INPUT_ID = 'id_password2';
 const ERROR_SPAN_CLASS = 'error-span';
 
 
@@ -25,11 +26,12 @@ function setupFormTest() {
     const form = document.querySelector(`.${FORM_CLASS}`);
     const usernameInput = form.querySelector(`#${USERNAME_INPUT_ID}`);
     const password1Input = form.querySelector(`#${PASSWORD1_INPUT_ID}`);
+    const password2Input = form.querySelector(`#${PASSWORD2_INPUT_ID}`);
 
     main();
 
     return {
-        usernameInput, password1Input
+        usernameInput, password1Input, password2Input
     };
 }
 
@@ -68,9 +70,10 @@ describe('Test Username input form validations', () => {
 
 describe('Test Password input form validations', () => {
     let password1Input;
+    let password2Input;
 
     beforeEach(() => {
-        ({ password1Input } = setupFormTest());
+        ({ password1Input, password2Input } = setupFormTest());
     });
 
     describe('password length validor', () => {
@@ -130,6 +133,41 @@ describe('Test Password input form validations', () => {
             const errorSpan = getErrorSpan();
             expect(errorSpan).not.toBeNull();
             expect(errorSpan.textContent).toBe('');
+        });
+    });
+
+    describe('password match', () => {
+        test('should show validator success', () => {
+            password1Input.value = 'abcde1234!@';
+            password2Input.value = 'abcde1234!@';
+
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('');
+        });
+
+        test('should show validator error message', () => {
+            password1Input.value = 'abcde1234!@';
+            password2Input.value = 'abcde123!@';
+
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('Passwords do not match.');
+        });
+
+        test('should not show symbols, number and length errors', () => {
+            password1Input.value = 'abcde1234!@';
+            password2Input.value = 'abc';
+
+            password2Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('Passwords do not match.');
         });
     });
 })

@@ -12,7 +12,6 @@ export function validateUsernameLength(username) {
 // validade_username_already_exists
 // validate_email
 
-// validatePasswordMatch
 
 // | Função         | Uso                                        |
 // | -------------- | ------------------------------------------ |
@@ -64,8 +63,21 @@ export class PasswordValidators {
     validatePasswordContainsNumbers(password) {
         // password do not have numbers
         if(/\d/.test(password) === false) {
-            // colocar tradução
             const msg = gettext('Password must contain numbers.');
+            this._errors.push(msg);
+
+            return msg;
+        }
+
+        return true;
+    };
+
+    validatePasswordsMatch(password1, password2) {
+        // password.length start validate if passwords.length is > 0
+        if(password1.length === 0 || password2.length === 0) return;
+
+        if(password1 !== password2) {
+            const msg = gettext('Passwords do not match.');
             this._errors.push(msg);
 
             return msg;
@@ -79,23 +91,36 @@ export class PasswordValidators {
     }
 };
 
+function sendErrors(passwordValidators, errorSpan) {
+    const errors = passwordValidators.errors;
 
-function attachPasswordListener(passwordInput, errorSpan) {
-    passwordInput.addEventListener('input', () => {
+    errorSpan.textContent = '';
+    for(let error of errors) {
+        errorSpan.textContent += error;
+    }
+};
+
+
+function attachPasswordListener(password1Input, password2Input, errorSpan) {
+    password1Input.addEventListener('input', () => {
         const passwordValidators = new PasswordValidators();
 
-        passwordValidators.validatePasswordLength(passwordInput.value);
-        passwordValidators.validatePasswordContainsSymbols(passwordInput.value);
-        passwordValidators.validatePasswordContainsNumbers(passwordInput.value);
+        passwordValidators.validatePasswordLength(password1Input.value);
+        passwordValidators.validatePasswordContainsSymbols(password1Input.value);
+        passwordValidators.validatePasswordContainsNumbers(password1Input.value);
+        passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
 
-        const errors = passwordValidators.errors;
-
-        errorSpan.textContent = '';
-        for(let error of errors) {
-            errorSpan.textContent += error;
-        }
+        sendErrors(passwordValidators, errorSpan);
     })
-}
+
+    password2Input.addEventListener('input', () => {
+        const passwordValidators = new PasswordValidators();
+
+        passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
+
+        sendErrors(passwordValidators, errorSpan);
+    })
+};
 
 
 function attachUsernameListener(usernameInput, errorSpan) {
@@ -108,16 +133,17 @@ function attachUsernameListener(usernameInput, errorSpan) {
             errorSpan.textContent = '';
         }
     }) 
-}
+};
 
 
 function getElements() {
     const form = document.querySelector('.author-form');
     const usernameInput = form.querySelector('#id_username');
-    const passwordInput = form.querySelector('#id_password1');
+    const password1Input = form.querySelector('#id_password1');
+    const password2Input = form.querySelector('#id_password2');
 
-    return {form, usernameInput, passwordInput};
-}
+    return {form, usernameInput, password1Input, password2Input};
+};
 
 
 function createErrorSpan(form) {
@@ -127,13 +153,13 @@ function createErrorSpan(form) {
     form.appendChild(errorSpan);
 
     return errorSpan;
-}
+};
 
 
 export function main() {
-    const {form, usernameInput, passwordInput} = getElements();
+    const {form, usernameInput, password1Input, password2Input} = getElements();
     const errorSpan = createErrorSpan(form);
 
     attachUsernameListener(usernameInput, errorSpan);
-    attachPasswordListener(passwordInput, errorSpan);
-}
+    attachPasswordListener(password1Input, password2Input, errorSpan);
+};

@@ -48,7 +48,7 @@ describe('Test Password form validations', () => {
     });
     
     describe('password contains symbols', () => {
-            test('should show validator success message', () => {
+            test('should show validator success', () => {
                 expect(
                     passwordValidators.validatePasswordContainsSymbols('ab12!')
                 ).toBe(true);
@@ -64,7 +64,7 @@ describe('Test Password form validations', () => {
     });
 
     describe('password contains numbers', () => {
-        test('should show validator success message', () => {
+        test('should show validator success', () => {
             expect(passwordValidators.validatePasswordContainsNumbers('ab12!')).toBe(true);
         });
 
@@ -72,6 +72,26 @@ describe('Test Password form validations', () => {
             expect(passwordValidators.validatePasswordContainsNumbers('abc!')).toBe(
                 'Password must contain numbers.'
             );
+        });
+    });
+
+    describe('password match', () => {
+        test('should show validator success', () => {
+            expect(passwordValidators.validatePasswordsMatch(
+                'abcde1234!@', 'abcde1234!@'
+            )).toBe(true);
+        });
+
+        test('should show validator error message', () => {
+            expect(passwordValidators.validatePasswordsMatch(
+                'abcde1234!@', 'abcde123!@'
+            )).toBe('Passwords do not match.');
+        });
+
+        test('should not show symbols, number and length errors', () => {
+            expect(passwordValidators.validatePasswordsMatch(
+                'abcde1234!@', 'abc'
+            )).toBe('Passwords do not match.');
         });
     });
 });
