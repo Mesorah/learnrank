@@ -53,7 +53,7 @@ class TestChangeUsernameForm(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors['new_username'][0], const.USERNAME_TAKEN_ALREADY_ERROR
+            form.errors['new_username'][0], const.USERNAME_ALREADY_TAKEN_ERROR
         )
 
     def test_wait_time_after_change_username_was_set_correctly(self):

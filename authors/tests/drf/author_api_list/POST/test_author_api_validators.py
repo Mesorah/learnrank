@@ -27,7 +27,7 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         self.assertFalse(serializer.is_valid())
         self.assertEqual(
             serializer.errors['username'][0],
-            const.USERNAME_TAKEN_ALREADY_ERROR
+            const.USERNAME_ALREADY_TAKEN_ERROR
         )
 
     def test_email_validator_is_correct(self):

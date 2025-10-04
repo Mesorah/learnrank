@@ -139,7 +139,7 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
 
         # He saw a form error
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
-        self.assertEqual(error_message, const.USERNAME_TAKEN_ALREADY_ERROR)
+        self.assertEqual(error_message, const.USERNAME_ALREADY_TAKEN_ERROR)
 
     def test_user_can_see_the_page_styling_and_layout(self):
         self.go_to_url()

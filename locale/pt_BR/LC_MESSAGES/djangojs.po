@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-04 13:01-0300\n"
+"POT-Creation-Date: 2025-10-04 19:12-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: .\authors\static\authors\js\constants.js:2
-msgid "Please enter at least 4 characters (you are currently using %(usernameLength)s characters)."
-msgstr "Por favor, insira pelo menos 4 caracteres (você está usando atualmente %(usernameLength)s caracteres)."
+msgid ""
+"Please enter at least 4 characters (you are currently using %"
+"(usernameLength)s characters)."
+msgstr ""
+"Por favor, insira pelo menos 4 caracteres (você está usando atualmente %"
+"(usernameLength)s caracteres)."
 
 #: .\authors\static\authors\js\constants.js:3
-msgid "Please lengthen this text to 8 characters or more (you are currently using %(passwordLength)s characters)."
-msgstr "Por favor, aumente este texto para 8 caracteres ou mais (você está usando atualmente %(passwordLength)s caracteres)."
+msgid ""
+"Please lengthen this text to 8 characters or more (you are currently using %"
+"(passwordLength)s characters)."
+msgstr ""
+"Por favor, aumente este texto para 8 caracteres ou mais (você está usando "
+"atualmente %(passwordLength)s caracteres)."
 
 #: .\authors\static\authors\js\constants.js:4
 msgid "The password must contain symbols."
@@ -37,3 +45,11 @@ msgstr "A senha deve conter números."
 #: .\authors\static\authors\js\constants.js:6
 msgid "Passwords do not match."
 msgstr "As senhas não coincidem."
+
+#: .\authors\static\authors\js\constants.js:7
+msgid "Username is already taken."
+msgstr "Este nome de usuário já está em uso."
+
+#: .\authors\static\authors\js\constants.js:8
+msgid "Email is already registered."
+msgstr "Este e-mail já está registrado."

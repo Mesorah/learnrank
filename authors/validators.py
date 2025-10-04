@@ -26,7 +26,7 @@ class AuthorValidatorMixin:
             self, field_name, username, add_error=True
     ):
         if User.objects.filter(username=username).exists():
-            msg = const.USERNAME_TAKEN_ALREADY_ERROR
+            msg = const.USERNAME_ALREADY_TAKEN_ERROR
 
             if add_error:
                 self.add_error(field_name, msg)

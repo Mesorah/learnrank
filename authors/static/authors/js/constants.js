@@ -4,5 +4,6 @@ export const ERRORS = {
     PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR: gettext('The password must contain symbols.'),
     PASSWORD_MUST_CONTAIN_NUMBERS_ERROR: gettext('Password must contain numbers.'),
     PASSWORDS_DO_NOT_MATCH_ERROR: gettext('Passwords do not match.'),
-    USERNAME_TAKEN_ALREADY_ERROR: gettext('Username is already taken.'),
+    USERNAME_ALREADY_TAKEN_ERROR: gettext('Username is already taken.'),
+    EMAIL_ALREADY_TAKEN_ERROR: gettext('Email is already registered.')
 };
