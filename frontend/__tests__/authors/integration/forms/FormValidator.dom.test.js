@@ -3,7 +3,7 @@
 */
 
 import { ERRORS } from '@js/constants.js';
-import { main } from '@js/validateForms';
+import { main, UsernameValidators } from '@js/validateForms';
 
 
 const FORM_CLASS = 'author-form';
@@ -47,13 +47,19 @@ describe('Test Username input form validations', () => {
 
     beforeEach(() => {
         ({ usernameInput } = setupFormTest());
+
+        // doing this to nullify the function
+        UsernameValidators.prototype.validateUsernameAlreadyRegistred = () => false;
     });
 
-    test('displays error message when username is too short', () => {
+    test('displays error message when username is too short', async() => {
         usernameInput.value = 'abc';
         usernameInput.dispatchEvent(new Event('input'));
 
         const errorSpan = getErrorSpan();
+
+        await new Promise(process.nextTick);
+
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.USERNAME_MIN_LENGTH_ERROR(3));
     })
@@ -75,6 +81,9 @@ describe('Test Password input form validations', () => {
 
     beforeEach(() => {
         ({ password1Input, password2Input } = setupFormTest());
+
+        // doing this to nullify the function
+        UsernameValidators.prototype.validateUsernameAlreadyRegistred = () => false;
     });
 
     describe('password length validor', () => {

@@ -1,14 +1,20 @@
 import { ERRORS } from '@js/constants.js';
-import { PasswordValidators, validateUsernameLength } from '@js/validateForms';
+import { PasswordValidators, UsernameValidators } from '@js/validateForms';
 
 
 describe('Test Username form validations', () => {
+    let usernameValidators;
+
+    beforeEach(() => {
+        usernameValidators = new UsernameValidators();
+    })
+
     test('username length validator message success', () => {
-        expect(validateUsernameLength('abcd')).toBe(true);
+        expect(usernameValidators.validateUsernameLength('abcd')).toBe(true);
     });
 
     test('username length validator message error', () => {
-        expect(validateUsernameLength('abc')).toBe(
+        expect(usernameValidators.validateUsernameLength('abc')).toBe(
             ERRORS.USERNAME_MIN_LENGTH_ERROR(3)
         );
     });
