@@ -24,9 +24,9 @@
     <script src="{% url 'javascript-catalog' %}"></script>
 
     <script type="module">
-        import { main } from "{% static 'authors/js/validateForms.js' %}";
+        import { inicializeListener } from "{% static 'authors/js/forms/main.js' %}";
         document.addEventListener("DOMContentLoaded", () => {
-            main();
+            inicializeListener();
         });
     </script>
 {% endblock content %}

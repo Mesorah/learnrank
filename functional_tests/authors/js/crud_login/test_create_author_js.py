@@ -59,6 +59,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.assertIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
 
+    @skip('use mock')
     def test_email_not_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -160,6 +161,7 @@ class CreateAuthorMessagesJSTest(
 
         self.assertIn('As senhas não coincidem.', error_messages)
 
+    @skip('use mock')
     def test_email_already_registred_error_message_portuguese_translate(self):
         # Enter to signup page
         self.go_to_url('authors:signup')

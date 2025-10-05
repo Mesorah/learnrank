@@ -3,7 +3,8 @@
 */
 
 import { ERRORS } from '@js/constants.js';
-import { main, UsernameValidators } from '@js/validateForms';
+import { inicializeListener } from '@js/forms/main.js';
+import { UsernameValidators } from '@js/forms/validateUsername.js';
 
 
 const FORM_CLASS = 'author-form';
@@ -29,7 +30,7 @@ function setupFormTest() {
     const password1Input = form.querySelector(`#${PASSWORD1_INPUT_ID}`);
     const password2Input = form.querySelector(`#${PASSWORD2_INPUT_ID}`);
 
-    main();
+    inicializeListener();
 
     return {
         usernameInput, password1Input, password2Input
