@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from authors.tests.helpers import (  # noqa E501
     change_username_data,
     create_admin_user,
@@ -91,15 +92,16 @@ class AuthorAPIChangeUsernameTest(AuthorAPIMixin):
 
     def test_wait_time_not_work_in_admin_user(self):
         admin_user = create_admin_user()
+        admin_password = const_informations.TEST_PASSWORD_ADMIN
 
         self.change_username(
-            username=admin_user.username, password='testing12ADMIN!@1dsFG',
+            username=admin_user.username, password=admin_password,
             create_new_user=False, pk=admin_user.pk,
             new_username='new_username'
         )
 
         response = self.change_username(
-            username=admin_user.username, password='testing12ADMIN!@1dsFG',
+            username=admin_user.username, password=admin_password,
             create_new_user=False, pk=admin_user.pk,
             new_username='new_username2'
         )

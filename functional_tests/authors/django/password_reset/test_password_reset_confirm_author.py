@@ -6,6 +6,7 @@ from django.utils.http import urlsafe_base64_encode
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 User = get_user_model()
@@ -102,10 +103,12 @@ class TestPasswordResetConfirmAuthorFT(BaseWebDriverForFunctionalTests):
             errors_messages[0]
         )
 
+        password = const_informations.TEST_PASSWORD
+
         # Decided to fix the gaps that caused errors and resend it again.
         self.fill_credentials(
-            id_new_password1='testing12!@1dsFG',
-            id_new_password2='testing12!@1dsFG',
+            id_new_password1=password,
+            id_new_password2=password,
             submit=True
         )
 

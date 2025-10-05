@@ -1,16 +1,17 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
+import utils.constants_informations as const_informations
 from authors.tests.helpers import create_admin_user, create_user
 
 
 class AuthorAPIMixin(APITestCase):
     def setUp(self):
-        self.password = 'testing12!@1dsFG'
+        self.password = const_informations.TEST_PASSWORD
 
         self.data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
+            'username': const_informations.TEST_USERNAME,
+            'email': const_informations.TEST_EMAIL,
             'password': self.password,
         }
 
@@ -58,13 +59,11 @@ class AuthorAPIMixin(APITestCase):
         pk=None,
         create_new_user=True,
         admin_user=True,
-        username='testing',
-        password=None,
-        email='testing@example.com',
         *args, **kwargs
     ):
-        if password is None:
-            password = self.password
+        username = kwargs.get('username', const_informations.TEST_USERNAME)
+        email = kwargs.get('email', const_informations.TEST_EMAIL)
+        password = kwargs.get('password', const_informations.TEST_PASSWORD)
 
         data = {
             'username': username,

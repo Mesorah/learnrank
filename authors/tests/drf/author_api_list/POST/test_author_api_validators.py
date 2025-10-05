@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from authors.serializers import AuthorSerializer
 from authors.tests.mixins_test import AuthorAPIMixin
 
@@ -87,8 +88,8 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
 
         self.assertEqual(User.objects.count(), 2)
 
-        self.data['username'] = 'testing'
-        self.data['email'] = 'testing@example.com'
+        self.data['username'] = const_informations.TEST_USERNAME
+        self.data['email'] = const_informations.TEST_EMAIL
         serializer = AuthorSerializer(data=self.data)
         self.assertFalse(serializer.is_valid())
 

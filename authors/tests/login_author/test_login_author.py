@@ -2,6 +2,7 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
+import utils.constants_informations as const_informations
 from authors.views import LoginAuthorView
 
 from ..helpers import create_user
@@ -12,8 +13,8 @@ class TestLoginAuthor(TestCase):
         create_user(client=self.client)
 
         self.data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
+            'username': const_informations.TEST_USERNAME,
+            'password': const_informations.TEST_PASSWORD,
         }
 
         return super().setUp()

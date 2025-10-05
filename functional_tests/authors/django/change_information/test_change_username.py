@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from authors.utils import is_wait_time_done
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
@@ -34,7 +35,9 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         current_username = self.find_element(By.ID, 'id_current_username')
         current_username_value = current_username.get_attribute('value')
 
-        self.assertEqual(current_username_value, 'testing')
+        self.assertEqual(
+            current_username_value, const_informations.TEST_USERNAME
+        )
 
         # He changes the username
         self.fill_credentials(id_new_username='new_username', submit=True)
@@ -135,7 +138,9 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         self.click_when_visible(By.CLASS_NAME, 'change-information')
 
         # He try change the username
-        self.fill_credentials(id_new_username='testing', submit=True)
+        self.fill_credentials(
+            id_new_username=const_informations.TEST_USERNAME, submit=True
+        )
 
         # He saw a form error
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')

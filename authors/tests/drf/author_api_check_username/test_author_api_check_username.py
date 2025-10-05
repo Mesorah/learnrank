@@ -1,5 +1,6 @@
 from django.urls import reverse
 
+import utils.constants_informations as const_informations
 from authors.tests.helpers import create_user
 from authors.tests.mixins_test import AuthorAPIMixin
 
@@ -12,7 +13,7 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
 
     def test_check_user_there_are_no_other_users_success(self):
         response = self.request_author_api_check_username(
-            data={'username': 'testing'}
+            data={'username': const_informations.TEST_USERNAME}
         )
 
         self.assertFalse(response.data['username_already_registred'])
@@ -28,7 +29,7 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
         create_user(username='other_username')
 
         response = self.request_author_api_check_username(
-            data={'username': 'testing'}
+            data={'username': const_informations.TEST_USERNAME}
         )
 
         self.assertFalse(response.data['username_already_registred'])
@@ -37,20 +38,20 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
         create_user()
 
         response = self.request_author_api_check_username(
-            data={'username': 'testing'}
+            data={'username': const_informations.TEST_USERNAME}
         )
 
         self.assertTrue(response.data['username_already_registred'])
 
     def test_user_did_not_submit_the_correct_field(self):
         response = self.request_author_api_check_username(
-            data={'email': 'testing@example.com'}
+            data={'email': const_informations.TEST_EMAIL}
         )
 
         self.assertFalse(response.data['username_already_registred'])
 
         response = self.request_author_api_check_username(
-            data={'password': 'testing12!@1dsFG'}
+            data={'password': const_informations.TEST_PASSWORD}
         )
 
         self.assertFalse(response.data['username_already_registred'])
@@ -58,9 +59,9 @@ class AuthorAPICheckUsernameTest(AuthorAPIMixin):
     def test_user_sends_more_than_one_argument_success(self):
         response = self.request_author_api_check_username(
             data={
-                'username': 'testing',
-                'email': 'testing@example.com',
-                'password': 'testing12!@1dsFG'
+                'username': const_informations.TEST_USERNAME,
+                'email': const_informations.TEST_EMAIL,
+                'password': const_informations.TEST_PASSWORD
             }
         )
 

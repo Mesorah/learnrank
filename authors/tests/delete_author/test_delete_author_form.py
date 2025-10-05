@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils import html
 
 import authors.constants as consts
+import utils.constants_informations as const_informations
 
 from ..helpers import create_user
 
@@ -28,14 +29,18 @@ class TestDeleteAuthorForm(TestCase):
         )
 
     def test_post_delete_user_and_redirects_to_home(self):
-        user = User.objects.filter(username='testing').exists()
+        user = User.objects.filter(
+            username=const_informations.TEST_USERNAME
+        ).exists()
         self.assertTrue(user)
 
         response = self.client.post(reverse('authors:delete'), data={
             'confirm': 'DELETE'
         }, follow=True)
 
-        user = User.objects.filter(username='testing').exists()
+        user = User.objects.filter(
+            username=const_informations.TEST_USERNAME
+        ).exists()
         self.assertFalse(user)
         self.assertRedirects(response, reverse('home:index'))
         self.assertContains(

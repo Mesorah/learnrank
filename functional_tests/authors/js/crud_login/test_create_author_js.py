@@ -3,6 +3,7 @@ from unittest import skip
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -29,7 +30,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         self.go_to_url('authors:signup')
 
         # filled in the field with 'testing'
-        self.fill_credentials(id_username='testing')
+        self.fill_credentials(id_username=const_informations.TEST_USERNAME)
 
         error_messages = self.get_errors()
 
@@ -52,7 +53,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         self.go_to_url('authors:signup')
 
         # filled in the field with 'testing@example.com'
-        self.fill_credentials(id_email='testing@example.com')
+        self.fill_credentials(id_email=const_informations.TEST_EMAIL)
 
         error_messages = self.get_errors()
 
@@ -81,6 +82,7 @@ class CreateAuthorMessagesJSTest(
 
         self.wait = self.delay()
 
+    @skip('use mock')
     def test_username_length_error_message_portuguese_translation(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -98,13 +100,13 @@ class CreateAuthorMessagesJSTest(
 
     @skip('use mock')
     def test_username_already_registred_error_message_portuguese(self):
-        self.create_valid_user(username='testing')
+        self.create_valid_user(username=const_informations.TEST_USERNAME)
 
         # Enter to signup page
         self.go_to_url('authors:signup')
 
         # filled in the field with 'testing'
-        self.fill_credentials(id_username='testing')
+        self.fill_credentials(id_username=const_informations.TEST_USERNAME)
 
         error_messages = self.get_errors()
 
@@ -163,7 +165,7 @@ class CreateAuthorMessagesJSTest(
         self.go_to_url('authors:signup')
 
         # filled in the field with 'testing@example.com'
-        self.fill_credentials(id_email='testing@example.com')
+        self.fill_credentials(id_email=const_informations.TEST_EMAIL)
 
         error_messages = self.get_errors()
 

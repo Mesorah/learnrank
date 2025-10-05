@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 
+import utils.constants_informations as const_informations
 from authors.tests.helpers import create_admin_user, create_user
 from authors.tests.mixins_test import AuthorAPIMixin
 
@@ -33,11 +34,12 @@ class AuthorAPIRETRIEVETest(AuthorAPIMixin):
 
     def test_admin_user_can_see_all_users_details(self):
         admin_user = create_admin_user()
+        admin_password = const_informations.TEST_PASSWORD_ADMIN
 
         response = self.get_authorized_view(
             self.request_author_api_detail, method='get',
             create_new_user=False, pk=self.user.pk,
-            username=admin_user.username, password='testing12ADMIN!@1dsFG'
+            username=admin_user.username, password=admin_password
         )
 
         self.assertEqual(response.status_code, 200)

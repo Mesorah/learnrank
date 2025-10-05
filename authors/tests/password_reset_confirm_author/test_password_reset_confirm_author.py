@@ -6,6 +6,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 
+import utils.constants_informations as const_informations
 from authors.views import PasswordResetConfirmAuthorView
 
 from ..helpers import create_user
@@ -66,9 +67,11 @@ class TestPasswordResetConfirmAuthor(TestCase):
         self.assertContains(response, 'Nova senha:')
         self.assertContains(response, 'Confirmação da nova senha:')
 
+        password = const_informations.TEST_PASSWORD
+
         response = self.client.post(redirect_url, data={
-            'new_password1': 'testing12!@1dsFG',
-            'new_password2': 'testing12!@1dsFG'
+            'new_password1': password,
+            'new_password2': password
         }, follow=True)
 
         self.assertContains(response, 'Senha alterada com sucesso!')

@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from authors.forms import CustomSignupForm
 
 User = get_user_model()
@@ -12,10 +13,10 @@ User = get_user_model()
 class TestCreateAuthorForm(TestCase):
     def setUp(self):
         self.form_data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'username': const_informations.TEST_USERNAME,
+            'email': const_informations.TEST_EMAIL,
+            'password1': const_informations.TEST_PASSWORD,
+            'password2': const_informations.TEST_PASSWORD,
         }
 
         return super().setUp()
@@ -106,8 +107,8 @@ class TestCreateAuthorForm(TestCase):
 
         self.assertEqual(User.objects.count(), 2)
 
-        self.form_data['username'] = 'testing'
-        self.form_data['email'] = 'testing@example.com'
+        self.form_data['username'] = const_informations.TEST_USERNAME
+        self.form_data['email'] = const_informations.TEST_EMAIL
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
 

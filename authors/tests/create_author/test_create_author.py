@@ -2,16 +2,17 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
+import utils.constants_informations as const_informations
 from authors.views import CreateAuthorView
 
 
 class TestCreateAuthor(TestCase):
     def setUp(self):
         self.data = {
-            'username': 'testing',
-            'email': 'testing@example.com',
-            'password1': 'testing12!@1dsFG',
-            'password2': 'testing12!@1dsFG',
+            'username': const_informations.TEST_USERNAME,
+            'email': const_informations.TEST_EMAIL,
+            'password1': const_informations.TEST_PASSWORD,
+            'password2': const_informations.TEST_PASSWORD,
         }
 
         return super().setUp()

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+import utils.constants_informations as const_informations
 from authors.forms import CustomAuthenticationForm
 
 from ..helpers import create_user
@@ -15,8 +16,8 @@ class TestLoginAuthorForm(TestCase):
         create_user(client=self.client)
 
         self.form_data = {
-            'username': 'testing',
-            'password': 'testing12!@1dsFG',
+            'username': const_informations.TEST_USERNAME,
+            'password': const_informations.TEST_PASSWORD,
         }
 
         return super().setUp()

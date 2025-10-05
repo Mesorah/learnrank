@@ -3,6 +3,7 @@ from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 from django.utils.translation import activate
 
+import utils.constants_informations as const_informations
 from authors.views import PasswordResetAuthorView
 
 from ..helpers import create_user
@@ -12,7 +13,7 @@ class TestPasswordResetAuthor(TestCase):
     def setUp(self):
         create_user(client=self.client, auto_login=True)
 
-        self.email_data = 'testing@example.com'
+        self.email_data = const_informations.TEST_EMAIL
 
         return super().setUp()
 
@@ -42,7 +43,7 @@ class TestPasswordResetAuthor(TestCase):
 
         self.assertEqual(len(email), 1)
 
-        self.assertEqual(email[0].to, ['testing@example.com'])
+        self.assertEqual(email[0].to, [const_informations.TEST_EMAIL])
 
         self.assertIn(
             ("You're receiving this email because you requested a password "
@@ -73,7 +74,7 @@ class TestPasswordResetAuthor(TestCase):
 
         self.assertEqual(len(email), 1)
 
-        self.assertEqual(email[0].to, ['testing@example.com'])
+        self.assertEqual(email[0].to, [const_informations.TEST_EMAIL])
 
         self.assertIn(
             ('Você está recebendo este e-mail porque solicitou a redefinição '

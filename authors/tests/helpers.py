@@ -1,22 +1,23 @@
 from django.contrib.auth import get_user_model
 
+import utils.constants_informations as const_informations
 from authors.utils import is_wait_time_done
 
 User = get_user_model()
 
 
-def login(client, username='testing', password='testing12!@1dsFG'):
+def login(client, **kwargs):
+    username = kwargs.get('username', const_informations.TEST_USERNAME)
+    password = kwargs.get('password', const_informations.TEST_PASSWORD)
+
     client.login(username=username, password=password)
 
 
-def create_user(
-    username='testing',
-    email='testing@example.com',
-    password='testing12!@1dsFG',
-    auto_login=False,
-    client=None,
-    qtd=1
-):
+def create_user(auto_login=False, client=None, qtd=1, **kwargs):
+    username = kwargs.get('username', const_informations.TEST_USERNAME)
+    email = kwargs.get('email', const_informations.TEST_EMAIL)
+    password = kwargs.get('password', const_informations.TEST_PASSWORD)
+
     for user in range(qtd):
         final_username = f'{username}-{user}' if qtd != 1 else username
         final_email = f'{username}-{user}' if qtd != 1 else email
@@ -34,12 +35,14 @@ def create_user(
 
 
 def create_admin_user(
-    username='testingADMIN',
-    email='testingADMIN@example.com',
-    password='testing12ADMIN!@1dsFG',
     auto_login=False,
     client=None,
+    **kwargs
 ):
+    username = kwargs.get('username', const_informations.TEST_USERNAME_ADMIN)
+    email = kwargs.get('email', const_informations.TEST_EMAIL_ADMIN)
+    password = kwargs.get('password', const_informations.TEST_PASSWORD_ADMIN)
+
     super_user = User.objects.create_superuser(
         username=username,
         email=email,

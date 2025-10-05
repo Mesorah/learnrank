@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -54,7 +55,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         # See the form and decide to fill it out and send
         # the form and notice errors on your screen
         self.fill_credentials(
-            id_username='abcd', id_email='testing@example.com',
+            id_username='abcd', id_email=const_informations.TEST_EMAIL,
             id_password1='abcd1234', id_password2='defg5678',
             submit=True,
         )
@@ -85,8 +86,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         # Decided to fix the gaps that caused errors and resend it again.
         self.fill_credentials(
-            id_username='testing', id_email='testing@example.com',
-            id_password1='testing12!@1dsFG', id_password2='testing12!@1dsFG',
+            id_username=const_informations.TEST_USERNAME,
+            id_email=const_informations.TEST_EMAIL,
+            id_password1=const_informations.TEST_PASSWORD,
+            id_password2=const_informations.TEST_PASSWORD,
             submit=True,
         )
 
@@ -103,15 +106,17 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'username-profile'
         )
 
-        self.assertEqual(username, 'testing')
+        self.assertEqual(username, const_informations.TEST_USERNAME)
 
     def test_logged_user_cannot_access_registration_page(self):
         # User enters the home screen
         self.go_to_url('authors:signup')
 
         self.fill_credentials(
-            id_username='testing', id_email='testing@example.com',
-            id_password1='testing12!@1dsFG', id_password2='testing12!@1dsFG',
+            id_username=const_informations.TEST_USERNAME,
+            id_email=const_informations.TEST_EMAIL,
+            id_password1=const_informations.TEST_PASSWORD,
+            id_password2=const_informations.TEST_PASSWORD,
             submit=True,
         )
 

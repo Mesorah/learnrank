@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
@@ -63,7 +64,8 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         # Decided to fix the gaps that caused errors and resend it again.
         self.fill_credentials(
-            id_username='testing', id_password='testing12!@1dsFG', submit=True
+            id_username=const_informations.TEST_USERNAME,
+            id_password=const_informations.TEST_PASSWORD, submit=True
         )
 
         message_success = self.get_text(By.CLASS_NAME, 'alert-success')
@@ -78,7 +80,7 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
             By.CLASS_NAME, 'username-profile', wait_for_element=False
         )
 
-        self.assertEqual(username, 'testing')
+        self.assertEqual(username, const_informations.TEST_USERNAME)
 
     def test_logged_user_cannot_access_login_page(self):
         self.go_to_url()

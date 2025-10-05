@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 
+import utils.constants_informations as const_informations
 from authors.tests.helpers import create_admin_user, create_user
 from authors.tests.mixins_test import AuthorAPIMixin
 
@@ -11,7 +12,7 @@ class AuthorAPIDELETETest(AuthorAPIMixin):
         self.admin_user = create_admin_user()
         self.normal_user = create_user()
 
-        self.admin_password = 'testing12ADMIN!@1dsFG'
+        self.admin_password = const_informations.TEST_PASSWORD_ADMIN
 
         return super().setUp()
 

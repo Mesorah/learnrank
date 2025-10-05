@@ -4,6 +4,7 @@ from django.urls import resolve, reverse
 from django.utils.translation import activate
 
 import authors.constants as const
+import utils.constants_informations as const_informations
 from authors.tests.helpers import (  # noqa E501
     change_username_data,
     create_admin_user,
@@ -53,11 +54,11 @@ class TestChangeUsername(TestCase):
 
         content = response.content.decode()
 
-        self.assertIn('value="testing"', content)
+        self.assertIn(f'value="{const_informations.TEST_USERNAME}"', content)
 
     def test_post_change_username_and_return_to_dashboard(self):
         users = User.objects.get()
-        self.assertEqual(users.username, 'testing')
+        self.assertEqual(users.username, const_informations.TEST_USERNAME)
 
         response = self.change_username()
 

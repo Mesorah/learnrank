@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+import utils.constants_informations as const_informations
 from utils.browser import get_chrome_driver
 
 User = get_user_model()
@@ -69,7 +70,10 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
         return self.find_element(by, element, all_element).text
 
-    def login_user(self, username='testing', password='testing12!@1dsFG'):
+    def login_user(self, **kwargs):
+        username = kwargs.get('username', const_informations.TEST_USERNAME)
+        password = kwargs.get('password', const_informations.TEST_PASSWORD)
+
         self.client.login(username=username, password=password)
 
         cookie = self.client.cookies['sessionid']
@@ -89,11 +93,12 @@ class BaseWebDriverForFunctionalTests(StaticLiveServerTestCase):
 
     def create_valid_user(
             self,
-            username='testing',
-            email='testing@example.com',
-            password='testing12!@1dsFG',
-            auto_login=False
+            auto_login=False,
+            **kwargs
     ):
+        username = kwargs.get('username', const_informations.TEST_USERNAME)
+        email = kwargs.get('email', const_informations.TEST_EMAIL)
+        password = kwargs.get('password', const_informations.TEST_PASSWORD)
 
         user = User.objects.create_user(
             username=username,

@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
+import utils.constants_informations as const_informations
+
 from ..helpers import create_user
 
 User = get_user_model()
@@ -65,18 +67,20 @@ class TestPasswordResetConfirmAuthorForm(TestCase):
         )
 
     def test_password_user_has_been_changed(self):
+        password = const_informations.TEST_PASSWORD
+
         self.assertTrue(self.user.check_password('oldpassword'))
 
         redirect_url, _ = self.get_correct_url()
 
         self.client.post(redirect_url, data={
-            'new_password1': 'testing12!@1dsFG',
-            'new_password2': 'testing12!@1dsFG'
+            'new_password1': password,
+            'new_password2': password
         })
 
         self.user.refresh_from_db()
 
-        self.assertTrue(self.user.check_password('testing12!@1dsFG'))
+        self.assertTrue(self.user.check_password(password))
 
     def test_renders_input_form(self):
         _, response = self.get_correct_url()
