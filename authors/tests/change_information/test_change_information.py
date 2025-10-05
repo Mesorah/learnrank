@@ -116,7 +116,7 @@ class TestChangeUsername(TestCase):
 
         create_admin_user(client=self.client, auto_login=True)
 
-        response = self.change_username()
+        self.change_username()
 
         response = self.change_username(
             new_username_name='new_username2', follow=True

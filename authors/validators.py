@@ -18,7 +18,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         return username
 
@@ -31,7 +31,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         return username
 
@@ -42,7 +42,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         return email
 
@@ -54,7 +54,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         # Verify if password1 don't have numbers [1-9]
         if not re.search(r'\d', password):
@@ -63,7 +63,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         if not re.search(r'[A-Za-z]', password):
             msg = const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
@@ -71,7 +71,7 @@ class AuthorValidatorMixin:
             if add_error:
                 self.add_error(field_name, msg)
             else:
-                raise self.ValidationError({field_name: msg})
+                raise self.validation_error({field_name: msg})
 
         return password
 
@@ -87,7 +87,7 @@ class AuthorValidatorMixin:
             # Because 7 days becomes 6 days and 23 hours.
             wait_days = time_to_wait.days + 1
 
-            raise self.ValidationError({
+            raise self.validation_error({
                 field_name:
                 const.CANNOT_CHANGE_USERNAME_ERROR % {'days': wait_days}
             })
@@ -95,11 +95,11 @@ class AuthorValidatorMixin:
 
 class ChangeUsernameValidator(AuthorValidatorMixin):
     def __init__(
-        self, change_username_data, new_username, ValidationError, is_staff
+        self, change_username_data, new_username, validation_error, is_staff
     ):
         self.change_username_data = change_username_data
         self.new_username = new_username
-        self.ValidationError = ValidationError
+        self.validation_error = validation_error
         self.is_staff = is_staff
 
         self.control()
@@ -124,11 +124,11 @@ class ChangeUsernameValidator(AuthorValidatorMixin):
 
 class AuthorPATCHValidator(AuthorValidatorMixin):
     def __init__(
-            self, change_username_data, values, ValidationError, is_staff
+            self, change_username_data, values, validation_error, is_staff
     ):
         self.values = values
         self.change_username_data = change_username_data
-        self.ValidationError = ValidationError
+        self.validation_error = validation_error
         self.is_staff = is_staff
 
         self.control()
@@ -166,11 +166,11 @@ class AuthorPATCHValidator(AuthorValidatorMixin):
 
 class AuthorValidator(AuthorValidatorMixin):
     def __init__(
-            self, values, ValidationError, add_error=None,
+            self, values, validation_error, add_error=None,
             context=None
     ):
         self.values = values
-        self.ValidationError = ValidationError
+        self.validation_error = validation_error
         self.add_error = add_error
         self.context = context
 
@@ -230,10 +230,10 @@ class AuthorValidator(AuthorValidatorMixin):
 
 class CheckAuthorUsernameValidator(AuthorValidatorMixin):
     def __init__(
-            self, values, ValidationError
+            self, values, validation_error
     ):
         self.values = values
-        self.ValidationError = ValidationError
+        self.validation_error = validation_error
 
         self.control()
 

@@ -45,7 +45,7 @@ class ChangeUsernameForm(forms.Form):
         ChangeUsernameValidator(
             change_username_data=self.user.change_username_data,
             new_username=self.get_new_username(super_clean, 'new_username'),
-            ValidationError=ValidationError,
+            validation_error=ValidationError,
             is_staff=self.user.is_staff
         )
 
@@ -166,7 +166,7 @@ class CustomSignupForm(forms.ModelForm):
 
         AuthorValidator(
             values=self.get_clean_data(super_clean),
-            ValidationError=ValidationError,
+            validation_error=ValidationError,
             add_error=self.add_error,
             context='form'
         )

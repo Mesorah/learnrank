@@ -52,14 +52,14 @@ class AuthorSerializer(serializers.ModelSerializer):
             AuthorPATCHValidator(
                 values=attrs,
                 change_username_data=self.change_username_data,
-                ValidationError=serializers.ValidationError,
+                validation_error=serializers.ValidationError,
                 is_staff=self.is_staff
             )
 
         else:
             AuthorValidator(
                 values=attrs,
-                ValidationError=serializers.ValidationError,
+                validation_error=serializers.ValidationError,
                 context='serializer',
             )
 
@@ -85,7 +85,7 @@ class CheckAuthorUsernameSerializer(serializers.Serializer):
 
         CheckAuthorUsernameValidator(
             values=attrs,
-            ValidationError=serializers.ValidationError,
+            validation_error=serializers.ValidationError,
         )
 
         return attrs

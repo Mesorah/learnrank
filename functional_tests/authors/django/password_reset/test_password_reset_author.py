@@ -26,16 +26,14 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(self.browser.title, 'Password reset')
 
         # Check that all inputs have placeholders.
-        input = form.find_element(By.ID, 'id_email')
+        email_input = form.find_element(By.ID, 'id_email')
 
-        placeholder = input.get_attribute('placeholder')
-        name = input.get_attribute('name')
+        placeholder = email_input.get_attribute('placeholder')
+        name = email_input.get_attribute('name')
 
         correct_input = {'email': const.EMAIL_PLACEHOLDER}
 
-        if placeholder == correct_input[name]:
-            pass
-        else:
+        if placeholder != correct_input[name]:
             self.fail((placeholder, correct_input[name]))
 
     def test_user_can_see_the_page_styling_and_layout(self):

@@ -57,7 +57,7 @@ class AuthorAPIChangeUsernameTest(AuthorAPIMixin):
         self.assertEqual(response.status_code, 200)
 
     def test_username_change_wait_time_adjusts_after_repeated_changes(self):
-        response = self.change_username(
+        self.change_username(
             username=self.owner_user.username,
             create_new_user=False, pk=self.owner_user.pk,
             new_username='new_username'

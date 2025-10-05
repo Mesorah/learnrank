@@ -22,12 +22,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         }
 
         for name, placeholder in inputs_information:
-            input = correct_inputs[name]
+            correct_input = correct_inputs[name]
 
-            if placeholder == input:
-                pass
-            else:
-                self.fail((placeholder, input))
+            if placeholder != correct_input:
+                self.fail((placeholder, correct_input))
 
     def test_user_can_see_all_the_placeholders(self):
         # User enters the home screen

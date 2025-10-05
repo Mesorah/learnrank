@@ -1,12 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import (  # noqa E501
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from authors.permissions import IsAdminOrSelf
@@ -45,8 +44,8 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
         return [IsAdminUser()]
 
 
-@csrf_exempt
 @api_view(http_method_names=['POST'])
+@permission_classes([AllowAny])
 def author_api_check_username(request):
     username = request.data.get('username')
 
@@ -59,8 +58,8 @@ def author_api_check_username(request):
     })
 
 
-@csrf_exempt
 @api_view(http_method_names=['POST'])
+@permission_classes([AllowAny])
 def author_api_check_email(request):
     email = request.data.get('email')
 

@@ -6,10 +6,12 @@ from authors.tests.helpers import create_admin_user, create_user
 
 class AuthorAPIMixin(APITestCase):
     def setUp(self):
+        self.password = 'testing12!@1dsFG'
+
         self.data = {
             'username': 'testing',
             'email': 'testing@example.com',
-            'password': 'testing12!@1dsFG',
+            'password': self.password,
         }
 
         return super().setUp()
@@ -37,8 +39,11 @@ class AuthorAPIMixin(APITestCase):
 
     def change_username(
         self, username, create_new_user, pk,
-        new_username, password='testing12!@1dsFG'
+        new_username, password=None
     ):
+        if password is None:
+            password = self.password
+
         return self.get_authorized_view(
             self.request_author_api_detail, method='patch',
             username=username, password=password,
@@ -54,10 +59,13 @@ class AuthorAPIMixin(APITestCase):
         create_new_user=True,
         admin_user=True,
         username='testing',
-        password='testing12!@1dsFG',
+        password=None,
         email='testing@example.com',
         *args, **kwargs
     ):
+        if password is None:
+            password = self.password
+
         data = {
             'username': username,
             'email': email,

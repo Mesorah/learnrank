@@ -45,7 +45,7 @@ class TestLoginAuthor(TestCase):
         self.assertTrue(response.context['user'].is_authenticated)
 
     def test_user_authenticated_cant_get_200_in_signup(self):
-        response = self.client.post(
+        self.client.post(
             reverse('authors:login'), self.data
         )
 

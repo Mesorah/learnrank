@@ -20,4 +20,4 @@ class TestChangeEmailFT(BaseWebDriverForFunctionalTests):
         self.assertEqual(self.browser.title, 'Change email')
 
         # Preenche o campo para trocar de email corretamente
-        pass
+        self.fail('FINISH THE TEST!')

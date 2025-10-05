@@ -1,6 +1,6 @@
-global.gettext = (s) => s;
+globalThis.gettext = (s) => s;
 
-global.interpolate = (fmt, vars) => {
+globalThis.interpolate = (fmt, vars) => {
     let result = fmt;
 
     for (const key in vars) {

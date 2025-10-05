@@ -142,6 +142,7 @@ GitHub.sublime-settings
 
 # Jest
 node_modules
+frontend/coverage
 
 # Me
 _me

@@ -26,6 +26,10 @@ from authors.forms import (
 
 User = get_user_model()
 
+HOME_PAGE = 'home:index'
+LOGIN_PAGE = 'authors:login'
+AUTHORS_TEMPLATE = 'authors/pages/authors.html'
+
 
 class LoginErrorMixin:
     message = const.CANNOT_ACCESS_LOGGED_ERROR
@@ -42,14 +46,14 @@ class LoginErrorMixin:
 
         messages.error(request, self.message)
 
-        return redirect(reverse('home:index'))
+        return redirect(reverse(HOME_PAGE))
 
 
 class CreateAuthorView(LoginErrorMixin, CreateView):
     model = User
     form_class = CustomSignupForm
-    template_name = 'authors/pages/authors.html'
-    success_url = reverse_lazy('home:index')
+    template_name = AUTHORS_TEMPLATE
+    success_url = reverse_lazy(HOME_PAGE)
 
     def get_success_url(self):
         return self.success_url
@@ -78,18 +82,18 @@ class CreateAuthorView(LoginErrorMixin, CreateView):
 
 
 @require_POST
-@login_required(login_url=reverse_lazy('authors:login'))
+@login_required(login_url=reverse_lazy(LOGIN_PAGE))
 def logout_author(request):
     logout(request)
     messages.success(request, const.ACCOUNT_LOGOUT_SUCCESS)
 
-    return redirect('authors:login')
+    return redirect(LOGIN_PAGE)
 
 
 class LoginAuthorView(LoginErrorMixin, LoginView):
     form_class = CustomAuthenticationForm
-    template_name = 'authors/pages/authors.html'
-    success_url = reverse_lazy('home:index')
+    template_name = AUTHORS_TEMPLATE
+    success_url = reverse_lazy(HOME_PAGE)
 
     def get_success_url(self):
         return self.success_url
@@ -103,7 +107,7 @@ class LoginAuthorView(LoginErrorMixin, LoginView):
 
         ctx['title'] = const.TITLE_LOGIN
         ctx['html_language'] = translation.get_language()
-        ctx['form_action'] = 'authors:login'
+        ctx['form_action'] = LOGIN_PAGE
         ctx['title_key'] = 'Login'
 
         return ctx
@@ -114,7 +118,7 @@ class DeleteAuthorView(LoginErrorMixin, View):
     authenticated_user = True
 
     def render_form(self, form):
-        return render(self.request, 'authors/pages/authors.html', context={
+        return render(self.request, AUTHORS_TEMPLATE, context={
             'form_action': 'authors:delete',
             'form': form,
             'title': const.TITLE_DELETE_ACCOUNT,
@@ -135,7 +139,7 @@ class DeleteAuthorView(LoginErrorMixin, View):
                 self.request, const.ACCOUNT_DELETED_SUCCESS
             )
 
-            return redirect('home:index')
+            return redirect(HOME_PAGE)
 
         return self.render_form(form)
 
@@ -148,7 +152,7 @@ class ChangeUsernameView(View):
     """
 
     def render_form(self, form):
-        return render(self.request, 'authors/pages/authors.html', context={
+        return render(self.request, AUTHORS_TEMPLATE, context={
             'form_action': 'authors:change_username',
             'title': const.TITLE_CHANGE_USERNAME,
             'form': form
@@ -158,7 +162,7 @@ class ChangeUsernameView(View):
         if not request.user.is_authenticated:
             messages.error(request, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
 
-            return redirect('authors:login')
+            return redirect(LOGIN_PAGE)
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -175,7 +179,7 @@ class ChangeUsernameView(View):
 
             messages.success(self.request, const.USERNAMED_CHANGED_SUCCESS)
 
-            return redirect('home:index')
+            return redirect(HOME_PAGE)
 
         return self.render_form(form)
 
@@ -197,7 +201,7 @@ class PasswordResetDoneAuthorView(PasswordResetDoneView):
 
 
 class PasswordResetConfirmAuthorView(PasswordResetConfirmView):
-    success_url = reverse_lazy('home:index')
+    success_url = reverse_lazy(HOME_PAGE)
     template_name = 'authors/pages/password_reset.html'
     form_class = CustomSetPasswordForm
 
