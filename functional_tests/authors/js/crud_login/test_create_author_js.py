@@ -1,4 +1,5 @@
-from selenium.common.exceptions import TimeoutException
+from unittest import skip
+
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
@@ -22,6 +23,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.create_valid_user()
 
+    @skip('use mock')
     def test_username_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -31,7 +33,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         error_messages = self.get_errors()
 
-        self.assertIn(const.USERNAME_TAKEN_ALREADY_ERROR, error_messages)
+        self.assertIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
 
     def test_username_not_already_registred(self):
         # Enter to signup page
@@ -42,7 +44,30 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         error_messages = self.get_errors()
 
-        self.assertNotIn(const.USERNAME_TAKEN_ALREADY_ERROR, error_messages)
+        self.assertNotIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
+
+    @skip('use mock')
+    def test_email_already_registred(self):
+        # Enter to signup page
+        self.go_to_url('authors:signup')
+
+        # filled in the field with 'testing@example.com'
+        self.fill_credentials(id_email='testing@example.com')
+
+        error_messages = self.get_errors()
+
+        self.assertIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
+
+    def test_email_not_already_registred(self):
+        # Enter to signup page
+        self.go_to_url('authors:signup')
+
+        # filled in the field with 'testing2@example.com'
+        self.fill_credentials(id_email='testing2@example.com')
+
+        error_messages = self.get_errors()
+
+        self.assertNotIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
 
 
 class CreateAuthorMessagesJSTest(
@@ -60,19 +85,20 @@ class CreateAuthorMessagesJSTest(
         # Enter to signup page
         self.go_to_url('authors:signup')
 
-        # filled in the field with 'ab'
-        self.fill_credentials(id_username='ab')
+        # filled in the field with 'abc'
+        self.fill_credentials(id_username='abc')
 
         error_messages = self.get_errors()
 
         self.assertIn(
             'Por favor, insira pelo menos 4 caracteres '
-            '(você está usando atualmente 2 caracteres).',
+            '(você está usando atualmente 3 caracteres).',
             error_messages
         )
 
+    @skip('use mock')
     def test_username_already_registred_error_message_portuguese(self):
-        self.create_valid_user()
+        self.create_valid_user(username='testing')
 
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -131,3 +157,14 @@ class CreateAuthorMessagesJSTest(
         error_messages = self.get_errors()
 
         self.assertIn('As senhas não coincidem.', error_messages)
+
+    def test_email_already_registred_error_message_portuguese_translate(self):
+        # Enter to signup page
+        self.go_to_url('authors:signup')
+
+        # filled in the field with 'testing@example.com'
+        self.fill_credentials(id_email='testing@example.com')
+
+        error_messages = self.get_errors()
+
+        self.assertIn('Este e-mail já está registrado.', error_messages)

@@ -57,3 +57,17 @@ def author_api_check_username(request):
     return Response({
         'username_already_registred': username_already_registred
     })
+
+
+@csrf_exempt
+@api_view(http_method_names=['POST'])
+def author_api_check_email(request):
+    email = request.data.get('email')
+
+    email_already_registred = User.objects.filter(
+        email=email
+    ).exists()
+
+    return Response({
+        'email_already_registred': email_already_registred
+    })

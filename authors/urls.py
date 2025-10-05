@@ -53,6 +53,11 @@ urlpatterns = [
         api.author_api_check_username,
         name='author_api_check_username'
     ),
+    path(
+        'api/check-email/',
+        api.author_api_check_email,
+        name='author_api_check_email'
+    ),
 
 
     path(

@@ -1,4 +1,5 @@
 import { ERRORS } from "./constants.js";
+import { fetchCheckEmail } from "./getCheckEmailAPI.js";
 import { fetchCheckUsername } from "./getCheckUsernameAPI.js";
 
 
@@ -12,7 +13,6 @@ export class UsernameValidators {
 
         if(usernameLength < 4) {
             const string = ERRORS.USERNAME_MIN_LENGTH_ERROR(usernameLength);
-            
             const msg = interpolate(string, {usernameLength}, true);
 
             this._errors.push(msg);
@@ -28,7 +28,7 @@ export class UsernameValidators {
         const usernameAlreadyRegistred = result['username_already_registred'];
 
         if(usernameAlreadyRegistred) {
-            const msg = ERRORS.USERNAME_TAKEN_ALREADY_ERROR;
+            const msg = ERRORS.USERNAME_ALREADY_TAKEN_ERROR;
             this._errors.push(msg);
 
             return msg;
@@ -43,7 +43,18 @@ export class UsernameValidators {
 };
 
 
-// validate_email
+export async function validateEmailAlreadyRegistred(email) {
+    const result = await fetchCheckEmail(email);
+    const emailAlreadyRegistred = result['email_already_registred'];
+
+    if(emailAlreadyRegistred) {
+        return ERRORS.EMAIL_ALREADY_TAKEN_ERROR;
+    }
+
+    return true;
+};
+
+// validate email has @ .
 
 
 export class PasswordValidators {
@@ -124,16 +135,27 @@ function attachUsernameListener(usernameInput, errorSpan) {
         const usernameValidators = new UsernameValidators();
 
         usernameValidators.validateUsernameLength(usernameInput.value);
-        const msg = await usernameValidators.validateUsernameAlreadyRegistred(usernameInput.value);
+        await usernameValidators.validateUsernameAlreadyRegistred(usernameInput.value);
 
         const errors = usernameValidators.errors;
 
         errorSpan.textContent = '';
+
+        console.log(usernameInput.value);
         for(let error of errors) {
             errorSpan.textContent += error;
         }
     }) 
 };
+
+function attachEmailListener(emailInput, errorSpan) {
+    emailInput.addEventListener('input', async () => {
+        const msg = await validateEmailAlreadyRegistred(emailInput.value);
+
+        errorSpan.textContent = '';
+        errorSpan.textContent += msg;
+    })
+}
 
 function validatePassword(password1Input, password2Input, errorSpan) {
     const passwordValidators = new PasswordValidators();
@@ -161,10 +183,11 @@ function attachPasswordListener(password1Input, password2Input, errorSpan) {
 function getElements() {
     const form = document.querySelector('.author-form');
     const usernameInput = form.querySelector('#id_username');
+    const emailInput = form.querySelector('#id_email');
     const password1Input = form.querySelector('#id_password1');
     const password2Input = form.querySelector('#id_password2');
 
-    return {form, usernameInput, password1Input, password2Input};
+    return {form, usernameInput, emailInput, password1Input, password2Input};
 };
 
 
@@ -179,9 +202,10 @@ function createErrorSpan(form) {
 
 
 export function main() {
-    const {form, usernameInput, password1Input, password2Input} = getElements();
+    const {form, usernameInput, emailInput, password1Input, password2Input} = getElements();
     const errorSpan = createErrorSpan(form);
 
     attachUsernameListener(usernameInput, errorSpan);
     attachPasswordListener(password1Input, password2Input, errorSpan);
+    attachEmailListener(emailInput, errorSpan);
 };
