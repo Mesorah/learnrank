@@ -1,8 +1,7 @@
 import fetchMock from 'jest-fetch-mock';
 fetchMock.enableMocks();
 
-import { fetchCheckEmail } from "@js/getCheckEmailAPI";
-import { fetchCheckUsername } from "@js/getCheckUsernameAPI";
+import { fetchCheckInformation } from "@js/getCheckInformationAPI";
 
 beforeEach(() => {
     fetch.resetMocks();
@@ -13,7 +12,9 @@ describe('Check username API using mock', () => {
         fetch.mockResponseOnce(JSON.stringify({
             username_already_registred: false
         }))
-        const result = await fetchCheckUsername('usernameDoNotExists');
+        const result = await fetchCheckInformation(
+            'username', 'usernameDoNotExists'
+        );
 
         expect(result.username_already_registred).toBe(false);
     });
@@ -22,7 +23,9 @@ describe('Check username API using mock', () => {
         fetch.mockResponseOnce(JSON.stringify({
             username_already_registred: true
         }))
-        const result = await fetchCheckUsername('usernameExists');
+        const result = await fetchCheckInformation(
+            'username', 'usernameDoNotExists'
+        );
 
         expect(result.username_already_registred).toBe(true);
     });
@@ -33,7 +36,10 @@ describe('Check email API using mock', () => {
         fetch.mockResponseOnce(JSON.stringify({
             email_already_registred: false
         }))
-        const result = await fetchCheckEmail('emailDoNotExists');
+
+        const result = await fetchCheckInformation(
+            'email', 'emailDoNotExists'
+        );
 
         expect(result.email_already_registred).toBe(false);
     });
@@ -42,7 +48,10 @@ describe('Check email API using mock', () => {
         fetch.mockResponseOnce(JSON.stringify({
             email_already_registred: true
         }))
-        const result = await fetchCheckEmail('emailExists');
+
+        const result = await fetchCheckInformation(
+            'email', 'emailDoNotExists'
+        );
 
         expect(result.email_already_registred).toBe(true);
     });

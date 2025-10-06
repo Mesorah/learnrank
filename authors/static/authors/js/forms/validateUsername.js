@@ -1,5 +1,5 @@
 import { ERRORS } from "../constants.js";
-import { fetchCheckUsername } from "../getCheckUsernameAPI.js";
+import { fetchCheckInformation } from "../getCheckInformationAPI.js";
 import { sendErrors } from "./main.js";
 
 
@@ -23,9 +23,12 @@ export class UsernameValidators {
         return true;
     };
 
+    // usar o debounce
     async validateUsernameAlreadyRegistred(username) {
-        const result = await fetchCheckUsername(username);
+        const result = await fetchCheckInformation('username', username);
         const usernameAlreadyRegistred = result['username_already_registred'];
+
+        console.log(usernameAlreadyRegistred);
 
         if(usernameAlreadyRegistred) {
             const msg = ERRORS.USERNAME_ALREADY_TAKEN_ERROR;
@@ -39,7 +42,7 @@ export class UsernameValidators {
 
     get errors() {
         return this._errors;
-    }
+    };
 };
 
 export function attachUsernameListener(usernameInput, errorSpan) {

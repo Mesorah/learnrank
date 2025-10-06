@@ -1,6 +1,6 @@
-const apiURL = 'http://127.0.0.1:8000/authors/api/check-username/';
+export async function fetchCheckInformation(checkInformation, information) {
+    const apiURL = `http://127.0.0.1:8000/authors/api/check-${checkInformation}/`;
 
-export async function fetchCheckUsername(username) {
     const options = {
         method: 'POST',
         headers: {
@@ -8,7 +8,7 @@ export async function fetchCheckUsername(username) {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            username: username
+            [checkInformation]: information
         }),
     };
 
@@ -21,7 +21,7 @@ export async function fetchCheckUsername(username) {
         }
 
         const data = await response.json();
-        console.log('Return API:', data);
+        // console.log('Return API:', data);
 
         return data;
 
