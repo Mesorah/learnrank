@@ -4,9 +4,8 @@ from django.urls import resolve, reverse
 from django.utils.translation import activate
 
 import utils.constants_informations as const_informations
+from authors.tests.helpers import create_user
 from authors.views import PasswordResetAuthorView
-
-from ..helpers import create_user
 
 
 class TestPasswordResetAuthor(TestCase):

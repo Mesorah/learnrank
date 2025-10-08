@@ -5,8 +5,7 @@ from django.urls import reverse
 
 import utils.constants_informations as const_informations
 from authors.forms import CustomAuthenticationForm
-
-from ..helpers import create_user
+from authors.tests.helpers import create_user
 
 User = get_user_model()
 

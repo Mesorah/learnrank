@@ -7,8 +7,7 @@ from django.utils.translation import activate
 
 import authors.constants as const
 from authors import views
-
-from ..helpers import create_user
+from authors.tests.helpers import create_user
 
 User = get_user_model()
 

@@ -4,9 +4,8 @@ from django.utils import html
 from django.utils.translation import activate
 
 import authors.constants as const
+from authors.tests.helpers import create_user
 from authors.views import DeleteAuthorView
-
-from ..helpers import create_user
 
 
 class TestDeleteAuthor(TestCase):

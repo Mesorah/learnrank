@@ -7,9 +7,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 
 import utils.constants_informations as const_informations
+from authors.tests.helpers import create_user
 from authors.views import PasswordResetConfirmAuthorView
-
-from ..helpers import create_user
 
 User = get_user_model()
 

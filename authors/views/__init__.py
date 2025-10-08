@@ -1,5 +1,5 @@
 # flake8: noqa
-from .authentication import *
+from .auth_views import *
 from .change_informations import *
 from .delete_author import *
 from .login_mixins import *

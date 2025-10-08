@@ -6,8 +6,7 @@ from django.utils import html
 
 import authors.constants as consts
 import utils.constants_informations as const_informations
-
-from ..helpers import create_user
+from authors.tests.helpers import create_user
 
 User = get_user_model()
 

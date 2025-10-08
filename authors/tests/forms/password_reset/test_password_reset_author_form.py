@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from ..helpers import create_user
+from authors.tests.helpers import create_user
 
 User = get_user_model()
 

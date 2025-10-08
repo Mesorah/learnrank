@@ -7,8 +7,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 import utils.constants_informations as const_informations
-
-from ..helpers import create_user
+from authors.tests.helpers import create_user
 
 User = get_user_model()
 
