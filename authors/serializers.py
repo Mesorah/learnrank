@@ -4,11 +4,7 @@ from rest_framework.fields import empty
 
 import authors.constants as const
 from authors.utils import change_username
-from authors.validators import (
-    AuthorPATCHValidator,
-    AuthorValidator,
-    CheckAuthorUsernameValidator,
-)
+from authors.validators import AuthorPATCHValidator, AuthorValidator
 
 User = get_user_model()
 
@@ -75,17 +71,3 @@ class AuthorSerializer(serializers.ModelSerializer):
             )
 
         return super_save
-
-
-class CheckAuthorUsernameSerializer(serializers.Serializer):
-    username = serializers.CharField(min_length=4, max_length=30)
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-
-        CheckAuthorUsernameValidator(
-            values=attrs,
-            validation_error=serializers.ValidationError,
-        )
-
-        return attrs
