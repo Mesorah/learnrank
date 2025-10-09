@@ -24,12 +24,10 @@ class AuthorPATCHValidator(AuthorValidatorMixin):
 
             self.validate_username_length(
                 field_name='new_username', username=self.values['username'],
-                add_error=False
             )
 
             self.validade_username_already_exists(
                 field_name='new_username', username=self.values['username'],
-                add_error=False
             )
 
         if 'email' in self.values:
@@ -83,12 +81,10 @@ class AuthorValidator(AuthorValidatorMixin):
         if self.context == 'form':
             self.validate_username_length(
                 field_name='username', username=self.values['username'],
-                add_error=False
             )
 
             self.validade_username_already_exists(
                 field_name='username', username=self.values['username'],
-                add_error=False
             )
             self.validate_email('email', email=self.values['email'])
             self.validate_form()
@@ -96,12 +92,10 @@ class AuthorValidator(AuthorValidatorMixin):
         if self.context == 'serializer':
             self.validate_username_length(
                 field_name='username', username=self.values['username'],
-                add_error=False
             )
 
             self.validade_username_already_exists(
                 field_name='username', username=self.values['username'],
-                add_error=False
             )
             self.validate_email(
                 'email', email=self.values['email'], add_error=False

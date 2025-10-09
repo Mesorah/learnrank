@@ -9,29 +9,19 @@ User = get_user_model()
 
 
 class AuthorValidatorMixin:
-    def validate_username_length(
-            self, field_name, username, add_error=True
-    ):
+    def validate_username_length(self, field_name, username):
         if len(username) <= 3:
             msg = const.USERNAME_MIN_LENGTH_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            raise self.validation_error({field_name: msg})
 
         return username
 
-    def validade_username_already_exists(
-            self, field_name, username, add_error=True
-    ):
+    def validade_username_already_exists(self, field_name, username):
         if User.objects.filter(username=username).exists():
             msg = const.USERNAME_ALREADY_TAKEN_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            raise self.validation_error({field_name: msg})
 
         return username
 

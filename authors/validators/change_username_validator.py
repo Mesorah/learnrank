@@ -15,12 +15,10 @@ class ChangeUsernameValidator(AuthorValidatorMixin):
     def control(self):
         self.validate_username_length(
             field_name='new_username', username=self.new_username,
-            add_error=False
         )
 
         self.validade_username_already_exists(
             field_name='new_username', username=self.new_username,
-            add_error=False
         )
 
         if not self.is_staff:
