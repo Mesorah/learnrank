@@ -78,25 +78,19 @@ class AuthorValidator(AuthorValidatorMixin):
         return self.values
 
     def control(self):
-        if self.context == 'form':
-            self.validate_username_length(
+        self.validate_username_length(
                 field_name='username', username=self.values['username'],
             )
 
-            self.validade_username_already_exists(
-                field_name='username', username=self.values['username'],
-            )
+        self.validade_username_already_exists(
+            field_name='username', username=self.values['username'],
+        )
+
+        if self.context == 'form':
             self.validate_email('email', email=self.values['email'])
             self.validate_form()
 
         if self.context == 'serializer':
-            self.validate_username_length(
-                field_name='username', username=self.values['username'],
-            )
-
-            self.validade_username_already_exists(
-                field_name='username', username=self.values['username'],
-            )
             self.validate_email(
                 'email', email=self.values['email'], add_error=False
             )
