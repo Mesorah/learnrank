@@ -29,6 +29,12 @@ class AuthorAPIMixin(APITestCase):
         return response.data['access']
 
     def request_author_api_list(self, method, page=1, *args, **kwargs):
+        """
+        gettattr makes self.client.{method} work so that
+        if post is passed as a parameter of the method, it
+        does self.client.post(...).
+        """
+
         return getattr(self.client, method)(reverse(
             'authors:author_api_list'
         ) + f'?page={page}', *args, **kwargs)
@@ -37,20 +43,6 @@ class AuthorAPIMixin(APITestCase):
         return getattr(self.client, method)(reverse(
             'authors:author_api_detail', kwargs={'pk': pk}
         ), *args, **kwargs)
-
-    def change_username(
-        self, username, create_new_user, pk,
-        new_username, password=None
-    ):
-        if password is None:
-            password = self.password
-
-        return self.get_authorized_view(
-            self.request_author_api_detail, method='patch',
-            username=username, password=password,
-            create_new_user=create_new_user, pk=pk,
-            data={'username': new_username}
-        )
 
     def get_authorized_view(
         self,
@@ -91,4 +83,21 @@ class AuthorAPIMixin(APITestCase):
             pk=pk,
             HTTP_AUTHORIZATION='Bearer ' + access_token,
             *args, **kwargs
+        )
+
+    def change_username(
+        self, username, create_new_user, pk, new_username, password=None
+    ):
+        if password is None:
+            password = self.password
+
+        """
+        Call the function to authorize the view to
+        enter the API to change the username.
+        """
+        return self.get_authorized_view(
+            self.request_author_api_detail, method='patch',
+            username=username, password=password,
+            create_new_user=create_new_user, pk=pk,
+            data={'username': new_username}
         )

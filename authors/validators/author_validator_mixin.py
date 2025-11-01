@@ -66,12 +66,19 @@ class AuthorValidatorMixin:
         return password
 
     def validate_username_data(self, change_username_data, field_name):
+        """
+        Checks if the timeout for the user to rename their username has not
+        ended, gets the time remaining to rename the username, and throws the
+        error with the remaining time.
+        """
+
         if (
             change_username_data is not None
             and
+            # 25/10/2025 < 1/11/2025
             is_wait_time_done() < change_username_data
         ):
-
+            # 1/11/2025 - 25/10/2025 -> 6 days and 23 hours
             time_to_wait = change_username_data - is_wait_time_done()
 
             # Because 7 days becomes 6 days and 23 hours.
@@ -81,3 +88,5 @@ class AuthorValidatorMixin:
                 field_name:
                 const.CANNOT_CHANGE_USERNAME_ERROR % {'days': wait_days}
             })
+
+        return change_username_data

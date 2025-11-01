@@ -6,8 +6,17 @@ import authors.constants as const
 
 
 class LoginErrorMixin:
-    message = const.CANNOT_ACCESS_LOGGED_ERROR
+    """
+    Note that with authenticated_user = False, it validates whether the
+    user is not logged in, and with authenticated_user = True, it validates
+    whether the user is logged in. If authenticated_user = False and the
+    user is logged in, it throws an error, and the same applies if
+    authenticated_user = True and the user is logged out.
+    """
+
     authenticated_user = False
+    message = const.CANNOT_ACCESS_LOGGED_ERROR
+    redirect_page = const.HOME_PAGE
 
     def dispatch(self, request, *args, **kwargs):
         is_authenticated = request.user.is_authenticated
@@ -20,4 +29,4 @@ class LoginErrorMixin:
 
         messages.error(request, self.message)
 
-        return redirect(reverse(const.HOME_PAGE))
+        return redirect(reverse(self.redirect_page))

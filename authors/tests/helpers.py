@@ -18,9 +18,9 @@ def create_user(auto_login=False, client=None, qtd=1, **kwargs):
     email = kwargs.get('email', const_informations.TEST_EMAIL)
     password = kwargs.get('password', const_informations.TEST_PASSWORD)
 
-    for user in range(qtd):
-        final_username = f'{username}-{user}' if qtd != 1 else username
-        final_email = f'{username}-{user}' if qtd != 1 else email
+    for user_number in range(qtd):
+        final_username = f'{username}-{user_number}' if qtd > 1 else username
+        final_email = f'{username}-{user_number}' if qtd > 1 else email
 
         user = User.objects.create_user(
             username=final_username,
@@ -56,6 +56,7 @@ def create_admin_user(
 
 
 def change_username_data(user, wait_days=7):
+    # get how many days left to change username
     new_data = is_wait_time_done(wait_days=wait_days)
 
     user.change_username_data = new_data

@@ -21,7 +21,6 @@ export async function fetchCheckInformation(checkInformation, information) {
         }
 
         const data = await response.json();
-        // console.log('Return API:', data);
 
         return data;
 

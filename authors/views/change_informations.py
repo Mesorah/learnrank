@@ -5,17 +5,17 @@ from django.views.generic.base import View
 import authors.constants as const
 from authors.forms import ChangeUsernameForm
 
+from .login_mixins import LoginErrorMixin
+
 HOME_PAGE = 'home:index'
 LOGIN_PAGE = 'authors:login'
 AUTHORS_TEMPLATE = 'authors/pages/authors.html'
 
 
-class ChangeUsernameView(View):
-    """
-
-    The LoginErrorMixin cannot be used here due to the POST request.
-
-    """
+class ChangeUsernameView(LoginErrorMixin, View):
+    message = const.CANNOT_ACCESS_NOT_LOGGED_ERROR
+    authenticated_user = True
+    redirect_page = LOGIN_PAGE
 
     def render_form(self, form):
         return render(self.request, AUTHORS_TEMPLATE, context={
@@ -23,14 +23,6 @@ class ChangeUsernameView(View):
             'title': const.TITLE_CHANGE_USERNAME,
             'form': form
         })
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, const.CANNOT_ACCESS_NOT_LOGGED_ERROR)
-
-            return redirect(LOGIN_PAGE)
-
-        return super().dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
         form = ChangeUsernameForm(self.request.user)
