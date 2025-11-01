@@ -19,5 +19,5 @@ class TestPasswordResetAuthorForm(TestCase):
         parsed = lxml.html.fromstring(response.content)  # HTML -> DOM
         [form] = parsed.cssselect('form[method=POST]')  # -> Search a form
 
-        [input] = form.cssselect(f'input[name={'email'}]')
+        [input] = form.cssselect(f"input[name={'email'}]")
         self.assertEqual(input.get('type'), 'email')

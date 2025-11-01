@@ -52,5 +52,5 @@ class TestDeleteAuthorForm(TestCase):
         [form] = parsed.cssselect('form[method=POST]')  # -> Search a form
         self.assertEqual(form.get('action'), reverse('authors:delete'))
 
-        [input] = form.cssselect(f'input[name={'confirm'}]')
+        [input] = form.cssselect(f"input[name={'confirm'}]")
         self.assertEqual(input.get('type'), 'text')
