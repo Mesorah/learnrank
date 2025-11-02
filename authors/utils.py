@@ -1,4 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.utils import timezone
+from rest_framework.response import Response
+
+User = get_user_model()
 
 
 def is_wait_time_done(wait_days=7):
@@ -28,3 +32,21 @@ def change_username(user, cleaned_data):
     user.save()
 
     return user
+
+
+def author_api_check_field_already_registred(request, field_name):
+    field_value = request.data.get(f'{field_name}')
+
+    """
+    Unpacks the fields and transforms them into named arguments.
+
+    Ex:
+        "emai": "email@example.com" -> email@example.com
+    """
+    field_already_registred = User.objects.filter(
+        **{field_name: field_value}
+    ).exists()
+
+    return Response({
+        f'{field_name}_already_registred': field_already_registred
+    })

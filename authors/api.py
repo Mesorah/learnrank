@@ -6,10 +6,11 @@ from rest_framework.generics import (  # noqa E501
 )
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
 
 from authors.permissions import IsAdminOrSelf
 from authors.serializers import AuthorSerializer
+
+from .utils import author_api_check_field_already_registred
 
 User = get_user_model()
 
@@ -44,29 +45,13 @@ class AuthorAPIDetail(RetrieveUpdateDestroyAPIView):
         return [IsAdminUser()]
 
 
-@api_view(http_method_names=['POST'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def author_api_check_username(request):
-    username = request.data.get('username')
-
-    username_already_registred = User.objects.filter(
-        username=username
-    ).exists()
-
-    return Response({
-        'username_already_registred': username_already_registred
-    })
+    return author_api_check_field_already_registred(request, 'username')
 
 
-@api_view(http_method_names=['POST'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def author_api_check_email(request):
-    email = request.data.get('email')
-
-    email_already_registred = User.objects.filter(
-        email=email
-    ).exists()
-
-    return Response({
-        'email_already_registred': email_already_registred
-    })
+    return author_api_check_field_already_registred(request, 'email')
