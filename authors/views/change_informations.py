@@ -1,28 +1,21 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.views.generic.base import View
 
 import authors.constants as const
 from authors.forms import ChangeUsernameForm
 
-from .login_mixins import LoginErrorMixin
-
-HOME_PAGE = 'home:index'
-LOGIN_PAGE = 'authors:login'
-AUTHORS_TEMPLATE = 'authors/pages/authors.html'
+from .mixins import LoginErrorMixin, RenderFormMixin
 
 
-class ChangeUsernameView(LoginErrorMixin, View):
+class ChangeUsernameView(LoginErrorMixin, RenderFormMixin, View):
     message = const.CANNOT_ACCESS_NOT_LOGGED_ERROR
     authenticated_user = True
-    redirect_page = LOGIN_PAGE
+    redirect_page = const.LOGIN_PAGE
 
-    def render_form(self, form):
-        return render(self.request, AUTHORS_TEMPLATE, context={
-            'form_action': 'authors:change_username',
-            'title': const.TITLE_CHANGE_USERNAME,
-            'form': form
-        })
+    template = const.AUTHORS_TEMPLATE
+    form_action = 'authors:change_username'
+    title = const.TITLE_CHANGE_USERNAME
 
     def get(self, *args, **kwargs):
         form = ChangeUsernameForm(self.request.user)
@@ -37,7 +30,7 @@ class ChangeUsernameView(LoginErrorMixin, View):
 
             messages.success(self.request, const.USERNAMED_CHANGED_SUCCESS)
 
-            return redirect(HOME_PAGE)
+            return redirect(const.HOME_PAGE)
 
         return self.render_form(form)
 

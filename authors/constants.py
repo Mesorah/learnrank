@@ -60,4 +60,5 @@ TITLE_CHANGE_USERNAME = _lazy('Change information')
 # views
 HOME_PAGE = 'home:index'
 LOGIN_PAGE = 'authors:login'
+SIGNUP_PAGE = 'authors:signup'
 AUTHORS_TEMPLATE = 'authors/pages/authors.html'

@@ -1,23 +1,20 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.views.generic.base import View
 
 import authors.constants as const
 from authors.forms import ConfirmForm
 
-from .login_mixins import LoginErrorMixin
+from .mixins import LoginErrorMixin, RenderFormMixin
 
 
-class DeleteAuthorView(LoginErrorMixin, View):
+class DeleteAuthorView(LoginErrorMixin, RenderFormMixin, View):
     message = const.CANNOT_ACCESS_NOT_LOGGED_ERROR
     authenticated_user = True
 
-    def render_form(self, form):
-        return render(self.request, const.AUTHORS_TEMPLATE, context={
-            'form_action': 'authors:delete',
-            'form': form,
-            'title': const.TITLE_DELETE_ACCOUNT,
-        })
+    template = const.AUTHORS_TEMPLATE
+    form_action = 'authors:delete'
+    title = const.TITLE_DELETE_ACCOUNT
 
     def get(self, *args, **kwargs):
         form = ConfirmForm()

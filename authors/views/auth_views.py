@@ -4,26 +4,30 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils import translation
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView
 
 import authors.constants as const
 from authors.forms import CustomAuthenticationForm, CustomSignupForm
 
-from .login_mixins import LoginErrorMixin
+from .mixins import AuthViewMixin, LoginErrorMixin
 
 User = get_user_model()
 
 
-class CreateAuthorView(LoginErrorMixin, CreateView):
+class CreateAuthorView(LoginErrorMixin, AuthViewMixin, CreateView):
     model = User
     form_class = CustomSignupForm
     template_name = const.AUTHORS_TEMPLATE
     success_url = reverse_lazy(const.HOME_PAGE)
 
-    def get_success_url(self):
-        return self.success_url
+    title = const.TITLE_SIGN_UP
+    form_action = const.SIGNUP_PAGE
+    title_key = 'Sign Up'
+    is_signup = True
+
+    success_message = const.ACCOUNT_CREATED_SUCCESS
+    error_message = const.FORM_INVALID_ERROR
 
     def form_valid(self, form):
         self.object = form.save()
@@ -32,43 +36,18 @@ class CreateAuthorView(LoginErrorMixin, CreateView):
         messages.success(self.request, const.ACCOUNT_CREATED_SUCCESS)
         return redirect(self.get_success_url())
 
-    def form_invalid(self, form):
-        messages.error(self.request, const.FORM_INVALID_ERROR)
-        return super().form_invalid(form)
 
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-
-        ctx['title'] = const.TITLE_SIGN_UP
-        ctx['html_language'] = translation.get_language()
-        ctx['form_action'] = 'authors:signup'
-        ctx['is_signup'] = True
-        ctx['title_key'] = 'Sign Up'
-
-        return ctx
-
-
-class LoginAuthorView(LoginErrorMixin, LoginView):
+class LoginAuthorView(LoginErrorMixin, AuthViewMixin, LoginView):
     form_class = CustomAuthenticationForm
     template_name = const.AUTHORS_TEMPLATE
     success_url = reverse_lazy(const.HOME_PAGE)
 
-    def get_success_url(self):
-        return self.success_url
+    title = const.TITLE_LOGIN
+    form_action = const.LOGIN_PAGE
+    title_key = 'Login'
 
-    def form_valid(self, form):
-        messages.success(self.request, const.ACCOUNT_LOGGED_SUCCESS)
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-
-        ctx['title'] = const.TITLE_LOGIN
-        ctx['html_language'] = translation.get_language()
-        ctx['form_action'] = const.LOGIN_PAGE
-        ctx['title_key'] = 'Login'
-
-        return ctx
+    success_message = const.ACCOUNT_LOGGED_SUCCESS
+    error_message = const.FORM_INVALID_ERROR
 
 
 @require_POST
