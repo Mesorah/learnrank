@@ -41,7 +41,13 @@ class AuthorValidateEmail:
 
 class AuthorValidatePassword:
     def validate_password_length(self, field_name, password, add_error=True):
-        pass
+        if len(password) < 8:
+            msg = const.PASSWORD1_MIN_LENGTH_ERROR
+
+            if add_error:
+                self.add_error(field_name, msg)
+            else:
+                raise self.validation_error({field_name: msg})
 
     def validate_password_contains_letters(
             self, field_name, password, add_error=True
@@ -75,11 +81,6 @@ class AuthorValidatePassword:
                 self.add_error(field_name, msg)
             else:
                 raise self.validation_error({field_name: msg})
-
-    def validate_password_passwords_match(
-            self, field_name, password, add_error=True
-    ):
-        pass
 
     def validate_password_rules(self, *args, **kwargs):
         self.validate_password_length(*args, **kwargs)

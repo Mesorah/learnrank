@@ -45,6 +45,14 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         )
 
     def test_password_validator_is_correct(self):
+        self.data['password'] = 'ab12!@'
+        serializer = AuthorSerializer(data=self.data)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn(
+            const.PASSWORD1_MIN_LENGTH_ERROR,
+            serializer.errors['password']
+        )
+
         self.data['password'] = '12345678a'
         serializer = AuthorSerializer(data=self.data)
         self.assertFalse(serializer.is_valid())

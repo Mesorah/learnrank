@@ -36,7 +36,6 @@ class CustomSignupForm(forms.ModelForm):
     password1 = forms.CharField(
         label=const.PASSWORD1_LABEL,
         min_length=8,
-        error_messages={'min_length': const.PASSWORD1_MIN_LENGTH_ERROR},
         max_length=50, widget=forms.PasswordInput(
             attrs={'placeholder': const.SIGNUP_PASSWORD1_PLACEHOLDER}
         )
@@ -44,7 +43,6 @@ class CustomSignupForm(forms.ModelForm):
     password2 = forms.CharField(
         label=const.PASSWORD2_LABEL,
         min_length=8,
-        error_messages={'min_length': const.PASSWORD2_MIN_LENGTH_ERROR},
         max_length=50, widget=forms.PasswordInput(
             attrs={'placeholder': const.SIGNUP_PASSWORD2_PLACEHOLDER}
         )

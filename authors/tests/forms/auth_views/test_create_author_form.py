@@ -56,6 +56,15 @@ class TestCreateAuthorForm(TestCase):
         )
 
     def test_password_validator_is_correct(self):
+        self.form_data['password1'] = 'ab12!@'
+        self.form_data['password2'] = 'ab12!@'
+        form = CustomSignupForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            const.PASSWORD1_MIN_LENGTH_ERROR,
+            form.errors['password1']
+        )
+
         self.form_data['password1'] = '12345678'
         self.form_data['password2'] = '12345678'
         form = CustomSignupForm(data=self.form_data)
