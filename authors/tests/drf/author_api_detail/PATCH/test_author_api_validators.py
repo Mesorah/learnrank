@@ -32,8 +32,9 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         response = self.get_authorized_view(
             self.request_author_api_detail, method='patch',
             create_new_user=False, username=self.owner_user.username,
-            pk=self.owner_user.pk, data={'password': '12345678'}
+            pk=self.owner_user.pk, data={'password': '12345678a'}
         )
+
         self.assertIn(
             const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
             response.data['password']

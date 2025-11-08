@@ -11,7 +11,7 @@ export class UsernameValidators {
     validateUsernameLength(username) {
         const usernameLength = username.length;
 
-        if(usernameLength < 4) {
+        if(usernameLength <= 3) {
             const string = ERRORS.USERNAME_MIN_LENGTH_ERROR(usernameLength);
             const msg = interpolate(string, {usernameLength}, true);
 
@@ -27,8 +27,6 @@ export class UsernameValidators {
     async validateUsernameAlreadyRegistred(username) {
         const result = await fetchCheckInformation('username', username);
         const usernameAlreadyRegistred = result['username_already_registred'];
-
-        console.log(usernameAlreadyRegistred);
 
         if(usernameAlreadyRegistred) {
             const msg = ERRORS.USERNAME_ALREADY_TAKEN_ERROR;

@@ -8,7 +8,7 @@ from authors.utils import is_wait_time_done
 User = get_user_model()
 
 
-class AuthorValidatorMixin:
+class AuthorValidateUsername:
     def validate_username_length(self, field_name, username):
         if len(username) <= 3:
             msg = const.USERNAME_MIN_LENGTH_ERROR
@@ -25,6 +25,8 @@ class AuthorValidatorMixin:
 
         return username
 
+
+class AuthorValidateEmail:
     def validate_email(self, field_name, email, add_error=True):
         if User.objects.filter(email=email).exists():
             msg = const.EMAIL_ALREADY_REGISTERED_ERROR
@@ -36,25 +38,14 @@ class AuthorValidatorMixin:
 
         return email
 
-    def validate_password_rules(self, field_name, password, add_error=True):
-        # Verify if password1 have [a-z] or [1-9] and don't have symbols
-        if password and password.isalnum():
-            msg = const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+class AuthorValidatePassword:
+    def validate_password_length(self, field_name, password, add_error=True):
+        pass
 
-        # Verify if password1 don't have numbers [1-9]
-        if not re.search(r'\d', password):
-            msg = const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
-
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
-
+    def validate_password_contains_letters(
+            self, field_name, password, add_error=True
+    ):
         if not re.search(r'[A-Za-z]', password):
             msg = const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
 
@@ -63,8 +54,42 @@ class AuthorValidatorMixin:
             else:
                 raise self.validation_error({field_name: msg})
 
-        return password
+    def validate_password_contains_numbers(
+            self, field_name, password, add_error=True
+    ):
+        if not re.search(r'\d', password):
+            msg = const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
 
+            if add_error:
+                self.add_error(field_name, msg)
+            else:
+                raise self.validation_error({field_name: msg})
+
+    def validate_password_contains_symbols(
+            self, field_name, password, add_error=True
+    ):
+        if not re.search(r'\W+', password):
+            msg = const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
+
+            if add_error:
+                self.add_error(field_name, msg)
+            else:
+                raise self.validation_error({field_name: msg})
+
+    def validate_password_passwords_match(
+            self, field_name, password, add_error=True
+    ):
+        pass
+
+    def validate_password_rules(self, *args, **kwargs):
+        self.validate_password_length(*args, **kwargs)
+        self.validate_password_contains_letters(*args, **kwargs)
+        self.validate_password_contains_numbers(*args, **kwargs)
+        self.validate_password_contains_symbols(*args, **kwargs)
+        self.validate_password_passwords_match(*args, **kwargs)
+
+
+class AuthorValidateUsernameData:
     def validate_username_data(self, change_username_data, field_name):
         """
         Checks if the timeout for the user to rename their username has not
@@ -90,3 +115,10 @@ class AuthorValidatorMixin:
             })
 
         return change_username_data
+
+
+class AuthorValidatorMixin(
+    AuthorValidateUsername, AuthorValidateEmail,
+    AuthorValidatePassword, AuthorValidateUsernameData
+):
+    pass
