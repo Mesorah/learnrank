@@ -13,7 +13,7 @@ class DeleteAuthorView(LoginErrorMixin, RenderFormMixin, View):
     authenticated_user = True
 
     template = const.AUTHORS_TEMPLATE
-    form_action = 'authors:delete'
+    form_action = const.DELETE_PAGE
     title = const.TITLE_DELETE_ACCOUNT
 
     def get(self, *args, **kwargs):

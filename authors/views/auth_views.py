@@ -23,7 +23,7 @@ class CreateAuthorView(LoginErrorMixin, AuthViewMixin, CreateView):
 
     title = const.TITLE_SIGN_UP
     form_action = const.SIGNUP_PAGE
-    title_key = 'Sign Up'
+    title_key = const.SIGNUP_TITLE_KEY
     is_signup = True
 
     success_message = const.ACCOUNT_CREATED_SUCCESS
@@ -44,7 +44,7 @@ class LoginAuthorView(LoginErrorMixin, AuthViewMixin, LoginView):
 
     title = const.TITLE_LOGIN
     form_action = const.LOGIN_PAGE
-    title_key = 'Login'
+    title_key = const.LOGIN_TITLE_KEY
 
     success_message = const.ACCOUNT_LOGGED_SUCCESS
     error_message = const.FORM_INVALID_ERROR

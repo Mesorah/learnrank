@@ -14,7 +14,7 @@ class ChangeUsernameView(LoginErrorMixin, RenderFormMixin, View):
     redirect_page = const.LOGIN_PAGE
 
     template = const.AUTHORS_TEMPLATE
-    form_action = 'authors:change_username'
+    form_action = const.CHANGE_USERNAME_PAGE
     title = const.TITLE_CHANGE_USERNAME
 
     def get(self, *args, **kwargs):

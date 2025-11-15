@@ -57,8 +57,18 @@ TITLE_LOGIN = _lazy('Login')
 TITLE_DELETE_ACCOUNT = _lazy('Delete your account')
 TITLE_CHANGE_USERNAME = _lazy('Change information')
 
-# views
+
+# VIEWS
+# FORM ACTIONS
 HOME_PAGE = 'home:index'
 LOGIN_PAGE = 'authors:login'
 SIGNUP_PAGE = 'authors:signup'
+DELETE_PAGE = 'authors:delete'
+CHANGE_USERNAME_PAGE = 'authors:change_username'
+
+# TEMPLATES
 AUTHORS_TEMPLATE = 'authors/pages/authors.html'
+
+# TITLES KEYS
+SIGNUP_TITLE_KEY = 'Sign Up'
+LOGIN_TITLE_KEY = 'Login'
