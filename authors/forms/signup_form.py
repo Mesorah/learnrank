@@ -18,9 +18,7 @@ class CustomSignupForm(forms.ModelForm):
 
     username = forms.CharField(
         label=const.USERNAME_LABEL,
-        min_length=4,
         error_messages={
-            'min_length': const.USERNAME_MIN_LENGTH_ERROR,
             'unique': const.USERNAME_ALREADY_TAKEN_ERROR
         },
         max_length=30, widget=forms.TextInput(

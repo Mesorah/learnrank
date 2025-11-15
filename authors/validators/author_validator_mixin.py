@@ -87,7 +87,6 @@ class AuthorValidatePassword:
         self.validate_password_contains_letters(*args, **kwargs)
         self.validate_password_contains_numbers(*args, **kwargs)
         self.validate_password_contains_symbols(*args, **kwargs)
-        self.validate_password_passwords_match(*args, **kwargs)
 
 
 class AuthorValidateUsernameData:
