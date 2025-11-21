@@ -21,7 +21,7 @@ class TestCreateAuthorForm(TestCase):
 
         return super().setUp()
 
-    def test_username_validator_is_correct(self):
+    def test_username_min_length_validator(self):
         self.form_data['username'] = 'abc'
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
@@ -29,6 +29,7 @@ class TestCreateAuthorForm(TestCase):
             form.errors['username'][0], const.USERNAME_MIN_LENGTH_ERROR
         )
 
+    def test_username_already_taken_validator(self):
         self.form_data['username'] = 'abcd'
         form = CustomSignupForm(data=self.form_data)
         self.assertTrue(form.is_valid())
@@ -42,7 +43,7 @@ class TestCreateAuthorForm(TestCase):
             form.errors['username'][0], const.USERNAME_ALREADY_TAKEN_ERROR
         )
 
-    def test_email_validator_is_correct(self):
+    def test_email_already_registred_validator(self):
         form = CustomSignupForm(data=self.form_data)
         self.assertTrue(form.is_valid())
         form.save()
@@ -55,7 +56,7 @@ class TestCreateAuthorForm(TestCase):
             form.errors['email'][0], const.EMAIL_ALREADY_REGISTERED_ERROR
         )
 
-    def test_password_validator_is_correct(self):
+    def test_password_min_length_validator(self):
         self.form_data['password1'] = 'ab12!@'
         self.form_data['password2'] = 'ab12!@'
         form = CustomSignupForm(data=self.form_data)
@@ -65,19 +66,27 @@ class TestCreateAuthorForm(TestCase):
             form.errors['password1']
         )
 
-        self.form_data['password1'] = '12345678'
-        self.form_data['password2'] = '12345678'
+    def test_password_must_contain_symbols_validator(self):
+        self.form_data['password1'] = '12345678a'
+        self.form_data['password2'] = '12345678a'
         form = CustomSignupForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
             const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR,
             form.errors['password1']
         )
+
+    def test_password_must_contain_letters_validator(self):
+        self.form_data['password1'] = '12345678!'
+        self.form_data['password2'] = '12345678!'
+        form = CustomSignupForm(data=self.form_data)
+        self.assertFalse(form.is_valid())
         self.assertIn(
             const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR,
             form.errors['password1']
         )
 
+    def test_password_must_contain_numbers_validator(self):
         self.form_data['password1'] = 'abcdefgh'
         self.form_data['password2'] = 'abcdefgh'
         form = CustomSignupForm(data=self.form_data)
@@ -87,6 +96,7 @@ class TestCreateAuthorForm(TestCase):
             form.errors['password1']
         )
 
+    def test_password_do_not_match_validator(self):
         self.form_data['password1'] = 'abcdefg1'
         self.form_data['password2'] = 'abcdefg11'
         form = CustomSignupForm(data=self.form_data)
@@ -95,11 +105,6 @@ class TestCreateAuthorForm(TestCase):
             const.PASSWORDS_DO_NOT_MATCH_ERROR,
             form.errors['password2']
         )
-
-        self.form_data['password1'] = 'abcdef1!'
-        self.form_data['password2'] = 'abcdef1!'
-        form = CustomSignupForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
 
     def test_user_is_created(self):
         form = CustomSignupForm(data=self.form_data)

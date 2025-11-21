@@ -14,15 +14,17 @@ class TestPasswordResetAuthor(TestCase):
 
         self.email_data = const_informations.TEST_EMAIL
 
+        self.url = reverse('authors:password_reset')
+
         return super().setUp()
 
     def test_view_is_correct(self):
-        response = resolve(reverse('authors:password_reset'))
+        response = resolve(self.url)
 
         self.assertEqual(response.func.view_class, PasswordResetAuthorView)
 
     def test_view_load_correct_template(self):
-        response = self.client.get(reverse('authors:password_reset'))
+        response = self.client.get(self.url)
 
         self.assertTemplateUsed(
             response,
@@ -30,13 +32,12 @@ class TestPasswordResetAuthor(TestCase):
         )
 
     def test_get_view_returns_200(self):
-        response = self.client.get(reverse('authors:password_reset'))
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_email_was_sent_correctly(self):
-        url = reverse('authors:password_reset')
-        self.client.post(url, {'email': self.email_data})
+        self.client.post(self.url, {'email': self.email_data})
 
         email = mail.outbox
 
@@ -51,8 +52,7 @@ class TestPasswordResetAuthor(TestCase):
         )
 
     def test_incorrect_email_was_not_sent(self):
-        url = reverse('authors:password_reset')
-        self.client.post(url, {'email': 'falseemail@example.com'})
+        self.client.post(self.url, {'email': 'falseemail@example.com'})
 
         email = mail.outbox
 
@@ -66,8 +66,7 @@ class TestPasswordResetAuthor(TestCase):
         response = self.client.get(reverse('authors:password_reset'))
         self.assertContains(response, 'Enviar')
 
-        url = reverse('authors:password_reset')
-        self.client.post(url, {'email': self.email_data})
+        self.client.post(self.url, {'email': self.email_data})
 
         email = mail.outbox
 

@@ -21,8 +21,8 @@ class TestLoginAuthorForm(TestCase):
 
         return super().setUp()
 
-    def test_username_validator_is_correct(self):
-        self.form_data['username'] = 'abc'
+    def validate_case_sensitive_method(self, field):
+        self.form_data[field] = 'abc'
         form = CustomAuthenticationForm(data=self.form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
@@ -31,15 +31,11 @@ class TestLoginAuthorForm(TestCase):
             form.errors['__all__'][0]
         )
 
+    def test_username_validator_is_correct(self):
+        self.validate_case_sensitive_method('username')
+
     def test_password_validator_is_correct(self):
-        self.form_data['password'] = 'abc'
-        form = CustomAuthenticationForm(data=self.form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            ('Please enter a correct username and password. '
-             'Note that both fields may be case-sensitive.'),
-            form.errors['__all__'][0]
-        )
+        self.validate_case_sensitive_method('password')
 
     def test_user_is_created(self):
         form = CustomAuthenticationForm(data=self.form_data)

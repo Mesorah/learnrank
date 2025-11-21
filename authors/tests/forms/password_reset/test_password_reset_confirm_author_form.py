@@ -13,6 +13,14 @@ User = get_user_model()
 
 
 class TestPasswordResetConfirmAuthorForm(TestCase):
+    def get_correct_url(self):
+        response = self.client.get(self.url)
+        redirect_url = response.url
+
+        response = self.client.get(redirect_url)
+
+        return redirect_url, response
+
     def setUp(self):
         self.user = create_user(client=self.client, password='oldpassword')
 
@@ -23,43 +31,36 @@ class TestPasswordResetConfirmAuthorForm(TestCase):
             'token': self.token
         })
 
+        self.redirect_url, self.response = self.get_correct_url()
+
         return super().setUp()
 
-    def get_correct_url(self):
-        response = self.client.get(self.url)
-        redirect_url = response.url
-
-        response = self.client.get(redirect_url)
-
-        return redirect_url, response
-
-    def test_new_password_validator_is_correct(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 302)
-
-        redirect_url = response.url
-
-        response = self.client.get(redirect_url)
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.post(redirect_url, data={
-            'new_password1': 'abcd',
-            'new_password2': 'defg'
+    def test_new_password_do_not_match_validator(self):
+        response = self.client.post(self.redirect_url, data={
+            'new_password1': 'abcdefg1',
+            'new_password2': 'abcdefg11'
         })
 
         self.assertContains(
-            response, "The two password fields didn’t match"
+            response, "The two password fields didn’t match"  # TODO
         )
 
-        response = self.client.post(redirect_url, data={
-            'new_password1': 'abcd',
-            'new_password2': 'abcd'
+    def test_new_password_min_length_validator(self):
+        response = self.client.post(self.redirect_url, data={
+            'new_password1': 'ab12!@',
+            'new_password2': 'ab12!@'
         })
 
         self.assertContains(
             response,
             'This password is too short. It must contain at least 8 characters'
         )
+
+    def test_new_password_common_validator(self):
+        response = self.client.post(self.redirect_url, data={
+            'new_password1': 'abcd',
+            'new_password2': 'abcd'
+        })
 
         self.assertContains(
             response, 'This password is too common.'
@@ -70,9 +71,7 @@ class TestPasswordResetConfirmAuthorForm(TestCase):
 
         self.assertTrue(self.user.check_password('oldpassword'))
 
-        redirect_url, _ = self.get_correct_url()
-
-        self.client.post(redirect_url, data={
+        self.client.post(self.redirect_url, data={
             'new_password1': password,
             'new_password2': password
         })
@@ -82,9 +81,7 @@ class TestPasswordResetConfirmAuthorForm(TestCase):
         self.assertTrue(self.user.check_password(password))
 
     def test_renders_input_form(self):
-        _, response = self.get_correct_url()
-
-        parsed = lxml.html.fromstring(response.content)  # HTML -> DOM
+        parsed = lxml.html.fromstring(self.response.content)  # HTML -> DOM
         [form] = parsed.cssselect('form[method=POST]')  # -> Search a form
 
         inputs_names = {

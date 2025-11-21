@@ -16,11 +16,16 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
 
         return super().setUp()
 
-    def test_email_validator(self):
-        response = self.get_authorized_view(
+    def get_authorized_view_method(self, field, data_field):
+        return self.get_authorized_view(
             self.request_author_api_detail, method='patch',
             create_new_user=False, username=self.owner_user.username,
-            pk=self.owner_user.pk, data={'email': self.another_user.email}
+            pk=self.owner_user.pk, data={field: data_field}
+        )
+
+    def test_email_validator(self):
+        response = self.get_authorized_view_method(
+            'email', self.another_user.email
         )
 
         self.assertIn(
@@ -29,10 +34,8 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         )
 
     def test_password_validator_must_contain_symbols_error(self):
-        response = self.get_authorized_view(
-            self.request_author_api_detail, method='patch',
-            create_new_user=False, username=self.owner_user.username,
-            pk=self.owner_user.pk, data={'password': '12345678a'}
+        response = self.get_authorized_view_method(
+            'password', '12345678a'
         )
 
         self.assertIn(
@@ -41,22 +44,20 @@ class AuthorAPIValidatorsTest(AuthorAPIMixin):
         )
 
     def test_password_validator_must_contain_letters_error(self):
-        response = self.get_authorized_view(
-            self.request_author_api_detail, method='patch',
-            create_new_user=False, username=self.owner_user.username,
-            pk=self.owner_user.pk, data={'password': '12345678!'}
+        response = self.get_authorized_view_method(
+            'password', '12345678!'
         )
+
         self.assertIn(
             const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR,
             response.data['password']
         )
 
     def test_password_validator_must_contain_numbers_error(self):
-        response = self.get_authorized_view(
-            self.request_author_api_detail, method='patch',
-            create_new_user=False, username=self.owner_user.username,
-            pk=self.owner_user.pk, data={'password': 'ab@cdefgh'}
+        response = self.get_authorized_view_method(
+            'password', 'ab@cdefgh'
         )
+
         self.assertIn(
             const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR,
             response.data['password']
