@@ -107,6 +107,26 @@ describe('Test Password input form validations', () => {
         });
     });
 
+    describe('password contains letters', () => {
+        test('should show validator error message', () => {
+            password1Input.value = '123456!@';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR);
+        });
+
+        test('should show validator success message', () => {
+            password1Input.value = '123456a!';
+            password1Input.dispatchEvent(new Event('input'));
+
+            const errorSpan = getErrorSpan();
+            expect(errorSpan).not.toBeNull();
+            expect(errorSpan.textContent).toBe('');
+        });
+    });
+
     describe('password contains symbols', () => {
         test('should show validator error message', () => {
             password1Input.value = '123456ab';

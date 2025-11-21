@@ -54,6 +54,22 @@ describe('Test Password form validations', () => {
             );
         });
     });
+
+    describe('password contains letters', () => {
+            test('should show validator success', () => {
+                expect(
+                    passwordValidators.validatePasswordContainsLetters('ab12!')
+                ).toBe(true);
+        });
+
+        test('should show validator error message', () => {
+            expect(
+                passwordValidators.validatePasswordContainsLetters('1212!')
+            ).toBe(
+                ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
+            );
+        });
+    });
     
     describe('password contains symbols', () => {
             test('should show validator success', () => {

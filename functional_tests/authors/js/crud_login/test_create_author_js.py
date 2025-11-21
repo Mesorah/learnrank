@@ -128,6 +128,16 @@ class CreateAuthorMessagesJSTest(
             '(você está usando atualmente 3 caracteres).', error_messages
         )
 
+    def test_password_letters_error_message_portuguese_translation(self):
+        # Enter to signup page
+        self.go_to_url('authors:signup')
+
+        self.fill_credentials(id_password1='!@#$1234')
+
+        error_messages = self.get_errors()
+
+        self.assertIn('A senha deve conter letras.', error_messages)
+
     def test_password_symbols_error_message_portuguese_translation(self):
         # Enter to signup page
         self.go_to_url('authors:signup')

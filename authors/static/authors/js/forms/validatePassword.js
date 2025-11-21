@@ -23,6 +23,17 @@ export class PasswordValidators {
         return true;
     };
 
+    validatePasswordContainsLetters(password) {        
+        if(/[A-Za-z]/.test(password) === false) {
+            const msg = ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR;
+            this._errors.push(msg);
+
+            return msg;
+        }
+
+        return true;
+    };
+
     validatePasswordContainsSymbols(password) {        
         // password do not have symbols
         if(/\W/.test(password) === false) {
@@ -82,6 +93,7 @@ function validatePassword(password1Input, password2Input, errorSpan) {
     const passwordValidators = new PasswordValidators();
 
     passwordValidators.validatePasswordLength(password1Input.value);
+    passwordValidators.validatePasswordContainsLetters(password1Input.value);
     passwordValidators.validatePasswordContainsSymbols(password1Input.value);
     passwordValidators.validatePasswordContainsNumbers(password1Input.value);
     passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
