@@ -8,6 +8,13 @@ from authors.utils import is_wait_time_done
 User = get_user_model()
 
 
+def handle_error(self, field_name, msg, add_error):
+    if add_error:
+        self.add_error(field_name, msg)
+    else:
+        raise self.validation_error({field_name: msg})
+
+
 class AuthorValidateUsername:
     def validate_username_length(self, field_name, username):
         if len(username) <= 3:
@@ -31,10 +38,7 @@ class AuthorValidateEmail:
         if User.objects.filter(email=email).exists():
             msg = const.EMAIL_ALREADY_REGISTERED_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            handle_error(self, field_name, msg, add_error)
 
         return email
 
@@ -44,10 +48,7 @@ class AuthorValidatePassword:
         if len(password) < 8:
             msg = const.PASSWORD1_MIN_LENGTH_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            handle_error(self, field_name, msg, add_error)
 
     def validate_password_contains_letters(
             self, field_name, password, add_error=True
@@ -55,10 +56,7 @@ class AuthorValidatePassword:
         if not re.search(r'[A-Za-z]', password):
             msg = const.PASSWORD_MUST_CONTAIN_LETTERS_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            handle_error(self, field_name, msg, add_error)
 
     def validate_password_contains_numbers(
             self, field_name, password, add_error=True
@@ -66,10 +64,7 @@ class AuthorValidatePassword:
         if not re.search(r'\d', password):
             msg = const.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            handle_error(self, field_name, msg, add_error)
 
     def validate_password_contains_symbols(
             self, field_name, password, add_error=True
@@ -77,10 +72,7 @@ class AuthorValidatePassword:
         if not re.search(r'\W+', password):
             msg = const.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR
 
-            if add_error:
-                self.add_error(field_name, msg)
-            else:
-                raise self.validation_error({field_name: msg})
+            handle_error(self, field_name, msg, add_error)
 
     def validate_password_rules(self, *args, **kwargs):
         self.validate_password_length(*args, **kwargs)
