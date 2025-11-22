@@ -1,5 +1,5 @@
 export async function fetchCheckInformation(checkInformation, information) {
-    const apiURL = `http://127.0.0.1:8000/authors/api/check-${checkInformation}/`;
+    const apiURL = `/authors/api/check-${checkInformation}/`;
 
     const options = {
         method: 'POST',

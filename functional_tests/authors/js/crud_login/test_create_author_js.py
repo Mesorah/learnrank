@@ -1,5 +1,3 @@
-from unittest import skip
-
 from selenium.webdriver.common.by import By
 
 import authors.constants as const
@@ -24,7 +22,6 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.create_valid_user()
 
-    @skip('use mock')
     def test_username_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -36,7 +33,6 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.assertIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
 
-    @skip('use mock')
     def test_username_not_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -48,7 +44,6 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.assertNotIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
 
-    @skip('use mock')
     def test_email_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -60,13 +55,15 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
 
         self.assertIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
 
-    @skip('use mock')
     def test_email_not_already_registred(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
 
         # filled in the field with 'testing2@example.com'
         self.fill_credentials(id_email='testing2@example.com')
+
+        # uses a fail username for error_messages get a error
+        self.fill_credentials(id_username='abc')
 
         error_messages = self.get_errors()
 
@@ -84,7 +81,6 @@ class CreateAuthorMessagesJSTest(
 
         self.wait = self.delay()
 
-    @skip('use mock')
     def test_username_length_error_message_portuguese_translation(self):
         # Enter to signup page
         self.go_to_url('authors:signup')
@@ -100,7 +96,6 @@ class CreateAuthorMessagesJSTest(
             error_messages
         )
 
-    @skip('use mock')
     def test_username_already_registred_error_message_portuguese(self):
         self.create_valid_user(username=const_informations.TEST_USERNAME)
 
@@ -172,8 +167,10 @@ class CreateAuthorMessagesJSTest(
 
         self.assertIn('As senhas não coincidem.', error_messages)
 
-    @skip('use mock')
     def test_email_already_registred_error_message_portuguese_translate(self):
+        # Create a new account for test duplicated email
+        self.create_valid_user()
+
         # Enter to signup page
         self.go_to_url('authors:signup')
 
