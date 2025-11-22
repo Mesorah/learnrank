@@ -87,98 +87,44 @@ describe('Test Password input form validations', () => {
         UsernameValidators.prototype.validateUsernameAlreadyRegistred = () => false;
     });
 
-    describe('password length validor', () => {
-        test('should show valiidator error message', () => {
-            password1Input.value = 'abc12!@';
-            password1Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(7));
-        });
+    test('should show password length validor error message', () => {
+        password1Input.value = 'abc12!@';
+        password1Input.dispatchEvent(new Event('input'));
 
-        test('should show valiidator success message', () => {
-            password1Input.value = 'abcd12!@';
-            password1Input.dispatchEvent(new Event('input'));
-
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('');
-        });
+        const errorSpan = getErrorSpan();
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(7));
     });
 
-    describe('password contains letters', () => {
-        test('should show validator error message', () => {
-            password1Input.value = '123456!@';
-            password1Input.dispatchEvent(new Event('input'));
+    test('should show password contains letters validator error message', () => {
+        password1Input.value = '123456!@';
+        password1Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR);
-        });
-
-        test('should show validator success message', () => {
-            password1Input.value = '123456a!';
-            password1Input.dispatchEvent(new Event('input'));
-
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('');
-        });
+        const errorSpan = getErrorSpan();
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR);
     });
 
-    describe('password contains symbols', () => {
-        test('should show validator error message', () => {
-            password1Input.value = '123456ab';
-            password1Input.dispatchEvent(new Event('input'));
+    test('should show password contains symbols validator error message', () => {
+        password1Input.value = '123456ab';
+        password1Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
-        });
-
-        test('should show validator success message', () => {
-            password1Input.value = '123456a!';
-            password1Input.dispatchEvent(new Event('input'));
-
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('');
-        });
+        const errorSpan = getErrorSpan();
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
     });
 
-    describe('password contains numbers', () => {
-        test('should show validator error message', () => {
-            password1Input.value = 'abcde!@#';
-            password1Input.dispatchEvent(new Event('input'));
+    test('should show password contains numbers validator error message', () => {
+        password1Input.value = 'abcde!@#';
+        password1Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
-        });
-
-        test('should show validator sucess message', () => {
-            password1Input.value = 'abcd1234!';
-            password1Input.dispatchEvent(new Event('input'));
-
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('');
-        });
+        const errorSpan = getErrorSpan();
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
     });
 
     describe('password match', () => {
-        test('should show validator success', () => {
-            password1Input.value = 'abcde1234!@';
-            password2Input.value = 'abcde1234!@';
-
-            password1Input.dispatchEvent(new Event('input'));
-
-            const errorSpan = getErrorSpan();
-            expect(errorSpan).not.toBeNull();
-            expect(errorSpan.textContent).toBe('');
-        });
-
         test('should show validator error message', () => {
             password1Input.value = 'abcde1234!@';
             password2Input.value = 'abcde123!@';
@@ -200,5 +146,14 @@ describe('Test Password input form validations', () => {
             expect(errorSpan).not.toBeNull();
             expect(errorSpan.textContent).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
+    });
+
+    test('should show validator success message', () => {
+        password1Input.value = 'abcd12!@';
+        password1Input.dispatchEvent(new Event('input'));
+
+        const errorSpan = getErrorSpan();
+        expect(errorSpan).not.toBeNull();
+        expect(errorSpan.textContent).toBe('');
     });
 })
