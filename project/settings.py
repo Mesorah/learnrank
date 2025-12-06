@@ -149,7 +149,8 @@ AUTH_USER_MODEL = "authors.UserProfile"
 # SECURITY WARNING: don't run with CORS_ALLOW_ALL_ORIGINS turned on in production!
 CORS_ALLOW_ALL_ORIGINS = True
 
-if bool(os.getenv('DJANGO_TEST')) is True:
+
+if int(os.getenv('DJANGO_TEST', 0)) == 1:
     EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
