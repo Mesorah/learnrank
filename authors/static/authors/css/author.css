@@ -1,30 +1,96 @@
-Reset básico
+:root {
+  --color-primary: #016FB9;
+  --color-primary-light: #7EC9F5;
+  --color-dark: #100F3E;
+  --color-light-bg: #F4F7FB;
+  --color-white: #ffffff;
+  --color-danger: #b71c1c;
+
+  --bg-page: var(--color-light-bg);
+  --bg-card: var(--color-dark);
+  --bg-input: rgba(255,255,255,0.15);
+
+  --text-default: var(--color-white);
+
+  --border-default: rgba(255,255,255,0.15);
+
+  --button-primary: var(--color-primary);
+  --button-primary-hover: #015a96;
+
+  --font-card-size: 1.2em
+}
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Fonte e fundo */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #e0f7fa, #e1f5fe);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
+  background-color: var(--bg-page);
+  flex-direction: column;
 }
 
-/* Container geral */
-.container {
+.author-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-default);
+  gap: 25px;
+  padding: 30px 40px 0px 40px;
+  border-radius: 0 10px 10px 10px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.527);
 }
 
-/* Mensagens */
-.messages {
+.author-form label {
+  color: var(--text-default);
+  font-size: var(--font-card-size);
+}
+
+.author-form input {
+  background-color: var(--bg-input);
+  width: 100%;
+  border-radius: 10px;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.author-form button {
+  background-color: var(--button-primary);
+  border-radius: 10px;
+  padding: 8px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.author-form button:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.author-link {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* .error-span {
+  width: 100%;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+  overflow-wrap: break-word;
+} */
+
+/* .messages {
   width: 100%;
   max-width: 400px;
   margin-bottom: 1rem;
@@ -47,78 +113,4 @@ body {
 .alert-danger {
   background-color: #ffcdd2;
   color: #b71c1c;
-}
-
-/* Formulário */
-form.author-form {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-}
-
-form.author-form p {
-  margin-bottom: 1.2rem;
-}
-
-form.author-form label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-  color: #333;
-}
-
-form.author-form input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  transition: border-color 0.3s ease;
-}
-
-form.author-form input:focus {
-  border-color: #26c6da;
-  outline: none;
-}
-
-/* Botão de envio */
-form.author-form button {
-  background-color: rgb(38, 198, 218);
-  color: white;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 12px;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-form.author-form button:hover {
-  background-color: #00acc1;
-}
-
-/* Link para login */
-.author-link {
-  margin-top: 1rem;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.author-link p {
-  color: #333;
-}
-
-.author-link a {
-  color: #00796b;
-  text-decoration: none;
-  font-weight: bold;
-  margin-left: 0.3rem;
-}
-
-.author-link a:hover {
-  text-decoration: underline;
-}
+} */
