@@ -20,13 +20,15 @@
             {% endif %}
         </div>
     {% endif %}
+    
+    {% if title_key == 'Sign Up' %}
+        <script src="{% url 'javascript-catalog' %}"></script>
 
-    <script src="{% url 'javascript-catalog' %}"></script>
-
-    <script type="module">
-        import { inicializeListener } from "{% static 'authors/js/forms/main.js' %}";
-        document.addEventListener("DOMContentLoaded", () => {
-            inicializeListener();
-        });
-    </script>
+        <script type="module">
+            import { inicializeListener } from "{% static 'authors/js/forms/main.js' %}";
+            document.addEventListener("DOMContentLoaded", () => {
+                inicializeListener();
+            });
+        </script>
+    {% endif %}
 {% endblock content %}

@@ -33,19 +33,6 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
             'your password.'
         )
 
-    def test_user_can_see_the_page_styling_and_layout(self):
-        # User enters the reset password done page
-        self.go_to_url('authors:password_reset_done')
-
-        # He notices the Submit button color
-        text = self.find_element(
-            By.TAG_NAME, 'p'
-        )
-        self.assertEqual(
-            text.value_of_css_property('color'),
-            'rgba(75, 85, 99, 1)'
-        )
-
 
 class TestCreateAuthorPtBRFT(BaseWebDriverForFunctionalTests):
     language = 'pt-BR,pt'

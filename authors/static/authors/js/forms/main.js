@@ -3,7 +3,9 @@ import { attachPasswordListener } from './validatePassword.js';
 import { attachUsernameListener } from './validateUsername.js';
 
 
-export function sendErrors(validators, errorSpan) {
+export function sendErrors(validators, form_p) {
+    const errorSpan = createErrorSpan(form_p);
+
     const errors = validators.errors;
 
     errorSpan.textContent = '';
@@ -24,11 +26,15 @@ export function getElements() {
 };
 
 
-export function createErrorSpan(form) {
+export function createErrorSpan(form_p) {
+    const error_span = form_p.querySelector('.error-span');
+
+    if(error_span) return error_span;
+
     const errorSpan = document.createElement('span');
     errorSpan.classList.add('error-span');
 
-    form.appendChild(errorSpan);
+    form_p.appendChild(errorSpan);
 
     return errorSpan;
 };
@@ -36,9 +42,9 @@ export function createErrorSpan(form) {
 
 export function inicializeListener() {
     const {form, usernameInput, emailInput, password1Input, password2Input} = getElements();
-    const errorSpan = createErrorSpan(form);
+    // const errorSpan = createErrorSpan(form);
 
-    attachUsernameListener(usernameInput, errorSpan);
-    attachPasswordListener(password1Input, password2Input, errorSpan);
-    attachEmailListener(emailInput, errorSpan);
+    attachUsernameListener(usernameInput);
+    attachPasswordListener(password1Input, password2Input);
+    attachEmailListener(emailInput);
 };

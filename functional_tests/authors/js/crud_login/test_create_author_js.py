@@ -6,10 +6,11 @@ from functional_tests.base import BaseWebDriverForFunctionalTests
 
 
 class GetErrorsMixin:
-    def get_errors(self):
-        error_messages = self.wait_for_element(
-            By.CLASS_NAME, 'error-span', all_element=True
-        )
+    def get_errors(self, input_id):
+        input_el = self.find_element(By.ID, input_id)
+        parent = input_el.find_element(By.XPATH, "..")
+
+        error_messages = parent.find_elements(By.CLASS_NAME, 'error-span')
 
         return [error_message.text for error_message in error_messages]
 
@@ -29,7 +30,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         # filled in the field with 'testing'
         self.fill_credentials(id_username=const_informations.TEST_USERNAME)
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_username')
 
         self.assertIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
 
@@ -40,7 +41,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         # filled in the field with 'abc'
         self.fill_credentials(id_username='abc')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_username')
 
         self.assertNotIn(const.USERNAME_ALREADY_TAKEN_ERROR, error_messages)
 
@@ -88,7 +89,7 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'abc'
         self.fill_credentials(id_username='abc')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_username')
 
         self.assertIn(
             'Por favor, insira pelo menos 4 caracteres '
@@ -105,7 +106,7 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'testing'
         self.fill_credentials(id_username=const_informations.TEST_USERNAME)
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_username')
 
         self.assertIn('Este nome de usuário já está em uso.', error_messages)
 
@@ -116,7 +117,7 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'a1!'
         self.fill_credentials(id_password1='a1!')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_password1')
 
         self.assertIn(
             'Por favor, aumente este texto para 8 caracteres ou mais '
@@ -129,7 +130,7 @@ class CreateAuthorMessagesJSTest(
 
         self.fill_credentials(id_password1='!@#$1234')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_password1')
 
         self.assertIn('A senha deve conter letras.', error_messages)
 
@@ -140,7 +141,7 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'abcd1234'
         self.fill_credentials(id_password1='abcd1234')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_password1')
 
         self.assertIn('A senha deve conter símbolos.', error_messages)
 
@@ -151,7 +152,7 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'abcd!@#$'
         self.fill_credentials(id_password1='abcd!@#$')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_password1')
 
         self.assertIn('A senha deve conter números.', error_messages)
 
@@ -163,7 +164,7 @@ class CreateAuthorMessagesJSTest(
         self.fill_credentials(id_password1='abcd12!@#$')
         self.fill_credentials(id_password2='adbc')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_password1')
 
         self.assertIn('As senhas não coincidem.', error_messages)
 
@@ -177,6 +178,6 @@ class CreateAuthorMessagesJSTest(
         # filled in the field with 'testing@example.com'
         self.fill_credentials(id_email=const_informations.TEST_EMAIL)
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_email')
 
         self.assertIn('Este e-mail já está registrado.', error_messages)

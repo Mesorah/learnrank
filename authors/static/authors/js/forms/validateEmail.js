@@ -29,7 +29,7 @@ export class EmailValidators {
 };
 
 
-export function attachEmailListener(emailInput, errorSpan) {
+export function attachEmailListener(emailInput) {
     emailInput.addEventListener('input', async () => {
         const emailValidators = new EmailValidators();
 
@@ -37,6 +37,6 @@ export function attachEmailListener(emailInput, errorSpan) {
             emailInput.value
         );
 
-        sendErrors(emailValidators, errorSpan);
+        sendErrors(emailValidators, emailInput.parentElement);
     })
 }

@@ -78,18 +78,18 @@ export class PasswordValidators {
 };
 
 
-export function attachPasswordListener(password1Input, password2Input, errorSpan) {
+export function attachPasswordListener(password1Input, password2Input) {
     password1Input.addEventListener('input', () => {
-        validatePassword(password1Input, password2Input, errorSpan);
+        validatePassword(password1Input, password2Input);
     })
 
     password2Input.addEventListener('input', () => {
-        validatePassword(password1Input, password2Input, errorSpan);
+        validatePassword(password1Input, password2Input);
     })
 };
 
 
-function validatePassword(password1Input, password2Input, errorSpan) {
+function validatePassword(password1Input, password2Input) {
     const passwordValidators = new PasswordValidators();
 
     passwordValidators.validatePasswordLength(password1Input.value);
@@ -98,5 +98,5 @@ function validatePassword(password1Input, password2Input, errorSpan) {
     passwordValidators.validatePasswordContainsNumbers(password1Input.value);
     passwordValidators.validatePasswordsMatch(password1Input.value, password2Input.value);
 
-    sendErrors(passwordValidators, errorSpan);
+    sendErrors(passwordValidators, password1Input.parentElement);
 }

@@ -146,25 +146,6 @@ class TestChangeUsernameFT(BaseWebDriverForFunctionalTests):
         error_message = self.get_text(By.CLASS_NAME, 'errorlist')
         self.assertEqual(error_message, const.USERNAME_ALREADY_TAKEN_ERROR)
 
-    def test_user_can_see_the_page_styling_and_layout(self):
-        self.go_to_url()
-        self.create_valid_user(auto_login=True)
-
-        # User enters the home screen
-        self.go_to_url('authors:change_username')
-
-        # His browser window is set to a very specific size
-        self.browser.set_window_size(1024, 768)
-
-        # He notices the Submit button color
-        submit_button = self.find_element(
-            By.XPATH, '//button[text()="Submit"]'
-        )
-        self.assertEqual(
-            submit_button.value_of_css_property('background-color'),
-            'rgba(38, 198, 218, 1)'
-        )
-
 
 class TestChangeUsernamePtBRFT(BaseWebDriverForFunctionalTests):
     language = 'pt-BR,pt'

@@ -17,10 +17,22 @@ const ERROR_SPAN_CLASS = 'error-span';
 function setupFormTest() {
     document.body.innerHTML = `
         <form class="author-form">
-            <input type="text" id="${USERNAME_INPUT_ID}" placeholder="Ex: Gabriel Rodrigues">
-            <input type="email" id="id_email" placeholder="Ex: gabrielrodrigues@example.com">
-            <input type="password" id="id_password1" placeholder="Ex 23#$1fsgKDL!">
-            <input type="password" id="id_password2" placeholder="Repeat your password">
+            <p>
+                <input type="text" id="${USERNAME_INPUT_ID}" placeholder="Ex: Gabriel Rodrigues">
+            </p>
+
+            <p>
+                <input type="email" id="id_email" placeholder="Ex: gabrielrodrigues@example.com">
+            </p>
+
+            <p>
+                <input type="password" id="id_password1" placeholder="Ex 23#$1fsgKDL!">
+            </p>
+
+            <p>
+                <input type="password" id="id_password2" placeholder="Repeat your password">
+            </p>
+
             <button type="submit">Submit</button>
         </form>
     `;
@@ -38,8 +50,10 @@ function setupFormTest() {
 }
 
 
-function getErrorSpan() {
-    return document.querySelector(`.${ERROR_SPAN_CLASS}`);
+function getErrorSpan(input_id) {
+    const input = document.querySelector(`#${input_id}`).parentElement;
+
+    return input.querySelector(`.${ERROR_SPAN_CLASS}`);
 }
 
 
@@ -57,9 +71,9 @@ describe('Test Username input form validations', () => {
         usernameInput.value = 'abc';
         usernameInput.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
-
         await new Promise(process.nextTick);
+
+        const errorSpan = getErrorSpan(USERNAME_INPUT_ID);
 
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.USERNAME_MIN_LENGTH_ERROR(3));
@@ -69,9 +83,8 @@ describe('Test Username input form validations', () => {
         usernameInput.value = 'abcd';
         usernameInput.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
-        expect(errorSpan).not.toBeNull();
-        expect(errorSpan.textContent).toBe('');
+        const errorSpan = getErrorSpan(USERNAME_INPUT_ID);
+        expect(errorSpan).toBeNull();
     })
 });
 
@@ -92,7 +105,7 @@ describe('Test Password input form validations', () => {
         password1Input.value = 'abc12!@';
         password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
+        const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.PASSWORD1_MIN_LENGTH_ERROR(7));
     });
@@ -101,7 +114,7 @@ describe('Test Password input form validations', () => {
         password1Input.value = '123456!@';
         password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
+        const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_LETTERS_ERROR);
     });
@@ -110,7 +123,7 @@ describe('Test Password input form validations', () => {
         password1Input.value = '123456ab';
         password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
+        const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_SYMBOLS_ERROR);
     });
@@ -119,7 +132,7 @@ describe('Test Password input form validations', () => {
         password1Input.value = 'abcde!@#';
         password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
+        const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe(ERRORS.PASSWORD_MUST_CONTAIN_NUMBERS_ERROR);
     });
@@ -131,7 +144,7 @@ describe('Test Password input form validations', () => {
 
             password1Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
+            const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
             expect(errorSpan).not.toBeNull();
             expect(errorSpan.textContent).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
@@ -142,7 +155,7 @@ describe('Test Password input form validations', () => {
 
             password2Input.dispatchEvent(new Event('input'));
 
-            const errorSpan = getErrorSpan();
+            const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
             expect(errorSpan).not.toBeNull();
             expect(errorSpan.textContent).toBe(ERRORS.PASSWORDS_DO_NOT_MATCH_ERROR);
         });
@@ -152,7 +165,7 @@ describe('Test Password input form validations', () => {
         password1Input.value = 'abcd12!@';
         password1Input.dispatchEvent(new Event('input'));
 
-        const errorSpan = getErrorSpan();
+        const errorSpan = getErrorSpan(PASSWORD1_INPUT_ID);
         expect(errorSpan).not.toBeNull();
         expect(errorSpan.textContent).toBe('');
     });

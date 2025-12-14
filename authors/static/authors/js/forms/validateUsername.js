@@ -43,13 +43,13 @@ export class UsernameValidators {
     };
 };
 
-export function attachUsernameListener(usernameInput, errorSpan) {
+export function attachUsernameListener(usernameInput) {
     usernameInput.addEventListener('input', async () => {
         const usernameValidators = new UsernameValidators();
 
         usernameValidators.validateUsernameLength(usernameInput.value);
         await usernameValidators.validateUsernameAlreadyRegistred(usernameInput.value);
 
-        sendErrors(usernameValidators, errorSpan);
+        sendErrors(usernameValidators, usernameInput.parentElement);
     }) 
 };
