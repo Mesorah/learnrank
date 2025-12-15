@@ -56,6 +56,7 @@ TITLE_SIGN_UP = _lazy('Sign Up')
 TITLE_LOGIN = _lazy('Login')
 TITLE_DELETE_ACCOUNT = _lazy('Delete your account')
 TITLE_CHANGE_USERNAME = _lazy('Change information')
+TITLE_PASSWORD_RESET = _lazy('Password reset')
 
 
 # VIEWS

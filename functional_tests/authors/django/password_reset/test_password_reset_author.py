@@ -23,7 +23,10 @@ class TestPasswordResetAuthorFT(BaseWebDriverForFunctionalTests):
 
         # See the password reset page
         form = self.wait_for_element(By.CLASS_NAME, 'author-form')
-        self.assertEqual(self.browser.title, 'Password reset')
+        self.assertEqual(self.browser.title, const.TITLE_PASSWORD_RESET)
+
+        page_title = self.find_element(By.TAG_NAME, 'h1')
+        self.assertEqual(page_title.text, const.TITLE_PASSWORD_RESET)
 
         # Check that all inputs have placeholders.
         email_input = form.find_element(By.ID, 'id_email')

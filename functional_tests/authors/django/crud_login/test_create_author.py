@@ -62,6 +62,10 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.browser.set_window_size(1200, 800)
 
+        # He noticed that the page has its h1.
+        page_title = self.find_element(By.TAG_NAME, 'h1')
+        self.assertEqual(page_title.text, const.TITLE_SIGN_UP)
+
         error_message = self.get_text(By.CLASS_NAME, 'alert')
 
         self.assertEqual(error_message, const.FORM_INVALID_ERROR)

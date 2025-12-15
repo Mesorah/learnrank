@@ -37,6 +37,9 @@ class TestLoginAuthorFT(BaseWebDriverForFunctionalTests):
 
         self.assertEqual(self.browser.title, const.TITLE_LOGIN)
 
+        page_title = self.get_text(By.TAG_NAME, 'h1', wait_for_element=False)
+        self.assertEqual(page_title, const.TITLE_LOGIN)
+
         # Check that all inputs have placeholders.
         inputs_information = self.get_all_placeholders()
         self.validate_placeholders(inputs_information)
