@@ -27,7 +27,7 @@ class TestLogoutAuthorFT(BaseWebDriverForFunctionalTests):
         )
 
         # So he decided to log out there to be able to access the page.
-        self.click_when_visible(By.CLASS_NAME, 'author-logout-button')
+        self.click_when_visible(By.TAG_NAME, 'button')
 
         # He saw the success message
         success_message = self.get_text(By.CLASS_NAME, 'alert-success')
@@ -56,7 +56,7 @@ class TestLogoutAuthorPtBRFT(BaseWebDriverForFunctionalTests):
         self.create_valid_user(auto_login=True)
 
         # And he found the sucess message in portuguese
-        self.click_when_visible(By.CLASS_NAME, 'author-logout-button')
+        self.click_when_visible(By.TAG_NAME, 'button')
 
         success_message = self.get_text(By.CLASS_NAME, 'alert-success')
 
