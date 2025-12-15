@@ -36,6 +36,12 @@ body {
   flex-direction: column;
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 3em;
+}
+
 .author-form {
   display: flex;
   flex-direction: column;
@@ -83,14 +89,16 @@ body {
   gap: 10px;
 }
 
-/* .error-span {
-  width: 100%;
+.error-span {
+  display: block;
+  max-width: 330px;
+  min-width: 150px;
   color: var(--color-danger);
   font-size: 0.9rem;
   overflow-wrap: break-word;
-} */
+}
 
-/* .messages {
+.messages {
   width: 100%;
   max-width: 400px;
   margin-bottom: 1rem;
@@ -113,4 +121,4 @@ body {
 .alert-danger {
   background-color: #ffcdd2;
   color: #b71c1c;
-} */
+}
