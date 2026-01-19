@@ -1,13 +1,8 @@
+{% extends "courses/base.html" %}
+{% load i18n %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-</head>
-<body>
+{% block content %}
     <h1>Testando!!!!</h1>
 
     <span class='card'></span>
@@ -15,10 +10,9 @@
     <script src="{% url 'javascript-catalog' %}"></script>
 
         <script type="module">
-            import { inicializeListener } from "{% static 'classes/js/main.js' %}";
+            import { inicializeListener } from "{% static 'courses/js/main.js' %}";
             document.addEventListener("DOMContentLoaded", () => {
                 inicializeListener();
             });
     </script>
-</body>
-</html>
+{% endblock content %}
