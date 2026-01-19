@@ -1,6 +1,6 @@
-import { ERRORS } from '@js/constants.js';
-import { PasswordValidators } from '@js/forms/validatePassword.js';
-import { UsernameValidators } from '@js/forms/validateUsername.js';
+import { ERRORS } from '@jsAuthors/constants.js';
+import { PasswordValidators } from '@jsAuthors/forms/validatePassword.js';
+import { UsernameValidators } from '@jsAuthors/forms/validateUsername.js';
 
 
 describe('Test Username form validations', () => {

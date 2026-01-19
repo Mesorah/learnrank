@@ -4,7 +4,7 @@ export default {
     ['module-resolver', {
       root: ['./'],
       alias: {
-        '@js': '../authors/static/authors/js'
+        '@jsAuthors': '../authors/static/authors/js',
       }
     }]
   ]

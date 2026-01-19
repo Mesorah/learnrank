@@ -2,4 +2,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'home/pages/index.html')
+    return render(request, 'courses/pages/index.html')

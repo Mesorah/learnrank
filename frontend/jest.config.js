@@ -9,7 +9,7 @@ export default {
     ],
 
     moduleNameMapper: {
-        '^@js/(.*)$': '<rootDir>/../authors/static/authors/js/$1',
+        '^@jsAuthors/(.*)$': '<rootDir>/../authors/static/authors/js/$1',
     },
 
     coverageReporters: ['text', 'html'],

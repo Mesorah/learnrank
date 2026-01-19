@@ -1,7 +1,7 @@
 import fetchMock from 'jest-fetch-mock';
 fetchMock.enableMocks();
 
-import { fetchCheckInformation } from "@js/getCheckInformationAPI";
+import { fetchCheckInformation } from "@jsAuthors/getCheckInformationAPI";
 
 beforeEach(() => {
     fetch.resetMocks();

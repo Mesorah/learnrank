@@ -1,8 +1,8 @@
 from django.urls import path
 
-from home import views
+from courses import views
 
-app_name = 'home'
+app_name = 'courses'
 
 
 urlpatterns = [

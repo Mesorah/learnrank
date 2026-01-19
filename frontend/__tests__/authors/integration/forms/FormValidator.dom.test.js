@@ -2,9 +2,9 @@
  * @jest-environment jsdom
 */
 
-import { ERRORS } from '@js/constants.js';
-import { inicializeListener } from '@js/forms/main.js';
-import { UsernameValidators } from '@js/forms/validateUsername.js';
+import { ERRORS } from '@jsAuthors/constants.js';
+import { inicializeListener } from '@jsAuthors/forms/main.js';
+import { UsernameValidators } from '@jsAuthors/forms/validateUsername.js';
 
 
 const FORM_CLASS = 'author-form';

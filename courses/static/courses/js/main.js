@@ -21,7 +21,7 @@ function cardListener(card, div) {
     card.addEventListener('click', (e) => {
         const text = e.target.textContent;
 
-        if(text === 'sim') div.style.display = 'none';
+        if(text === 'não') div.style.display = 'none';
     })
 }
 

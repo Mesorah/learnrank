@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'authors',
     'home',
+    'courses',
     'rest_framework',
     'rest_framework_simplejwt',
 ]

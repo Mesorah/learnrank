@@ -52,7 +52,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         # filled in the field with 'testing@example.com'
         self.fill_credentials(id_email=const_informations.TEST_EMAIL)
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_email')
 
         self.assertIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
 
@@ -66,7 +66,7 @@ class CreateAuthorJSTest(BaseWebDriverForFunctionalTests, GetErrorsMixin):
         # uses a fail username for error_messages get a error
         self.fill_credentials(id_username='abc')
 
-        error_messages = self.get_errors()
+        error_messages = self.get_errors('id_email')
 
         self.assertNotIn(const.EMAIL_ALREADY_REGISTERED_ERROR, error_messages)
 

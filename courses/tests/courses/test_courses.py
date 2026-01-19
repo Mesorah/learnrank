@@ -1,17 +1,17 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
 
-from home import views
+from courses import views
 
 
-class TestHomeIndex(TestCase):
+class TestClasses(TestCase):
     def test_view_is_correct(self):
-        response = resolve(reverse('home:index'))
+        response = resolve(reverse('courses:index'))
 
         self.assertEqual(response.func, views.index)
 
     def test_view_load_correct_template(self):
-        response = self.client.get(reverse('home:index'))
+        response = self.client.get(reverse('courses:index'))
 
         self.assertTemplateUsed(
             response,
@@ -19,6 +19,6 @@ class TestHomeIndex(TestCase):
         )
 
     def test_status_code_view_get_is_correct(self):
-        response = self.client.get(reverse('home:index'))
+        response = self.client.get(reverse('courses:index'))
 
         self.assertEqual(response.status_code, 200)
