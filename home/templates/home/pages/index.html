@@ -1,157 +1,154 @@
+{% extends "templates/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-	<link rel="stylesheet" href="{% static 'home/css/home.css' %}">
-</head>
-<body>
+{% block head %}
+    {% include "home/partials/head.html" %}
+{% endblock head %}
+
+{% block content %}
 	<header>
 		<h1>Learn Rank</h1>
 
-		<nav>
-			<div class="nav-actions">
-				{% if user.is_authenticated %}
-					<a href="#" class="username btn">{{ user.username }}</a>
-					<form action="{% url "authors:logout" %}" method="post" class="logout-form">
-						{% csrf_token %}
+			<nav>
+				<div class="nav-actions">
+					{% if user.is_authenticated %}
+						<a href="#" class="username btn">{{ user.username }}</a>
+						<form action="{% url "authors:logout" %}" method="post" class="logout-form">
+							{% csrf_token %}
 
-						<button type="submit" class="btn">Logout</button>
-					</form>
-				{% else %}
-					<a href="{% url "authors:signup" %}" class="sign-up-button btn">Sign Up</a>
-					<a href="{% url "authors:login" %}" class="login-button btn">Login</a>
-				{% endif %}
-			</div>
-		</nav>
-	</header>
-
-	<main>
-		<section>
-			<h2>Aulas</h2>
-
-			<ul>
-				<li>
-					<p>Aula 1</p>
-					<p>Verb To Be</p>
-					<a href="{% url 'courses:index' %}" class="testing-courses">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 2</p>
-					<p>Pronomes Pessoais</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 3</p>
-					<p>Artigos (A / An / The)</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 4</p>
-					<p>Plural dos Substantivos</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 5</p>
-					<p>Presente Simples</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 6</p>
-					<p>Advérbios de Frequência</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 7</p>
-					<p>There Is / There Are</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 8</p>
-					<p>Preposições de Lugar</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 9</p>
-					<p>Passado Simples</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 10</p>
-					<p>Verbos Irregulares</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 11</p>
-					<p>Futuro com Will</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 12</p>
-					<p>Comparativos e Superlativos</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 13</p>
-					<p>Modal Verbs</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 14</p>
-					<p>Present Continuous</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 15</p>
-					<p>Question Forms</p>
-					<a href="#">Começar</a>
-				</li>
-
-				<li>
-					<p>Aula 16</p>
-					<p>Revisão Geral</p>
-					<a href="#">Começar</a>
-				</li>
-			</ul>
-		</section>
-
-		{% if messages %}
-			<div class="messages">
-			{% for message in messages %}
-				<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
-					{{ message }}
+							<button type="submit" class="btn">Logout</button>
+						</form>
+					{% else %}
+						<a href="{% url "authors:signup" %}" class="sign-up-button btn">Sign Up</a>
+						<a href="{% url "authors:login" %}" class="login-button btn">Login</a>
+					{% endif %}
 				</div>
-			{% endfor %}
+			</nav>
+		</header>
+
+		<main>
+			<section>
+				<h2>Aulas</h2>
+
+				<ul>
+					<li>
+						<p>Aula 1</p>
+						<p>Verb To Be</p>
+						<a href="{% url 'courses:index' %}" class="testing-courses">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 2</p>
+						<p>Pronomes Pessoais</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 3</p>
+						<p>Artigos (A / An / The)</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 4</p>
+						<p>Plural dos Substantivos</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 5</p>
+						<p>Presente Simples</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 6</p>
+						<p>Advérbios de Frequência</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 7</p>
+						<p>There Is / There Are</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 8</p>
+						<p>Preposições de Lugar</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 9</p>
+						<p>Passado Simples</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 10</p>
+						<p>Verbos Irregulares</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 11</p>
+						<p>Futuro com Will</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 12</p>
+						<p>Comparativos e Superlativos</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 13</p>
+						<p>Modal Verbs</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 14</p>
+						<p>Present Continuous</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 15</p>
+						<p>Question Forms</p>
+						<a href="#">Começar</a>
+					</li>
+
+					<li>
+						<p>Aula 16</p>
+						<p>Revisão Geral</p>
+						<a href="#">Começar</a>
+					</li>
+				</ul>
+			</section>
+
+			{% if messages %}
+				<div class="messages">
+				{% for message in messages %}
+					<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+						{{ message }}
+					</div>
+				{% endfor %}
+				</div>
+			{% endif %}
+
+			<div class="test">
+				<p>Testing</p>
 			</div>
-		{% endif %}
 
-		<div class="test">
-			<p>Testing</p>
-		</div>
-
-		<p class="username-profile">testing</p>
-		<a href="{% url "authors:password_reset" %}">Password reset</a>
-		<a href="{% url "authors:delete" %}">Delete account</a>
-		
-		<br><br>
-		<a href="{% url "authors:change_username" %}" class="change-information">Change username</a>
-	</main>
-</body>
-</html>
+			<p class="username-profile">testing</p>
+			<a href="{% url "authors:password_reset" %}">Password reset</a>
+			<a href="{% url "authors:delete" %}">Delete account</a>
+			
+			<br><br>
+			<a href="{% url "authors:change_username" %}" class="change-information">Change username</a>
+		</main>
+	</header>
+{% endblock content %}

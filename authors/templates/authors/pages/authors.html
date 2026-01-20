@@ -1,7 +1,10 @@
-{% extends "authors/base.html" %}
+{% extends "templates/base.html" %}
 {% load i18n %}
 {% load static %}
 
+{% block head %}
+    {% include "authors/partials/head.html" %}
+{% endblock head %}
 
 {% block content %}
     <h1>{{ title }}</h1>

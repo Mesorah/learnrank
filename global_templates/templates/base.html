@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ html_language }}">
 <head>
-    {% include "courses/partials/head.html" %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}{% endblock head %}
     <title>{{ title }}</title>
 </head>
 <body>

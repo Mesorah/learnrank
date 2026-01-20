@@ -15,7 +15,7 @@ class TestClasses(TestCase):
 
         self.assertTemplateUsed(
             response,
-            'home/pages/index.html'
+            'courses/pages/index.html'
         )
 
     def test_status_code_view_get_is_correct(self):

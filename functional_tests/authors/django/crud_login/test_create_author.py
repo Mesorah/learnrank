@@ -104,7 +104,7 @@ class TestCreateAuthorFT(BaseWebDriverForFunctionalTests):
         # It worked and was redirected already logged in to the homepage.
         self.wait_for_element(By.CLASS_NAME, 'test')
 
-        self.assertEqual(self.browser.title, 'Document')
+        self.assertEqual(self.browser.title, 'Home')
 
         username = self.get_text(
             By.CLASS_NAME, 'username-profile'

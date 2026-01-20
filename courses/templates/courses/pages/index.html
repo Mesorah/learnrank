@@ -1,11 +1,20 @@
-{% extends "courses/base.html" %}
+{% extends "templates/base.html" %}
 {% load i18n %}
 {% load static %}
+
+{% block head %}
+    {% include "courses/partials/head.html" %}
+{% endblock head %}
 
 {% block content %}
     <h1>Testando!!!!</h1>
 
     <span class='card'></span>
+
+    <!-- Usar um aspect radio de 16/9 e width 100% na div e um width e height 100% com border 0 no iframe -->
+    <div>
+        <iframe src="https://www.youtube.com/embed/6Gli-vT4SKI?si=wVIYPe0MWQ79w7iP" title="Learn Rank" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+    </div>
 
     <script src="{% url 'javascript-catalog' %}"></script>
 
