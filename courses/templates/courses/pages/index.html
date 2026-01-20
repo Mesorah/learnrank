@@ -9,12 +9,21 @@
 {% block content %}
     {% include "global/header.html" %}
 
-    <div class='video'>
-        <iframe src="https://www.youtube.com/embed/6Gli-vT4SKI?si=wVIYPe0MWQ79w7iP" title="Learn Rank" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-    </div>
+    <span class='card'></span>
+
+    {% comment %} <div class='video'>
+        <iframe src="https://www.youtube.com/embed/6Gli-vT4SKI?si=wVIYPe0MWQ79w7iP" title="Learn Rank" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" class='iframe'></iframe>
+    </div> {% endcomment %}
+
+    <div id="player"></div>
+
+    <span class='exercicies'></span>
+
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="{% static 'courses/js/youtube-player.js' %}"></script>
 
     <script src="{% url 'javascript-catalog' %}"></script>
-
         <script type="module">
             import { inicializeListener } from "{% static 'courses/js/main.js' %}";
             document.addEventListener("DOMContentLoaded", () => {

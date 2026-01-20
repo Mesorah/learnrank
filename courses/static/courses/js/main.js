@@ -2,8 +2,8 @@ function createElement() {
     const div = document.createElement('div');
     div.innerHTML = `
     <p> Você já estou esse assunto? </p>
-    <button>sim</button>
-    <button>não</button>
+    <button data-choice="yes">sim</button>
+    <button data-choice="no">não</button>
     `;
 
     return div;
@@ -19,13 +19,21 @@ function getCard(div) {
 
 function cardListener(card, div) {
     card.addEventListener('click', (e) => {
-        const text = e.target.textContent;
+        const choice = e.target.dataset.choice;
 
-        if(text === 'não') div.style.display = 'none';
+        if(!choice) return;
+
+        if(choice === 'no') div.style.display = 'none';
+
+        localStorage.setItem('userChoice', choice);
     })
 }
 
 export function inicializeListener() {
+    const choice = localStorage.getItem('userChoice');
+
+    if(choice) return;
+
     const div = createElement();
     const card = getCard(div);
 
