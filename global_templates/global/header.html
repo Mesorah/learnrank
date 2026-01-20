@@ -1,0 +1,19 @@
+<header>
+    <h1>Learn Rank</h1>
+
+    <nav>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="#" class="username btn">{{ user.username }}</a>
+                <form action="{% url "authors:logout" %}" method="post" class="logout-form">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url "authors:signup" %}" class="sign-up-button btn">Sign Up</a>
+                <a href="{% url "authors:login" %}" class="login-button btn">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
