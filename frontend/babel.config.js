@@ -5,6 +5,7 @@ export default {
       root: ['./'],
       alias: {
         '@jsAuthors': '../authors/static/authors/js',
+        '@jsCourses': '../courses/static/courses/js',
       }
     }]
   ]
