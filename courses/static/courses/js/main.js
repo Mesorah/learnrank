@@ -4,7 +4,7 @@ window.createDiv = createDiv;
 window.getCard = getCard;
 
 const html = `
-    <p> Você já estou esse assunto? </p>
+    <p> Você já estudou este assunto? </p>
     <button data-choice="yes">sim</button>
     <button data-choice="no">não</button>
 `
@@ -15,13 +15,17 @@ function cardListener(card, div) {
 
         if(!choice) return;
 
-        if(choice === 'no') div.style.display = 'none';
+        const cardDiv = div.parentElement;
+        const overlayDiv = cardDiv.parentElement;
+
+        if(choice === 'no') overlayDiv.style.display = 'none';
 
         localStorage.setItem('userChoice', choice);
     })
 }
 
 export function inicializeListener() {
+    localStorage.removeItem('userChoice')
     const choice = localStorage.getItem('userChoice');
 
     if(choice) return;

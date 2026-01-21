@@ -11,3 +11,42 @@
     margin: 30px auto;
     background-color: var(--color-primary-light);
 }
+
+.overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+
+    background: transparent;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px auto;
+
+    font-size: var(--font-size-normal);
+
+    background-color: var(--color-dark);
+    color: var(--color-white);
+
+    width: 35vw;
+    max-width: 450px;
+    max-height: 150px;
+    height: 20vh;
+
+    border-radius: 10px;
+}
+
+.card div p {
+    margin-bottom: 20px;
+}
+
+.card div button {
+    width: 60px;
+    height: 35px;
+    border-radius: 10px;
+}
