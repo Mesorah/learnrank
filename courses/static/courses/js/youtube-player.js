@@ -1,3 +1,7 @@
+const html = `
+    <a href="#">Resolver questões</a>
+`
+
 let player;
 
 function onYouTubeIframeAPIReady() {
@@ -11,24 +15,7 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.ENDED) {
-        const div = createElement();
-        getCard(div);
+        const div = window.createDiv(html);
+        window.getCard(div, '.exercicies');
     }
 }
-
-// function createElement() {
-//     const div = document.createElement('div');
-//     div.innerHTML = `
-//     <a href="#">Resolver questões</a>
-//     `;
-
-//     return div;
-// }
-
-// function getCard(div) {
-//     const card = document.querySelector('.exercicies');
-
-//     card.appendChild(div);
-
-//     return card;
-// }

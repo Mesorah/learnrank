@@ -1,21 +1,13 @@
-function createElement() {
-    const div = document.createElement('div');
-    div.innerHTML = `
+import { createDiv, getCard } from './createElements.js';
+
+window.createDiv = createDiv;
+window.getCard = getCard;
+
+const html = `
     <p> Você já estou esse assunto? </p>
     <button data-choice="yes">sim</button>
     <button data-choice="no">não</button>
-    `;
-
-    return div;
-}
-
-function getCard(div) {
-    const card = document.querySelector('.card');
-
-    card.appendChild(div);
-
-    return card;
-}
+`
 
 function cardListener(card, div) {
     card.addEventListener('click', (e) => {
@@ -34,8 +26,8 @@ export function inicializeListener() {
 
     if(choice) return;
 
-    const div = createElement();
-    const card = getCard(div);
+    const div = window.createDiv(html);
+    const card = window.getCard(div, '.card');
 
     cardListener(card, div);
 
